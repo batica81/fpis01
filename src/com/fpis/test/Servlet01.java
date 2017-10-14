@@ -1,5 +1,11 @@
 package com.fpis.test;
 
+import com.fpis.test.model.ArtikalEntity;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,64 +19,35 @@ import static java.lang.Class.forName;
 
 @WebServlet(name = "Servlet01", urlPatterns = {"/yomama"})
 public class Servlet01 extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println("Yo MAMA!");
-
-//        god object
+        out.println("Yo MAMA!<br>");
 
 
+        SessionFactory factory;
+        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+        Session session = factory.openSession();
+        Transaction transaction = null;
 
-        String url = "jdbc:oracle:thin://@192.168.1.20:1521/orcl";
+        transaction = session.beginTransaction();
 
-         Connection connection = null;
-        ResultSet results = null;
+        Long artId = Long.valueOf(request.getParameter("articleId"));
 
-        try {
-            forName("oracle.jdbc.driver.OracleDriver").newInstance();
-            try {
-                connection = DriverManager.getConnection(url,"db02","fon123");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+        ArtikalEntity artikal = (ArtikalEntity) session.get(ArtikalEntity.class, artId);
 
-        String query = "SELECT * FROM ARTIKAL";
-        PreparedStatement ps = null;
-        try {
-            assert connection != null;
-            ps = connection.prepareStatement(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            results = ps.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            while (results.next()) {
-                try {
-                    out.println(results.getString(2));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        out.println(artikal.getNazivartikla());
 
-    }
-}
+        transaction.commit();
+
+        session.close();
+
+
+    } //end doGet
+
+} //end servlet
