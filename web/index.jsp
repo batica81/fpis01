@@ -14,7 +14,7 @@
   <h2>HELLO FINALLY !!!!</h2>
   $END$
 
-  <form method="post" action="yomama">
+  <form method="post" action="artikalkontroler">
     <input type="text" title="articleId" name="articleId">
     <button type="submit">Nadji ga</button>
   </form>

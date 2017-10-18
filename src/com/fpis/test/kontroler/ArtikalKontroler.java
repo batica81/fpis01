@@ -22,7 +22,8 @@ public class ArtikalKontroler extends HttpServlet {
         response.setContentType("application/json");
 
         SessionFactory factory;
-        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+        // factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+        factory = new Configuration().configure("file:hibernate.cfg.xml").buildSessionFactory();
         Session session = factory.openSession();
         Transaction transaction = null;
 
