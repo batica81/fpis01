@@ -12,7 +12,7 @@
   </head>
   <body>
   <h2>HELLO FINALLY !!!!</h2>
-  $END$
+
 
   <form method="post" action="artikalkontroler">
     <input type="text" title="articleId" name="articleId">
