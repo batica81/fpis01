@@ -22,28 +22,39 @@ public class ArtikalKontroler extends HttpServlet {
         response.setContentType("application/json");
 
         SessionFactory factory;
-        // factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
-        factory = new Configuration().configure("file:hibernate.cfg.xml").buildSessionFactory();
+         factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+//        factory = new Configuration().configure("file:hibernate.cfg.xml").buildSessionFactory();
         Session session = factory.openSession();
         Transaction transaction = null;
 
         transaction = session.beginTransaction();
 
-        Long artId = Long.valueOf(request.getParameter("articleId"));
+//        Long artId = Long.valueOf(request.getParameter("articleId"));
 
-        ArtikalEntity artikal = (ArtikalEntity) session.get(ArtikalEntity.class, artId);
+//        ArtikalEntity artikal = (ArtikalEntity) session.get(ArtikalEntity.class, artId);
 
         List lista = session.getSession().createCriteria(ArtikalEntity.class).list();
 
+        PrintWriter out = response.getWriter();
 
         JSONObject obj = new JSONObject();
 
-        obj.put("sifraartikla", artikal.getSifraartikla());
-        obj.put("nazivartikla", artikal.getNazivartikla());
-        obj.put("opisartikla", artikal.getOpisartikla());
-        obj.put("jedinicamere", artikal.getJedinicamere());
 
-        PrintWriter out = response.getWriter();
+        for(int i=0;i<lista.size();i++){
+
+            ArtikalEntity listMember = (ArtikalEntity) lista.get(i);
+            out.println(listMember.getNazivartikla());
+
+
+        }
+
+
+
+//        obj.put("sifraartikla", artikal.getSifraartikla());
+//        obj.put("nazivartikla", artikal.getNazivartikla());
+//        obj.put("opisartikla", artikal.getOpisartikla());
+//        obj.put("jedinicamere", artikal.getJedinicamere());
+
         out.println(obj);
     }
 
@@ -75,6 +86,7 @@ public class ArtikalKontroler extends HttpServlet {
 //        System.out.print(obj);
 
         out.println(artikal.getNazivartikla());
+        out.println("<br><br>");
         out.println(obj);
 
         transaction.commit();
