@@ -14,12 +14,12 @@
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/fpis01</property>
     <property name="hibernate.connection.username">fpis01</property>
     <property name="hibernate.connection.password">fon123</property>
-      <!--General options-->
+    <!-- DB schema will be updated if needed -->
+    <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
+    <!--General options-->
     <mapping class="com.fpis.test.model.ArtikalEntity"/>
     <mapping class="com.fpis.test.model.PonudaEntity"/>
     <mapping class="com.fpis.test.model.StavkaPonudeEntity"/>
 
-    <!-- DB schema will be updated if needed -->
-    <!-- <property name="hbm2ddl.auto">update</property> -->
   </session-factory>
 </hibernate-configuration>

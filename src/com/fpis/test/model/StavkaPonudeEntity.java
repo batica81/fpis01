@@ -24,7 +24,7 @@ public class StavkaPonudeEntity {
     }
 
     @Id
-    @Column(name = "BrPonude", insertable = false, updatable = false)
+    @Column(name = "BrPonude")
     public int getBrPonude() {
         return brPonude;
     }
@@ -60,7 +60,7 @@ public class StavkaPonudeEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "BrPonude", referencedColumnName = "BrPonude", nullable = false)
+    @JoinColumn(name = "BrPonude", referencedColumnName = "BrPonude", nullable = false, insertable = false, updatable = false)
     public PonudaEntity getPonudaByBrPonude() {
         return ponudaByBrPonude;
     }

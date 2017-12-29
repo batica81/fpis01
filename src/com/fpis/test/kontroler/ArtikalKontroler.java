@@ -24,7 +24,7 @@ public class ArtikalKontroler extends HttpServlet {
 
         SessionFactory factory;
 //        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
-        factory = new Configuration().configure().buildSessionFactory();
+        factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         Session session = factory.openSession();
 
         List lista = session.getSession().createCriteria(ArtikalEntity.class).list();
@@ -56,7 +56,8 @@ public class ArtikalKontroler extends HttpServlet {
 
 
         SessionFactory factory;
-        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+//        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+        factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         Session session = factory.openSession();
         Transaction transaction = null;
 
