@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
@@ -22,40 +23,30 @@ public class ArtikalKontroler extends HttpServlet {
         response.setContentType("application/json");
 
         SessionFactory factory;
-         factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
-//        factory = new Configuration().configure("file:hibernate.cfg.xml").buildSessionFactory();
+//        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
+        factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
-        Transaction transaction = null;
-
-        transaction = session.beginTransaction();
-
-//        Long artId = Long.valueOf(request.getParameter("articleId"));
-
-//        ArtikalEntity artikal = (ArtikalEntity) session.get(ArtikalEntity.class, artId);
 
         List lista = session.getSession().createCriteria(ArtikalEntity.class).list();
 
         PrintWriter out = response.getWriter();
+        JSONArray arr = new JSONArray();
 
-        JSONObject obj = new JSONObject();
+        for (Object artikalRaw:lista) {
 
+            JSONObject obj = new JSONObject();
+            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
 
-        for(int i=0;i<lista.size();i++){
+            obj.put("jedinicamere", artikal.getJedinicamere());
+            obj.put("opisartikla", artikal.getOpisartikla());
+            obj.put("nazivartikla", artikal.getNazivartikla());
+            obj.put("sifraartikla", artikal.getSifraartikla());
 
-            ArtikalEntity listMember = (ArtikalEntity) lista.get(i);
-            out.println(listMember.getNazivartikla());
-
-
+            arr.add(obj);
         }
 
-
-
-//        obj.put("sifraartikla", artikal.getSifraartikla());
-//        obj.put("nazivartikla", artikal.getNazivartikla());
-//        obj.put("opisartikla", artikal.getOpisartikla());
-//        obj.put("jedinicamere", artikal.getJedinicamere());
-
-        out.println(obj);
+        out.println(arr);
+        session.close();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,16 +74,12 @@ public class ArtikalKontroler extends HttpServlet {
         obj.put("opisartikla", artikal.getOpisartikla());
         obj.put("jedinicamere", artikal.getJedinicamere());
 
-//        System.out.print(obj);
-
         out.println(artikal.getNazivartikla());
         out.println("<br><br>");
         out.println(obj);
 
         transaction.commit();
-
         session.close();
-
 
     } //end doGet
 

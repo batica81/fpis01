@@ -1,27 +1,30 @@
 package com.fpis.test.model;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "ARTIKAL", schema = "FPIS01", catalog = "")
+@Table(name = "ARTIKAL", schema = "fpis01", catalog = "")
 public class ArtikalEntity {
-    private long sifraartikla;
+    private int sifraartikla;
     private String nazivartikla;
     private String jedinicamere;
     private String opisartikla;
+    private Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla;
 
     @Id
-    @Column(name = "SIFRAARTIKLA", nullable = false, precision = 0)
-    public long getSifraartikla() {
+    @Column(name = "SIFRAARTIKLA")
+    public int getSifraartikla() {
         return sifraartikla;
     }
 
-    public void setSifraartikla(long sifraartikla) {
+    public void setSifraartikla(int sifraartikla) {
         this.sifraartikla = sifraartikla;
     }
 
     @Basic
-    @Column(name = "NAZIVARTIKLA", nullable = false, length = 200)
+    @Column(name = "NAZIVARTIKLA")
     public String getNazivartikla() {
         return nazivartikla;
     }
@@ -31,7 +34,7 @@ public class ArtikalEntity {
     }
 
     @Basic
-    @Column(name = "JEDINICAMERE", nullable = true, length = 20)
+    @Column(name = "JEDINICAMERE")
     public String getJedinicamere() {
         return jedinicamere;
     }
@@ -41,7 +44,7 @@ public class ArtikalEntity {
     }
 
     @Basic
-    @Column(name = "OPISARTIKLA", nullable = true, length = 200)
+    @Column(name = "OPISARTIKLA")
     public String getOpisartikla() {
         return opisartikla;
     }
@@ -54,23 +57,25 @@ public class ArtikalEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ArtikalEntity that = (ArtikalEntity) o;
-
-        if (sifraartikla != that.sifraartikla) return false;
-        if (nazivartikla != null ? !nazivartikla.equals(that.nazivartikla) : that.nazivartikla != null) return false;
-        if (jedinicamere != null ? !jedinicamere.equals(that.jedinicamere) : that.jedinicamere != null) return false;
-        if (opisartikla != null ? !opisartikla.equals(that.opisartikla) : that.opisartikla != null) return false;
-
-        return true;
+        return sifraartikla == that.sifraartikla &&
+                Objects.equals(nazivartikla, that.nazivartikla) &&
+                Objects.equals(jedinicamere, that.jedinicamere) &&
+                Objects.equals(opisartikla, that.opisartikla);
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (sifraartikla ^ (sifraartikla >>> 32));
-        result = 31 * result + (nazivartikla != null ? nazivartikla.hashCode() : 0);
-        result = 31 * result + (jedinicamere != null ? jedinicamere.hashCode() : 0);
-        result = 31 * result + (opisartikla != null ? opisartikla.hashCode() : 0);
-        return result;
+
+        return Objects.hash(sifraartikla, nazivartikla, jedinicamere, opisartikla);
+    }
+
+    @OneToMany(mappedBy = "artikalBySifraArtikla")
+    public Collection<StavkaPonudeEntity> getStavkaPonudesBySifraartikla() {
+        return stavkaPonudesBySifraartikla;
+    }
+
+    public void setStavkaPonudesBySifraartikla(Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla) {
+        this.stavkaPonudesBySifraartikla = stavkaPonudesBySifraartikla;
     }
 }
