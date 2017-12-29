@@ -1,6 +1,7 @@
 package com.fpis.test.kontroler;
 
 import com.fpis.test.model.ArtikalEntity;
+import com.fpis.test.model.PonudaEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -17,8 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "ArtikalKontroler", urlPatterns = {"/artikalkontroler"})
-public class ArtikalKontroler extends HttpServlet {
+@WebServlet(name = "PonudaKontroler", urlPatterns = {"/ponudakontroler"})
+public class PonudaKontroler extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
@@ -26,20 +27,22 @@ public class ArtikalKontroler extends HttpServlet {
         factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
 
-        List<ArtikalEntity> lista  = (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
+        List<PonudaEntity> lista  = (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
 
         PrintWriter out = response.getWriter();
         JSONArray arr = new JSONArray();
 
-        for (Object artikalRaw:lista) {
+        for (Object ponudaRaw:lista) {
 
             JSONObject obj = new JSONObject();
-            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
+            PonudaEntity ponuda = (PonudaEntity) ponudaRaw;
 
-            obj.put("jedinicamere", artikal.getJedinicamere());
-            obj.put("opisartikla", artikal.getOpisartikla());
-            obj.put("nazivartikla", artikal.getNazivartikla());
-            obj.put("sifraartikla", artikal.getSifraartikla());
+//            obj.put("jedinicamere", ponuda.getJedinicamere());
+//            obj.put("opisartikla", ponuda.getOpisartikla());
+//            obj.put("nazivartikla", ponuda.getNazivartikla());
+//            obj.put("sifraartikla", ponuda.getSifraartikla());
+
+            obj.put("ponuda", ponuda.toString());
 
             arr.add(obj);
         }

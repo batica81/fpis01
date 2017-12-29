@@ -15,7 +15,7 @@
     <property name="hibernate.connection.username">fpis01</property>
     <property name="hibernate.connection.password">fon123</property>
     <!-- DB schema will be updated if needed -->
-    <!--<property name="hibernate.hbm2ddl.auto">update</property>-->
+    <property name="hibernate.hbm2ddl.auto">update</property>
     <!--General options-->
     <mapping class="com.fpis.test.model.ArtikalEntity"/>
     <mapping class="com.fpis.test.model.PonudaEntity"/>
