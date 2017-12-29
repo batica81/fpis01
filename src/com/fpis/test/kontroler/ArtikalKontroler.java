@@ -24,10 +24,13 @@ public class ArtikalKontroler extends HttpServlet {
 
         SessionFactory factory;
 //        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
-        factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+        factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
 
-        List lista = session.getSession().createCriteria(ArtikalEntity.class).list();
+//        List lista = session.get       getSession().createCriteria(ArtikalEntity.class).list();
+
+        List<ArtikalEntity> lista  = (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
+
 
         PrintWriter out = response.getWriter();
         JSONArray arr = new JSONArray();
@@ -57,7 +60,7 @@ public class ArtikalKontroler extends HttpServlet {
 
         SessionFactory factory;
 //        factory = new Configuration().configure().addAnnotatedClass(ArtikalEntity.class).buildSessionFactory();
-        factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
+        factory = new Configuration().configure().buildSessionFactory();
         Session session = factory.openSession();
         Transaction transaction = null;
 
