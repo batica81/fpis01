@@ -11,9 +11,11 @@ public class ArtikalEntity {
     private String nazivartikla;
     private String jedinicamere;
     private String opisartikla;
+    private String status;
     private Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "SIFRAARTIKLA")
     public int getSifraartikla() {
         return sifraartikla;
@@ -51,6 +53,16 @@ public class ArtikalEntity {
 
     public void setOpisartikla(String opisartikla) {
         this.opisartikla = opisartikla;
+    }
+
+    @Transient
+    public String getStatus() {
+        return status;
+    }
+
+    @Transient
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

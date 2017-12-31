@@ -16,6 +16,7 @@
     <property name="hibernate.connection.password">fon123</property>
     <!-- DB schema will be updated if needed -->
     <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.id.new_generator_mappings">false</property>
     <!--General options-->
     <mapping class="com.fpis.test.model.ArtikalEntity"/>
     <mapping class="com.fpis.test.model.PonudaEntity"/>

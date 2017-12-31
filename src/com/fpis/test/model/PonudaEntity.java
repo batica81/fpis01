@@ -22,6 +22,7 @@ public class PonudaEntity {
     private String mesto;
     private String datumPrometa;
     private String tipPlacanja;
+    private String status;
     private Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude;
 
     @Id
@@ -162,6 +163,14 @@ public class PonudaEntity {
 
     public void setTipPlacanja(String tipPlacanja) {
         this.tipPlacanja = tipPlacanja;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
