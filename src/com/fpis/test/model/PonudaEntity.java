@@ -165,10 +165,12 @@ public class PonudaEntity {
         this.tipPlacanja = tipPlacanja;
     }
 
+    @Transient
     public String getStatus() {
         return status;
     }
 
+    @Transient
     public void setStatus(String status) {
         this.status = status;
     }
@@ -200,7 +202,7 @@ public class PonudaEntity {
         return Objects.hash(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost, pozivNaBroj, mesto, datumPrometa, tipPlacanja);
     }
 
-    @OneToMany(mappedBy = "ponudaByBrPonude")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
     public Collection<StavkaPonudeEntity> getStavkaPonudesByBrPonude() {
         return stavkaPonudesByBrPonude;
     }

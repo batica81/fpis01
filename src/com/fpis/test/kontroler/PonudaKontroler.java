@@ -1,14 +1,10 @@
 package com.fpis.test.kontroler;
 
-import com.fpis.test.model.ArtikalEntity;
+import com.fpis.test.dbbroker.DBbroker;
 import com.fpis.test.model.PonudaEntity;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import com.fpis.test.model.StavkaPonudeEntity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,70 +12,153 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 @WebServlet(name = "PonudaKontroler", urlPatterns = {"/ponudakontroler"})
 public class PonudaKontroler extends HttpServlet {
+    private DBbroker dbb = new DBbroker();
+    private List<PonudaEntity> listaPonuda;
+    PonudaEntity ponuda;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        SessionFactory factory;
-        factory = new Configuration().configure().buildSessionFactory();
-        Session session = factory.openSession();
+        vratiPonude();
 
-        List<PonudaEntity> lista  = (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
-
+        // Vrati listu ponuda u JSON formatu
         PrintWriter out = response.getWriter();
-        JSONArray arr = new JSONArray();
+        JSONArray listaPonudaJSON = new JSONArray();
 
-        for (Object ponudaRaw:lista) {
+        for (Object ponudaRaw:listaPonuda) {
 
-            JSONObject obj = new JSONObject();
             PonudaEntity ponuda = (PonudaEntity) ponudaRaw;
+            JSONObject ponudaJson = new JSONObject();
+            JSONArray listaStavkiJson = new JSONArray();
+            Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
 
-//            obj.put("jedinicamere", ponuda.getJedinicamere());
-//            obj.put("opisartikla", ponuda.getOpisartikla());
-//            obj.put("nazivartikla", ponuda.getNazivartikla());
-//            obj.put("sifraartikla", ponuda.getSifraartikla());
+            for (Object stavkaRaw:stavkePonude) {
+                JSONObject stavkaJson = new JSONObject();
+                StavkaPonudeEntity stavka = (StavkaPonudeEntity) stavkaRaw;
+                stavkaJson.put("Rbr", stavka.getRbr());
+                stavkaJson.put("Kolicina", stavka.getKolicina());
+                stavkaJson.put("Artikal", stavka.getArtikalBySifraArtikla().getNazivartikla());
+                listaStavkiJson.add(stavkaJson);
+            }
 
-            obj.put("ponuda", ponuda.toString());
-
-            arr.add(obj);
+            ponudaJson.put("BrPonude", ponuda.getBrPonude());
+            ponudaJson.put("Mesto", ponuda.getMesto());
+            ponudaJson.put("Stavke", listaStavkiJson);
+            listaPonudaJSON.add(ponudaJson);
         }
 
-        out.println(arr);
-        session.close();
+        out.println(listaPonudaJSON);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+
+        String status = String.valueOf(request.getParameter("status"));
+        int brPonude = Integer.valueOf(request.getParameter("brPonude"));
+        Timestamp datum = Timestamp.valueOf(request.getParameter("datum"));
+        int sifraKupca = Integer.valueOf(request.getParameter("sifraKupca"));
+        int sifraRadnika = Integer.valueOf(request.getParameter("sifraRadnika"));
+        String isporuka = String.valueOf(request.getParameter("isporuka"));
+        String banka = String.valueOf(request.getParameter("banka"));
+        String tekuciRacun = String.valueOf(request.getParameter("tekuciRacun"));
+        String uslovi = String.valueOf(request.getParameter("uslovi"));
+        String napomena = String.valueOf(request.getParameter("napomena"));
+        String validnost = String.valueOf(request.getParameter("validnost"));
+        String pozivNaBroj = String.valueOf(request.getParameter("pozivNaBroj"));
+        String mesto = String.valueOf(request.getParameter("mesto"));
+        String datumPrometa = String.valueOf(request.getParameter("datumPrometa"));
+        String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
+
+        if (status.equals("insert")) {
+            zapamtiPonudu(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+                    pozivNaBroj, mesto,datumPrometa, tipPlacanja);
+        }
+        else if (status.equals("update")) {
+            izmeniPonudu(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+                    pozivNaBroj, mesto,datumPrometa, tipPlacanja);
+        }
+        else if (status.equals("delete")) {
+            obrisiPonudu(brPonude);
+        }
+
         PrintWriter out = response.getWriter();
-        out.println("Yo MAMA!<br>");
+        out.println("OK!");
+    } //end doPost
 
+    public void vratiPonude(){
+        dbb.pokreniDBTransakciju();
+        listaPonuda  = dbb.vratiPonude();
+        dbb.potvrdiDBTransakciju();
+    }
 
-        SessionFactory factory;
-        factory = new Configuration().configure().buildSessionFactory();
-        Session session = factory.openSession();
-        Transaction transaction = null;
+    public void zapamtiPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, String datumPrometa, String tipPlacanja){
+        ponuda = new PonudaEntity();
+        ponuda.setBrPonude(brPonude);
+        ponuda.setDatum(datum);
+        ponuda.setSifraKupca(sifraKupca);
+        ponuda.setSifraRadnika(sifraRadnika);
+        ponuda.setIsporuka(isporuka);
+        ponuda.setBanka(banka);
+        ponuda.setTekuciRacun(tekuciRacun);
+        ponuda.setUslovi(uslovi);
+        ponuda.setNapomena(napomena);
+        ponuda.setValidnost(validnost);
+        ponuda.setPozivNaBroj(pozivNaBroj);
+        ponuda.setMesto(mesto);
+        ponuda.setDatumPrometa(datumPrometa);
+        ponuda.setTipPlacanja(tipPlacanja);
+        ponuda.setStatus("insert");
 
-        transaction = session.beginTransaction();
+        dbb.pokreniDBTransakciju();
+        boolean ret = dbb.zapamtiPonudu(ponuda);
+        if(ret)
+            dbb.potvrdiDBTransakciju();
+        else
+            dbb.ponistiDBTransakciju();
+    }
 
-        Integer artId = Integer.valueOf(request.getParameter("articleId"));
-        ArtikalEntity artikal = (ArtikalEntity) session.get(ArtikalEntity.class, artId);
-        JSONObject obj = new JSONObject();
+    public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, String datumPrometa, String tipPlacanja){
+        ponuda = new PonudaEntity();
+        ponuda.setBrPonude(brPonude);
+        ponuda.setDatum(datum);
+        ponuda.setSifraKupca(sifraKupca);
+        ponuda.setSifraRadnika(sifraRadnika);
+        ponuda.setIsporuka(isporuka);
+        ponuda.setBanka(banka);
+        ponuda.setTekuciRacun(tekuciRacun);
+        ponuda.setUslovi(uslovi);
+        ponuda.setNapomena(napomena);
+        ponuda.setValidnost(validnost);
+        ponuda.setPozivNaBroj(pozivNaBroj);
+        ponuda.setMesto(mesto);
+        ponuda.setDatumPrometa(datumPrometa);
+        ponuda.setTipPlacanja(tipPlacanja);
+        ponuda.setStatus("update");
 
-        obj.put("sifraartikla", artikal.getSifraartikla());
-        obj.put("nazivartikla", artikal.getNazivartikla());
-        obj.put("opisartikla", artikal.getOpisartikla());
-        obj.put("jedinicamere", artikal.getJedinicamere());
+        dbb.pokreniDBTransakciju();
+        boolean ret = dbb.zapamtiPonudu(ponuda);
+        if(ret)
+            dbb.potvrdiDBTransakciju();
+        else
+            dbb.ponistiDBTransakciju();
+    }
 
-        out.println(artikal.getNazivartikla());
-        out.println("<br><br>");
-        out.println(obj);
+    public void obrisiPonudu(int brPonude){
+        ponuda = new PonudaEntity();
+        ponuda.setBrPonude(brPonude);
+        ponuda.setStatus("delete");
 
-        transaction.commit();
-        session.close();
-
-    } //end doGet
-
+        dbb.pokreniDBTransakciju();
+        boolean ret = dbb.zapamtiPonudu(ponuda);
+        if(ret)
+            dbb.potvrdiDBTransakciju();
+        else
+            dbb.ponistiDBTransakciju();
+    }
 } //end servlet

@@ -16,19 +16,18 @@ import java.util.List;
 @WebServlet(name = "ArtikalKontroler", urlPatterns = {"/artikalkontroler"})
 public class ArtikalKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
+    private List<ArtikalEntity> listaArtikala;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        //TODO: Premestiti u metod po projektu
-        dbb.pokreniDBTransakciju();
+        vratiArtikle();
 
-        List<ArtikalEntity> lista  = dbb.vratiArtikle();
-
+        // Vrati listu artikala u JSON formatu
         PrintWriter out = response.getWriter();
         JSONArray arr = new JSONArray();
 
-        for (Object artikalRaw:lista) {
+        for (Object artikalRaw:listaArtikala) {
 
             JSONObject obj = new JSONObject();
             ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
@@ -39,9 +38,7 @@ public class ArtikalKontroler extends HttpServlet {
             obj.put("sifraartikla", artikal.getSifraartikla());
             arr.add(obj);
         }
-
         out.println(arr);
-        dbb.potvrdiDBTransakciju();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,19 +52,23 @@ public class ArtikalKontroler extends HttpServlet {
         if (status.equals("insert")) {
             zapamtiArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
         }
-
         else if (status.equals("update")) {
             izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
         }
-
         else if (status.equals("delete")) {
             obrisiArtikal(Sifraartikla);
         }
 
         PrintWriter out = response.getWriter();
-        out.println("You did it!");
+        out.println("OK!");
 
     } //end doPost
+
+    public void vratiArtikle(){
+        dbb.pokreniDBTransakciju();
+        listaArtikala  = dbb.vratiArtikle();
+        dbb.potvrdiDBTransakciju();
+    }
 
     public void zapamtiArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
         ArtikalEntity artikal = new ArtikalEntity();
@@ -116,6 +117,5 @@ public class ArtikalKontroler extends HttpServlet {
         else
             dbb.ponistiDBTransakciju();
     }
-
 
 } //end servlet

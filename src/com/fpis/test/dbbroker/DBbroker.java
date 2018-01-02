@@ -20,35 +20,39 @@ public class DBbroker {
     }
 
     public void potvrdiDBTransakciju(){
-        this.transaction.commit();
-        this.session.close();
+        try {
+            transaction.commit();
+            session.close();
+        } catch (Exception e) {
+            System.err.println("Greska prilikom commit operacije... -> " + e);
+        }
     }
 
     public void ponistiDBTransakciju(){
-        this.transaction.rollback();
-        this.session.close();
+        try {
+            transaction.rollback();
+            session.close();
+        } catch (Exception e) {
+            System.err.println("Greska prilikom rollback operacije... -> " + e);
+        }
     }
 
     public List<ArtikalEntity> vratiArtikle(){
-        return  (List<ArtikalEntity>) this.session.createQuery("from ArtikalEntity ").list();
+        return  (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
     }
 
     public boolean zapamtiArtikal(ArtikalEntity artikal) {
 
         try {
-
             if (artikal.getStatus().equals("insert")) {
-                this.session.persist(artikal);
+                session.persist(artikal);
             }
-
             else if (artikal.getStatus().equals("update")) {
-                this.session.saveOrUpdate(artikal);
+                session.saveOrUpdate(artikal);
             }
-
             else if (artikal.getStatus().equals("delete")) {
-                this.session.delete(artikal);
+                session.delete(artikal);
             }
-
             return true;
         }
 
@@ -59,25 +63,21 @@ public class DBbroker {
     }
 
     public List<PonudaEntity> vratiPonude(){
-        return  (List<PonudaEntity>) this.session.createQuery("from PonudaEntity ").list();
+        return  (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
     }
 
     public boolean zapamtiPonudu(PonudaEntity ponuda){
 
         try {
-
             if (ponuda.getStatus().equals("insert")) {
-                this.session.persist(ponuda);
+                session.persist(ponuda);
             }
-
             else if (ponuda.getStatus().equals("update")) {
-                this.session.saveOrUpdate(ponuda);
+                session.saveOrUpdate(ponuda);
             }
-
             else if (ponuda.getStatus().equals("delete")) {
-                this.session.delete(ponuda);
+                session.delete(ponuda);
             }
-
             return true;
         }
 
