@@ -48,7 +48,7 @@ public class PonudaKontroler extends HttpServlet {
             }
 
             ponudaJson.put("BrPonude", ponuda.getBrPonude());
-            ponudaJson.put("datum", ponuda.getDatum());
+            ponudaJson.put("datum", ponuda.getDatum().toString());
             ponudaJson.put("sifraKupca", ponuda.getSifraKupca());
             ponudaJson.put("sifraRadnika", ponuda.getSifraRadnika());
             ponudaJson.put("isporuka", ponuda.getIsporuka());
@@ -59,13 +59,12 @@ public class PonudaKontroler extends HttpServlet {
             ponudaJson.put("validnost", ponuda.getValidnost());
             ponudaJson.put("pozivNaBroj", ponuda.getPozivNaBroj());
             ponudaJson.put("mesto", ponuda.getMesto());
-            ponudaJson.put("datumPrometa", ponuda.getDatumPrometa());
+            ponudaJson.put("datumPrometa", ponuda.getDatumPrometa().toString());
             ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
             ponudaJson.put("Stavke", listaStavkiJson);
             listaPonudaJSON.add(ponudaJson);
         }
 
-        //TODO: Ispraviti svuda tip datuma
         //TODO: Proveriti da li su sva polja popisana svuda
 
         out.println(listaPonudaJSON);
@@ -87,7 +86,7 @@ public class PonudaKontroler extends HttpServlet {
         String validnost = String.valueOf(request.getParameter("validnost"));
         String pozivNaBroj = String.valueOf(request.getParameter("pozivNaBroj"));
         String mesto = String.valueOf(request.getParameter("mesto"));
-        String datumPrometa = String.valueOf(request.getParameter("datumPrometa"));
+        Timestamp datumPrometa = Timestamp.valueOf(request.getParameter("datumPrometa"));
         String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
 
         if (status.equals("insert")) {
@@ -112,7 +111,7 @@ public class PonudaKontroler extends HttpServlet {
         dbb.potvrdiDBTransakciju();
     }
 
-    public void zapamtiPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, String datumPrometa, String tipPlacanja){
+    public void zapamtiPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         ponuda = new PonudaEntity();
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
@@ -138,7 +137,7 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, String datumPrometa, String tipPlacanja){
+    public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         ponuda = new PonudaEntity();
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);

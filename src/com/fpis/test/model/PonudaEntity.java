@@ -20,7 +20,7 @@ public class PonudaEntity {
     private String validnost;
     private String pozivNaBroj;
     private String mesto;
-    private String datumPrometa;
+    private Timestamp datumPrometa;
     private String tipPlacanja;
     private String status;
     private Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude;
@@ -147,11 +147,11 @@ public class PonudaEntity {
 
     @Basic
     @Column(name = "DatumPrometa")
-    public String getDatumPrometa() {
+    public Timestamp getDatumPrometa() {
         return datumPrometa;
     }
 
-    public void setDatumPrometa(String datumPrometa) {
+    public void setDatumPrometa(Timestamp datumPrometa) {
         this.datumPrometa = datumPrometa;
     }
 
