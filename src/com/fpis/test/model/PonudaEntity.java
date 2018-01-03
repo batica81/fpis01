@@ -210,4 +210,45 @@ public class PonudaEntity {
     public void setStavkaPonudesByBrPonude(Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude) {
         this.stavkaPonudesByBrPonude = stavkaPonudesByBrPonude;
     }
+
+    public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina){
+
+        StavkaPonudeEntity sp = new StavkaPonudeEntity();
+
+        sp.setRbr(rbr);
+        sp.setBrPonude(brPonude);
+        sp.setArtikalBySifraArtikla(Artikal);
+        sp.setKolicina(kolicina);
+        sp.setStatus("insert");
+        getStavkaPonudesByBrPonude().add(sp);
+    }
+
+    public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {
+
+        Collection<StavkaPonudeEntity> stavkePonude = getStavkaPonudesByBrPonude();
+        for (Object spRaw:stavkePonude) {
+
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
+
+            if (sp.getRbr() == rbr) {
+                sp.setArtikalBySifraArtikla(Artikal);
+                sp.setKolicina(kolicina);
+                sp.setStatus("update");
+            }
+        }
+    }
+
+    public void obrisiStavku(int rbr){
+
+        Collection<StavkaPonudeEntity> stavkePonude = getStavkaPonudesByBrPonude();
+        for (Object spRaw:stavkePonude) {
+
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
+
+            if(sp.getRbr()==rbr) {
+                sp.setStatus("delete");
+            }
+        }
+    }
+
 }

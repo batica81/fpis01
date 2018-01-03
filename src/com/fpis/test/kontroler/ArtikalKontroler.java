@@ -50,7 +50,7 @@ public class ArtikalKontroler extends HttpServlet {
         String Jedinicamere = String.valueOf(request.getParameter("Jedinicamere"));
 
         if (status.equals("insert")) {
-            zapamtiArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
+            dodajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
         }
         else if (status.equals("update")) {
             izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
@@ -70,7 +70,7 @@ public class ArtikalKontroler extends HttpServlet {
         dbb.potvrdiDBTransakciju();
     }
 
-    public void zapamtiArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
+    public void dodajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
         ArtikalEntity artikal = new ArtikalEntity();
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);

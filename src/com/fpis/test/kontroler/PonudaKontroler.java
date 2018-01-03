@@ -1,6 +1,7 @@
 package com.fpis.test.kontroler;
 
 import com.fpis.test.dbbroker.DBbroker;
+import com.fpis.test.model.ArtikalEntity;
 import com.fpis.test.model.PonudaEntity;
 import com.fpis.test.model.StavkaPonudeEntity;
 import org.json.simple.JSONArray;
@@ -90,7 +91,7 @@ public class PonudaKontroler extends HttpServlet {
         String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
 
         if (status.equals("insert")) {
-            zapamtiPonudu(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+            dodajPonudu(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                     pozivNaBroj, mesto,datumPrometa, tipPlacanja);
         }
         else if (status.equals("update")) {
@@ -111,7 +112,7 @@ public class PonudaKontroler extends HttpServlet {
         dbb.potvrdiDBTransakciju();
     }
 
-    public void zapamtiPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
+    public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         ponuda = new PonudaEntity();
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
@@ -175,4 +176,45 @@ public class PonudaKontroler extends HttpServlet {
         else
             dbb.ponistiDBTransakciju();
     }
+
+    public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina){
+
+        StavkaPonudeEntity sp = new StavkaPonudeEntity();
+
+        sp.setRbr(rbr);
+        sp.setBrPonude(ponuda.getBrPonude());
+        sp.setArtikalBySifraArtikla(Artikal);
+        sp.setKolicina(kolicina);
+        sp.setStatus("insert");
+        ponuda.getStavkaPonudesByBrPonude().add(sp);
+    }
+
+    public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {
+
+        Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+        for (Object spRaw:stavkePonude) {
+
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
+
+            if (sp.getRbr() == rbr) {
+                sp.setArtikalBySifraArtikla(Artikal);
+                sp.setKolicina(kolicina);
+                sp.setStatus("update");
+            }
+        }
+    }
+
+    public void obrisiStavku(int rbr){
+
+        Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+        for (Object spRaw:stavkePonude) {
+
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
+
+            if(sp.getRbr()==rbr) {
+                sp.setStatus("delete");
+            }
+        }
+    }
+
 } //end servlet

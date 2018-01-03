@@ -12,6 +12,17 @@ public class StavkaPonudeEntity {
     private int kolicina;
     private PonudaEntity ponudaByBrPonude;
     private ArtikalEntity artikalBySifraArtikla;
+    private String status;
+
+    @Transient
+    public String getStatus() {
+        return status;
+    }
+
+    @Transient
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Id
     @Column(name = "Rbr")
