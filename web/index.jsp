@@ -26,5 +26,10 @@
   <form method="get" action="artikalkontroler">
     <button type="submit">Izlistaj sve artikle</button>
   </form>
+
+  <form method="get" action="ponudakontroler">
+    <button type="submit">Izlistaj sve ponude</button>
+  </form>
+
   </body>
 </html>
