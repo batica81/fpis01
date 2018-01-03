@@ -48,10 +48,25 @@ public class PonudaKontroler extends HttpServlet {
             }
 
             ponudaJson.put("BrPonude", ponuda.getBrPonude());
-            ponudaJson.put("Mesto", ponuda.getMesto());
+            ponudaJson.put("datum", ponuda.getDatum());
+            ponudaJson.put("sifraKupca", ponuda.getSifraKupca());
+            ponudaJson.put("sifraRadnika", ponuda.getSifraRadnika());
+            ponudaJson.put("isporuka", ponuda.getIsporuka());
+            ponudaJson.put("banka", ponuda.getBanka());
+            ponudaJson.put("tekuciRacun", ponuda.getTekuciRacun());
+            ponudaJson.put("uslovi", ponuda.getUslovi());
+            ponudaJson.put("napomena", ponuda.getNapomena());
+            ponudaJson.put("validnost", ponuda.getValidnost());
+            ponudaJson.put("pozivNaBroj", ponuda.getPozivNaBroj());
+            ponudaJson.put("mesto", ponuda.getMesto());
+            ponudaJson.put("datumPrometa", ponuda.getDatumPrometa());
+            ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
             ponudaJson.put("Stavke", listaStavkiJson);
             listaPonudaJSON.add(ponudaJson);
         }
+
+        //TODO: Ispraviti svuda tip datuma
+        //TODO: Proveriti da li su sva polja popisana svuda
 
         out.println(listaPonudaJSON);
     }
