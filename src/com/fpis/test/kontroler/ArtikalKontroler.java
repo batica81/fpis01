@@ -44,10 +44,10 @@ public class ArtikalKontroler extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         String status = String.valueOf(request.getParameter("status"));
-        Integer Sifraartikla = Integer.valueOf(request.getParameter("Sifraartikla"));
-        String Nazivartikla = String.valueOf(request.getParameter("Nazivartikla"));
-        String Opisartikla = String.valueOf(request.getParameter("Opisartikla"));
-        String Jedinicamere = String.valueOf(request.getParameter("Jedinicamere"));
+        Integer Sifraartikla = Integer.valueOf(request.getParameter("sifraartikla"));
+        String Nazivartikla = String.valueOf(request.getParameter("nazivartikla"));
+        String Opisartikla = String.valueOf(request.getParameter("opisartikla"));
+        String Jedinicamere = String.valueOf(request.getParameter("jedinicamere"));
 
         if (status.equals("insert")) {
             dodajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
@@ -61,6 +61,7 @@ public class ArtikalKontroler extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         out.println("OK!");
+        out.println("<a href='javascript:history.back()'>Nazad</a>");
 
     } //end doPost
 
