@@ -9,13 +9,20 @@
 <html>
   <head>
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.populate.js"></script>
+    <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
-    <style>
-      .hidden{
-        display: none;
-      }
-    </style>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
     <title>FPIS Aplikacija</title>
   </head>
   <body>
@@ -25,20 +32,22 @@
 <button id="dugmeunos">Unos artikla</button>
 <button id="dugmeizmena">Izmena artikla</button>
 
-  <select name="combo" id="combo" class="hidden">
+  <select name="combo" id="combo" class="form-control hidden">
     <option value="0" selected>Odaberite artikal za izmenu</option>
   </select>
 
   <form id="artikalForma" method="post" action="artikalkontroler">
+    <div class="form-group">
     <input class="inputfield" type="text" placeholder="Jedinica mere" name="jedinicamere">
     <input class="inputfield" type="text" placeholder="Opis artikla" name="opisartikla">
     <input class="inputfield" type="text" placeholder="Naziv artikla" name="nazivartikla">
     <input hidden id="sifraartikla" type="text" name="sifraartikla">
     <input hidden id="stautsinput" type="text" name="status">
 
-    <button id="insertBbutton" type="submit">Unesi artikal</button>
-    <button id="updateBbutton" type="submit" class="hidden">Izmeni artikal</button>
-    <button id="deleteBbutton" type="submit" class="hidden">Obrisi artikal</button>
+    <button id="insertBbutton" class="btn btn-info" type="submit">Unesi artikal</button>
+    <button id="updateBbutton" type="submit" class="btn btn-success hidden">Izmeni artikal</button>
+    <button id="deleteBbutton" type="submit" class="btn btn-danger hidden">Obrisi artikal</button>
+    </div>
   </form>
 
   <script type="text/javascript">

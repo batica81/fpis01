@@ -1,0 +1,8 @@
+.hidden{
+    display: none;
+}
+
+#combo{
+    width: 400px;
+    font-weight: bold;
+}
