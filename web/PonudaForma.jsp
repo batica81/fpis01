@@ -36,14 +36,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.jsp">VWG Inženjering</a>
+            <a class="navbar-brand" href="index.jsp">FPIS Aplikacija</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a id="dugmeunos" href="ArtikalForma.jsp">Unos artikla</a></li>
                 <li><a id="dugmeizmena" href="ArtikalForma.jsp">Izmena artikla</a></li>
-                <li><a href="PonudaForma.jsp">Unos ponude</a></li>
-                <li><a href="#">Izmena Ponude</a></li>
+                <li><a id="dugmeunosPonude" href="PonudaForma.jsp">Unos ponude</a></li>
+                <li><a id="dugmeizmenaPonude" href="#">Izmena Ponude</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -57,7 +57,7 @@
                     <h3 class="panel-title">Unos ponude</h3>
                     <h3 class="panel-title hidden">Izmena ponude</h3>
                 </div>
-                <select name="combo" id="combo" class="dropdown form-control 5hidden">
+                <select name="combo" id="combo" class="dropdown form-control hidden">
                     <option value="0" selected>Odaberite ponudu za izmenu</option>
                 </select>
                 <div class="panel-body">
@@ -125,47 +125,47 @@
                             </div>
                         </div>
 
-
                         <div class="ponuda_omot">
-                            <h3>Detalji ponude</h3>
-
                             <div class="row centered-form">
-                                <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+                                <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
                                             <h3 class="panel-title">Dodajte novu stavku ponude</h3>
+                                            <h3 class="panel-title hidden">Rad sa stavkom ponude</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <form action="dodaj_stavke_ponude.php" method="post" role="form">
-                                                <input type="hidden" name="BRPONUDE" value="57">
+                                            <div action="dodaj_stavke_ponude.php" method="post" role="form">
+                                                <%--<input type="hidden" name="BRPONUDE" value="57">--%>
 
                                                 <div class="form-group">
-                                                    <label class="control-label" for="select_SIFRAARTIKLA">Izaberi artikal</label>
+                                                    <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
                                                     <select id="select_SIFRAARTIKLA" name="SIFRAARTIKLA" class="form-control">
-
                                                     </select>
                                                 </div>
-
                                                 <div class="form-group">
-                                                    <label class="control-label" for="kolicina">Unesi količinu</label>
-                                                    <input type="number" min="1" step="1" name="KOLICINA" class="form-control input-sm" placeholder="Kolicina" required>
-
+                                                    <label class="control-label" for="kolicina">Količina</label>
+                                                    <input type="number" min="1" step="1" name="KOLICINA" id="kolicina" class="form-control input-sm" placeholder="Kolicina">
                                                 </div>
-
-                                                <button id="singlebutton" name="singlebutton" class="btn btn-info">Dodaj stavku ponude</button>
-                                            </form>
+                                                <div class="form-group">
+                                                    <label class="control-label" for="napomenastavke">Napomena</label>
+                                                    <input type="text" id="napomenastavke" name="napomenastavke" class="form-control input-sm" placeholder="Napomena stavke">
+                                                </div>
+                                                <div class="stavkabuttons">
+                                                    <button id="dodajstavku" name="dodajstavku" class="btn btn-info">Dodaj stavku</button>
+                                                    <button id="izmenistavku" name="izmenistavku" class="btn btn-success hidden">Izmeni stavku</button>
+                                                    <button id="obrisistavku" name="obrisistavku" class="btn btn-danger hidden">Obrisi stavku</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
-                                <h4>Stavke ponude</h4>
-
-                                <table id="detalji_ponude" border='1' class='table table-striped table-condensed'></table>
+                                <h3>Stavke ponude</h3>
+                                <table id="detalji_ponude" border='1' class='table tablesorter table-striped table-condensed'></table>
                             </div>
                         </div>
-
 
                         <input hidden id="stautsinput" type="text" name="status">
                         <button id="insertBbutton" class="btn-lg btn-block btn-info" type="submit">Unesi ponudu</button>
@@ -228,9 +228,15 @@
         }
 
         function popuniFormu(selected) {
+            $('#detalji_ponude').empty();
             listaPonuda.forEach( function (ponuda) {
                 if (ponuda.BrPonude == selected){
+
+                    stavke = ponuda.Stavke;
+                    delete ponuda.Stavke;
                     $('#ponudaForma').populate(ponuda);
+
+                    Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
                 }
             });
         }
@@ -239,7 +245,7 @@
 
         vratiArtikle();
 
-        Tablify_stavka(listaArtikala, '#detalji_ponude', 'RBR');
+        // Tablify_stavka(listaArtikala, '#detalji_ponude', 'RBR');
 
 
         $('#combo').change(function () {
@@ -260,10 +266,19 @@
             $("#stautsinput").val("delete");
         });
 
+        $('#dugmeizmenaPonude').click(function () {
+            $('#combo').toggleClass('hidden');
+            $('#updateBbutton').toggleClass('hidden');
+            $('#deleteBbutton').toggleClass('hidden');
+            $('.panel-title').toggleClass('hidden');
+            $('#insertBbutton').toggleClass('hidden');
+            $('#izmenistavku').toggleClass('hidden');
+            $('#obrisistavku').toggleClass('hidden');
+        });
     });
 
 </script>
-<div id="footer" class="navbar-fixed-bottom">
+<div id="footer" class="">
     <div class="container">
         <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
     </div>

@@ -38,7 +38,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.jsp">VWG Inženjering</a>
+        <a class="navbar-brand" href="index.jsp">FPIS Aplikacija</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -51,10 +51,20 @@
     </div>
   </nav>
 
+  <div class="welcome container">
 
+    <h3>Dobrodošli !</h3>
 
-  <h2>FPIS Aplikacija</h2>
+    <p>Preduzeće VWG Inženjering d.o.o. iz Beograda se bavi prodajom, instalacijom i održavanjem sistema tehničke zaštite, kao i pružanjem konsultantskih usluga iz oblasti fizičko-tehničke bezbednosti.</p>
+    <br>
 
+    <h4>Ova aplikacija predstavlja implementaciju podmodela - <strong>		Prodaja proizvoda</strong> - poslovnog procesa firme VWG.</h4>
+
+    <br>
+    <p>Proces prodaje proizvoda počinje prijemom upita kupca koji pristiže elektronskom poštom ili telefonom. Na osnovu upita, unose se osnovni podaci kupca u bazu i kreira se ponuda koja se dostavljaju kupcu. Ponuda sadrži spsiak traženih artikala sa aktuelnim cenama.
+    </p>
+
+  </div>
 
 
   <script type="text/javascript">

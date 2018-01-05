@@ -62,11 +62,10 @@ public class PonudaKontroler extends HttpServlet {
             ponudaJson.put("mesto", ponuda.getMesto());
             ponudaJson.put("datumPrometa", ponuda.getDatumPrometa().toString());
             ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
-//            ponudaJson.put("Stavke", listaStavkiJson);
+            ponudaJson.put("Stavke", listaStavkiJson);
             listaPonudaJSON.add(ponudaJson);
         }
 
-        //TODO: Proveriti da li su sva polja popisana svuda
 
         out.println(listaPonudaJSON);
     }
