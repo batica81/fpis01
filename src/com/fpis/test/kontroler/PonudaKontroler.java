@@ -62,7 +62,7 @@ public class PonudaKontroler extends HttpServlet {
             ponudaJson.put("mesto", ponuda.getMesto());
             ponudaJson.put("datumPrometa", ponuda.getDatumPrometa().toString());
             ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
-            ponudaJson.put("Stavke", listaStavkiJson);
+//            ponudaJson.put("Stavke", listaStavkiJson);
             listaPonudaJSON.add(ponudaJson);
         }
 
@@ -75,7 +75,7 @@ public class PonudaKontroler extends HttpServlet {
         response.setContentType("text/html");
 
         String status = String.valueOf(request.getParameter("status"));
-        int brPonude = Integer.valueOf(request.getParameter("brPonude"));
+        int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
         Timestamp datum = Timestamp.valueOf(request.getParameter("datum"));
         int sifraKupca = Integer.valueOf(request.getParameter("sifraKupca"));
         int sifraRadnika = Integer.valueOf(request.getParameter("sifraRadnika"));
@@ -104,6 +104,8 @@ public class PonudaKontroler extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         out.println("OK!");
+        out.println("<a href='javascript:history.back()'>Nazad</a>");
+
     } //end doPost
 
     public void vratiPonude(){

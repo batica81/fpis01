@@ -1,8 +1,39 @@
+body {
+    background-color: lightslategray;
+}
+
 .hidden{
     display: none;
 }
 
 #combo{
-    width: 400px;
+    /*width: 400px;*/
     font-weight: bold;
+    margin: 15px;
+    width: 95%;
 }
+
+#footer {
+    text-align: center;
+}
+
+label {
+    min-width: 130px;
+}
+
+.artikalforma .inputfield {
+    width: 74% !important;
+}
+
+.col-left {
+    display: inline-block;
+}
+
+.col-right {
+    float: right;
+}
+
+.btn-block {
+    margin-top: 20px !important;
+}
+

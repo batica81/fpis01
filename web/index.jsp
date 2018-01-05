@@ -13,6 +13,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.populate.js"></script>
     <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="js/tablesorter.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -26,83 +27,38 @@
     <title>FPIS Aplikacija</title>
   </head>
   <body>
+
+  <!-- Static navbar -->
+  <nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.jsp">VWG Inženjering</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a id="dugmeunos" href="ArtikalForma.jsp">Unos artikla</a></li>
+          <li><a id="dugmeizmena" href="ArtikalForma.jsp">Izmena artikla</a></li>
+          <li><a href="PonudaForma.jsp">Unos ponude</a></li>
+          <li><a href="PonudaForma.jsp">Izmena Ponude</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+
+
   <h2>FPIS Aplikacija</h2>
 
 
-<button id="dugmeunos">Unos artikla</button>
-<button id="dugmeizmena">Izmena artikla</button>
-
-  <select name="combo" id="combo" class="form-control hidden">
-    <option value="0" selected>Odaberite artikal za izmenu</option>
-  </select>
-
-  <form id="artikalForma" method="post" action="artikalkontroler">
-    <div class="form-group">
-    <input class="inputfield" type="text" placeholder="Jedinica mere" name="jedinicamere">
-    <input class="inputfield" type="text" placeholder="Opis artikla" name="opisartikla">
-    <input class="inputfield" type="text" placeholder="Naziv artikla" name="nazivartikla">
-    <input hidden id="sifraartikla" type="text" name="sifraartikla">
-    <input hidden id="stautsinput" type="text" name="status">
-
-    <button id="insertBbutton" class="btn btn-info" type="submit">Unesi artikal</button>
-    <button id="updateBbutton" type="submit" class="btn btn-success hidden">Izmeni artikal</button>
-    <button id="deleteBbutton" type="submit" class="btn btn-danger hidden">Obrisi artikal</button>
-    </div>
-  </form>
 
   <script type="text/javascript">
       $(document).ready(function () {
-
-        $("#insertBbutton").click(function () {
-            $("#stautsinput").val("insert");
-            $("#sifraartikla").val(0);
-        });
-
-        $("#updateBbutton").click(function () {
-            $("#stautsinput").val("update");
-        });
-
-        $("#deleteBbutton").click(function () {
-            $("#stautsinput").val("delete");
-        });
-
-        function vratiArtikle() {
-            $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
-                method: "GET",
-                success:
-                    function (data) {
-                        populateComboBox(data);
-                        listaArtikala = data;
-                    },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-        }
-
-        function populateComboBox(data) {
-            $(data).map(function () {
-                $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
-            });
-        }
-
-        function popuniFormu(selected) {
-            listaArtikala.forEach( function (artikal) {
-                if (artikal.sifraartikla == selected){
-                    $('#artikalForma').populate(artikal);
-                }
-            });
-        }
-
-        vratiArtikle();
-
-        $('#combo').change(function () {
-              selected = $('#combo').find('option:selected').val();
-              popuniFormu(selected);
-          });
-
         $('#dugmeizmena').click(function () {
            $('#combo').removeClass('hidden');
            $('#updateBbutton').removeClass('hidden');
@@ -123,11 +79,11 @@
   </script>
 
 
-  </body>
-
-  <form method="get" action="ponudakontroler">
-    <button type="submit">Izlistaj sve ponude</button>
-  </form>
+  <div id="footer" class="navbar-fixed-bottom">
+    <div class="container">
+      <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
+    </div>
+  </div>
 
   </body>
 </html>
