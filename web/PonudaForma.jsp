@@ -23,7 +23,9 @@
     <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Title</title>
+    <link rel="shortcut icon" href="css/images/favicon.ico">
+
+    <title>FPIS Aplikacija</title>
 </head>
 <body>
 <!-- Static navbar -->
@@ -70,15 +72,18 @@
                             </div>
                             <div class="form-group form-inline">
                                 <label for="datum">Datum</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Datum" id="datum" name="datum">
+                                <input class="inputfield form-control input-lg datepicker" type="text" placeholder="Datum" id="datum"
+                                       name="datum">
                             </div>
                             <div class="form-group form-inline">
-                                <label for="sifraKupca">Sifra kupca</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Sifra kupca" id="sifraKupca" name="sifraKupca">
+                                <label for="sifraKupca">Šifra kupca</label>
+                                <input class="inputfield form-control input-lg" type="text" placeholder="Šifra kupca" id="sifraKupca"
+                                       name="sifraKupca">
                             </div>
                             <div class="form-group form-inline">
-                                <label for="sifraRadnika">Sifra radnika</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Sifra radnika" id="sifraRadnika" name="sifraRadnika">
+                                <label for="sifraRadnika">Šifra radnika</label>
+                                <input class="inputfield form-control input-lg" type="text" placeholder="Šifra radnika" id="sifraRadnika"
+                                       name="sifraRadnika">
                             </div>
                             <div class="form-group form-inline">
                                 <label for="isporuka">Isporuka</label>
@@ -89,8 +94,9 @@
                                 <input class="inputfield form-control input-lg" type="text" placeholder="Banka" id="banka" name="banka">
                             </div>
                             <div class="form-group form-inline">
-                                <label for="tekuciRacun">Tekuci racun</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Tekuci racun" id="tekuciRacun" name="tekuciRacun">
+                                <label for="tekuciRacun">Tekući racun</label>
+                                <input class="inputfield form-control input-lg" type="text" placeholder="Tekući racun" id="tekuciRacun"
+                                       name="tekuciRacun">
                             </div>
                         </div>
 
@@ -117,11 +123,13 @@
                             </div>
                             <div class="form-group form-inline">
                                 <label for="datumPrometa">Datum prometa</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Datum prometa" id="datumPrometa" name="datumPrometa">
+                                <input class="inputfield form-control input-lg datepicker" type="text" placeholder="Datum prometa"
+                                       id="datumPrometa" name="datumPrometa">
                             </div>
                             <div class="form-group form-inline">
-                                <label for="tipPlacanja">Tip placanja</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Tip placanja" id="tipPlacanja" name="tipPlacanja">
+                                <label for="tipPlacanja">Tip plaćanja</label>
+                                <input class="inputfield form-control input-lg" type="text" placeholder="Tip plaćanja" id="tipPlacanja"
+                                       name="tipPlacanja">
                             </div>
                         </div>
 
@@ -140,20 +148,23 @@
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
                                                     <select id="select_SIFRAARTIKLA" name="SIFRAARTIKLA" class="form-control">
+                                                        <option value="0" selected>Artikal</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="kolicina">Količina</label>
-                                                    <input type="number" min="1" step="1" name="KOLICINA" id="kolicina" class="form-control input-sm" placeholder="Kolicina">
+                                                    <input type="number" min="1" step="1" name="KOLICINA" id="kolicina"
+                                                           class="form-control input-sm" placeholder="Količina">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="napomenastavke">Napomena</label>
                                                     <input type="text" id="napomenastavke" name="napomenastavke" class="form-control input-sm" placeholder="Napomena stavke">
                                                 </div>
                                                 <div class="stavkabuttons">
-                                                    <button id="dodajstavku" name="dodajstavku" class="btn btn-info">Dodaj stavku</button>
-                                                    <button id="izmenistavku" name="izmenistavku" class="btn btn-success hidden">Izmeni stavku</button>
-                                                    <button id="obrisistavku" name="obrisistavku" class="btn btn-danger hidden">Obrisi stavku</button>
+                                                    <button id="dodajstavku" name="dodajstavku" class="btn-lg btn-info">Dodaj stavku</button>
+                                                    <button id="izmenistavku" name="izmenistavku" class="btn-lg btn-success hidden">Izmeni stavku</button>
+                                                    <button id="obrisistavku" name="obrisistavku" class="btn-lg btn-danger hidden">Obriši
+                                                        stavku</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,11 +243,15 @@
             listaPonuda.forEach( function (ponuda) {
                 if (ponuda.BrPonude == selected){
 
+                    //dirty hack :)
                     stavke = ponuda.Stavke;
                     delete ponuda.Stavke;
                     $('#ponudaForma').populate(ponuda);
+                    ponuda.Stavke = stavke;
 
-                    Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
+                    if  (!jQuery.isEmptyObject(stavke)) {
+                        Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
+                    }
                 }
             });
         }
@@ -244,9 +259,6 @@
         vratiPonude();
 
         vratiArtikle();
-
-        // Tablify_stavka(listaArtikala, '#detalji_ponude', 'RBR');
-
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
@@ -275,6 +287,8 @@
             $('#izmenistavku').toggleClass('hidden');
             $('#obrisistavku').toggleClass('hidden');
         });
+
+        $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
     });
 
 </script>

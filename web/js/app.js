@@ -10,7 +10,7 @@ function Tablify_stavka(data, table_id, primary_key){
         keynames_array.push(keyName);
     }
 
-    tableHeader += '<th>OPCIJE</th>';
+    tableHeader += '<th>Ažuriraj stavku</th>';
     tableHeader += '</thead>';
 
     for(var i=0;i<data.length;i++){
@@ -18,7 +18,7 @@ function Tablify_stavka(data, table_id, primary_key){
         tableRow += '<tr>';
 
         tmp_key = turk[primary_key];
-        tmp_brponude = turk['BRPONUDE'];
+        tmp_brponude = turk['BrPonude'];
 
 
         for(var key in turk){

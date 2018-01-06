@@ -6,6 +6,8 @@ import com.fpis.test.model.PonudaEntity;
 import com.fpis.test.model.StavkaPonudeEntity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -101,10 +103,8 @@ public class PonudaKontroler extends HttpServlet {
             obrisiPonudu(brPonude);
         }
 
-        PrintWriter out = response.getWriter();
-        out.println("OK!");
-        out.println("<a href='javascript:history.back()'>Nazad</a>");
-
+        RequestDispatcher view = request.getRequestDispatcher("html/back.html");
+        view.forward(request, response);
     } //end doPost
 
     public void vratiPonude(){

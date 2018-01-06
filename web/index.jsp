@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="css/images/favicon.ico">
 
     <title>FPIS Aplikacija</title>
   </head>

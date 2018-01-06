@@ -23,7 +23,9 @@
     <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
     <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <title>Title</title>
+    <link rel="shortcut icon" href="css/images/favicon.ico">
+
+    <title>FPIS Aplikacija</title>
 </head>
 <body>
 <!-- Static navbar -->
@@ -63,8 +65,9 @@
                 <div class="panel-body">
                     <form id="artikalForma" class="" action="artikalkontroler" method="post" role="form">
                         <div class="form-group form-inline">
-                            <label for="sifraartikla">Sifra artikla</label>
-                            <input readonly class="inputfield form-control input-lg" type="text" placeholder="Sifra artikla" id="sifraartikla" name="sifraartikla">
+                            <label for="sifraartikla">Šifra artikla</label>
+                            <input readonly class="inputfield form-control input-lg" type="text" placeholder="Šifra artikla"
+                                   id="sifraartikla" name="sifraartikla">
                         </div>
                         <div class="form-group form-inline">
                             <label for="nazivartikla">Naziv artikla</label>
