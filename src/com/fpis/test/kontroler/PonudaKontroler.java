@@ -23,12 +23,14 @@ import java.util.List;
 public class PonudaKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
     private List<PonudaEntity> listaPonuda;
-    PonudaEntity ponuda;
+    private List<ArtikalEntity> listaArtikala;
+    PonudaEntity ponuda = new PonudaEntity();;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
         vratiPonude();
+        vratiArtikle();
 
         // Vrati listu ponuda u JSON formatu
         PrintWriter out = response.getWriter();
@@ -103,6 +105,8 @@ public class PonudaKontroler extends HttpServlet {
             obrisiPonudu(brPonude);
         }
 
+
+
         RequestDispatcher view = request.getRequestDispatcher("html/back.html");
         view.forward(request, response);
     } //end doPost
@@ -113,8 +117,13 @@ public class PonudaKontroler extends HttpServlet {
         dbb.potvrdiDBTransakciju();
     }
 
+    public void vratiArtikle(){
+        dbb.pokreniDBTransakciju();
+        listaArtikala  = dbb.vratiArtikle();
+        dbb.potvrdiDBTransakciju();
+    }
+
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
-        ponuda = new PonudaEntity();
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
         ponuda.setSifraKupca(sifraKupca);
@@ -140,7 +149,18 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
-        ponuda = new PonudaEntity();
+
+
+        for (Object ponudaRaw:listaPonuda) {
+            PonudaEntity ponudaTemp = (PonudaEntity) ponudaRaw;
+            if (brPonude == ponudaTemp.getBrPonude()) {
+                ponuda = ponudaTemp;
+            }
+        }
+
+
+
+
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
         ponuda.setSifraKupca(sifraKupca);
@@ -156,6 +176,13 @@ public class PonudaKontroler extends HttpServlet {
         ponuda.setDatumPrometa(datumPrometa);
         ponuda.setTipPlacanja(tipPlacanja);
         ponuda.setStatus("update");
+
+
+
+        int rbr =1;
+        int sifraartikla = 1;
+        int kolicina = 666;
+        dodajStavku(rbr, sifraartikla, kolicina);
 
         dbb.pokreniDBTransakciju();
         boolean ret = dbb.zapamtiPonudu(ponuda);
@@ -178,16 +205,18 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina){
+    public void dodajStavku(int rbr, int sifraartikla, int kolicina){
 
-        StavkaPonudeEntity sp = new StavkaPonudeEntity();
+//        StavkaPonudeEntity sp = new StavkaPonudeEntity();
+        ArtikalEntity Artikal = listaArtikala.get(sifraartikla);
 
-        sp.setRbr(rbr);
-        sp.setBrPonude(ponuda.getBrPonude());
-        sp.setArtikalBySifraArtikla(Artikal);
-        sp.setKolicina(kolicina);
-        sp.setStatus("insert");
-        ponuda.getStavkaPonudesByBrPonude().add(sp);
+//        sp.setRbr(rbr);
+////        sp.setBrPonude(ponuda.getBrPonude());
+////        sp.setArtikalBySifraArtikla(Artikal);
+////        sp.setKolicina(kolicina);
+////        sp.setStatus("insert");
+////        ponuda.getStavkaPonudesByBrPonude().add(sp);
+        ponuda.dodajStavku(rbr, Artikal, kolicina);
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {

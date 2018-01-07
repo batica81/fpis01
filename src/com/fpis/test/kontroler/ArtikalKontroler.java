@@ -19,6 +19,7 @@ import java.util.List;
 public class ArtikalKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
     private List<ArtikalEntity> listaArtikala;
+    ArtikalEntity artikal = new ArtikalEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
@@ -45,6 +46,7 @@ public class ArtikalKontroler extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
+
         String status = String.valueOf(request.getParameter("status"));
         Integer Sifraartikla = Integer.valueOf(request.getParameter("sifraartikla"));
         String Nazivartikla = String.valueOf(request.getParameter("nazivartikla"));
@@ -72,7 +74,6 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
     public void dodajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
-        ArtikalEntity artikal = new ArtikalEntity();
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);
         artikal.setOpisartikla(Opisartikla);
@@ -89,7 +90,6 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
     public void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
-        ArtikalEntity artikal = new ArtikalEntity();
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);
         artikal.setOpisartikla(Opisartikla);
@@ -106,7 +106,6 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
     public void obrisiArtikal(int Sifraartikla){
-        ArtikalEntity artikal = new ArtikalEntity();
         artikal.setSifraartikla(Sifraartikla);
         artikal.setStatus("delete");
 

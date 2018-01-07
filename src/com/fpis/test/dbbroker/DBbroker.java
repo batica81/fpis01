@@ -2,6 +2,7 @@ package com.fpis.test.dbbroker;
 
 import com.fpis.test.model.ArtikalEntity;
 import com.fpis.test.model.PonudaEntity;
+import com.fpis.test.model.StavkaPonudeEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -74,6 +75,7 @@ public class DBbroker {
             }
             else if (ponuda.getStatus().equals("update")) {
                 session.saveOrUpdate(ponuda);
+                if (ponuda.)
             }
             else if (ponuda.getStatus().equals("delete")) {
                 session.delete(ponuda);
@@ -85,6 +87,12 @@ public class DBbroker {
             System.err.println("Objekat ne moze da se zapamti u bazi... -> " + e);
             return false;
         }
+    }
+
+    public boolean zapamtiStavkuPonude(StavkaPonudeEntity stavkaPonude) {
+        //TODO: implementirati, bataliti hibernate
+
+        return true;
     }
 
 }

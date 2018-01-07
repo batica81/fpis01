@@ -14,6 +14,7 @@
     <script type="text/javascript" src="js/jquery.populate.js"></script>
     <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
     <script type="text/javascript" src="js/tablesorter.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">

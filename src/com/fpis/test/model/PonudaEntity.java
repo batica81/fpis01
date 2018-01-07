@@ -216,11 +216,12 @@ public class PonudaEntity {
         StavkaPonudeEntity sp = new StavkaPonudeEntity();
 
         sp.setRbr(rbr);
-        sp.setBrPonude(brPonude);
+//        sp.setBrPonude(brPonude);
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
         sp.setStatus("insert");
-        getStavkaPonudesByBrPonude().add(sp);
+        sp.setPonudaByBrPonude(this);
+        stavkaPonudesByBrPonude.add(sp);
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {
