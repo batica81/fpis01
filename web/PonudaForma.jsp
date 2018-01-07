@@ -194,6 +194,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        listaPonuda = "";
+        listaArtikala = "";
+        aktuelnaPonuda = {};
+
         function vratiPonude() {
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
@@ -242,7 +246,7 @@
             $('#detalji_ponude').empty();
             listaPonuda.forEach( function (ponuda) {
                 if (ponuda.BrPonude == selected){
-
+                    aktuelnaPonuda = ponuda;
                     //dirty hack :)
                     stavke = ponuda.Stavke;
                     delete ponuda.Stavke;
@@ -289,6 +293,40 @@
         });
 
         $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
+
+        // Rad sa stavkom
+
+        $("#dodajstavku").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                method: "POST",
+                data: {
+                    'brponude' : aktuelnaPonuda.BrPonude,
+                    'radsastavkom' : 1,
+                    'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
+                    'KOLICINA' : $("#kolicina").val(),
+                    'napomenastavke' :  $("#napomenastavke").val(),
+                    'status' : 'insert',
+                    'rbr' : 0
+                },
+                success:
+                    function () {
+                        vratiPonude();
+                        popuniFormu();
+                    },
+                error:
+                    function (e) {
+                        console.log(e.responseText);
+                    }
+            });
+
+        });
+
+
+
+
     });
 
 </script>
