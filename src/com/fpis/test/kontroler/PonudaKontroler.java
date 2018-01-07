@@ -150,17 +150,12 @@ public class PonudaKontroler extends HttpServlet {
 
     public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
 
-
         for (Object ponudaRaw:listaPonuda) {
             PonudaEntity ponudaTemp = (PonudaEntity) ponudaRaw;
             if (brPonude == ponudaTemp.getBrPonude()) {
                 ponuda = ponudaTemp;
             }
         }
-
-
-
-
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
         ponuda.setSifraKupca(sifraKupca);
@@ -207,16 +202,12 @@ public class PonudaKontroler extends HttpServlet {
 
     public void dodajStavku(int rbr, int sifraartikla, int kolicina){
 
-//        StavkaPonudeEntity sp = new StavkaPonudeEntity();
-        ArtikalEntity Artikal = listaArtikala.get(sifraartikla);
-
-//        sp.setRbr(rbr);
-////        sp.setBrPonude(ponuda.getBrPonude());
-////        sp.setArtikalBySifraArtikla(Artikal);
-////        sp.setKolicina(kolicina);
-////        sp.setStatus("insert");
-////        ponuda.getStavkaPonudesByBrPonude().add(sp);
-        ponuda.dodajStavku(rbr, Artikal, kolicina);
+        for (Object artikalRaw:listaArtikala) {
+            ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
+            if (sifraartikla == Artikal.getSifraartikla()) {
+                ponuda.dodajStavku(rbr, Artikal, kolicina);
+            }
+        }
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {

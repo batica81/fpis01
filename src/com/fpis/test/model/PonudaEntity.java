@@ -216,7 +216,7 @@ public class PonudaEntity {
         StavkaPonudeEntity sp = new StavkaPonudeEntity();
 
         sp.setRbr(rbr);
-//        sp.setBrPonude(brPonude);
+        sp.setBrPonude(brPonude);
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
         sp.setStatus("insert");
