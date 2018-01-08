@@ -303,12 +303,40 @@
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
                 data: {
-                    'brponude' : aktuelnaPonuda.BrPonude,
-                    'radsastavkom' : 1,
+                    'radsastavkom' : true,
+                    'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
                     'status' : 'insert',
+                    'rbr' : 1
+                },
+                success:
+                    function () {
+                        vratiPonude();
+                        popuniFormu(aktuelnaPonuda.BrPonude);
+                    },
+                error:
+                    function (e) {
+                        console.log(e.responseText);
+                    }
+            });
+
+        });
+
+        $("#izmenistavku").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                method: "POST",
+                data: {
+                    'radsastavkom' : true,
+                    'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
+                    'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
+                    'KOLICINA' : $("#kolicina").val(),
+                    'napomenastavke' :  $("#napomenastavke").val(),
+                    'status' : 'update',
                     'rbr' : 0
                 },
                 success:
@@ -321,11 +349,31 @@
                         console.log(e.responseText);
                     }
             });
-
         });
 
+        $("#obrisistavku").click(function (e) {
+            e.preventDefault();
 
-
+            $.ajax({
+                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                method: "POST",
+                data: {
+                    'radsastavkom' : true,
+                    'BrPonude' : aktuelnaPonuda.BrPonude,
+                    'status' : 'delete',
+                    'rbr' : 0
+                },
+                success:
+                    function () {
+                        vratiPonude();
+                        popuniFormu();
+                    },
+                error:
+                    function (e) {
+                        console.log(e.responseText);
+                    }
+            });
+        });
 
     });
 

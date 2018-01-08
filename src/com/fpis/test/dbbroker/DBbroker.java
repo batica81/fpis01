@@ -73,7 +73,6 @@ public class DBbroker {
 
         try {
             if (ponuda.getStatus().equals("insert")) {
-                session.persist(ponuda);
 
                 Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
                 if(stavkePonude!=null){
@@ -82,9 +81,9 @@ public class DBbroker {
                         zapamtiStavkuPonude(sp);
                     }
                 }
+                session.persist(ponuda);
             }
             else if (ponuda.getStatus().equals("update")) {
-                session.saveOrUpdate(ponuda);
                 Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
                 if(stavkePonude!=null){
                     for (Object spRaw:stavkePonude) {
@@ -92,6 +91,7 @@ public class DBbroker {
                         zapamtiStavkuPonude(sp);
                     }
                 }
+                session.saveOrUpdate(ponuda);
             }
             else if (ponuda.getStatus().equals("delete")) {
                 session.delete(ponuda);

@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -76,27 +78,37 @@ public class PonudaKontroler extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
+
+        if ((Integer) ponuda.getBrPonude() == null)  {
+            for (Object ponudaRaw : listaPonuda) {
+                PonudaEntity aktuelnaPonuda = (PonudaEntity) ponudaRaw;
+                if (brPonude == aktuelnaPonuda.getBrPonude()) {
+                    ponuda = aktuelnaPonuda;
+                }
+            }
+        }
+
             if (request.getParameterMap().containsKey("radsastavkom")) {
 
                 String status = String.valueOf(request.getParameter("status"));
                 int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
-                int brponude = Integer.valueOf(request.getParameter("brponude"));
+                int rbr = Integer.valueOf(request.getParameter("rbr"));
+                int BrPonude = Integer.valueOf(request.getParameter("BrPonude"));
                 int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
                 String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
 
                 if (status.equals("insert")) {
-                    dodajStavku(0, brponude, sifraartikla, kolicina);
+                    dodajStavku(rbr, sifraartikla, kolicina);
                 } else if (status.equals("update")) {
-                    izmeniStavku(0, sifraartikla, kolicina);
+                    izmeniStavku(rbr, sifraartikla, kolicina);
                 } else if (status.equals("delete")) {
-                    obrisiStavku(0);
+                    obrisiStavku(rbr);
                 }
             } else {
 
-            response.setContentType("text/html");
 
             String status = String.valueOf(request.getParameter("status"));
-            int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
             Timestamp datum = Timestamp.valueOf(request.getParameter("datum"));
             int sifraKupca = Integer.valueOf(request.getParameter("sifraKupca"));
             int sifraRadnika = Integer.valueOf(request.getParameter("sifraRadnika"));
@@ -121,6 +133,7 @@ public class PonudaKontroler extends HttpServlet {
                 obrisiPonudu(brPonude);
             }
 
+            response.setContentType("text/html");
             RequestDispatcher view = request.getRequestDispatcher("html/back.html");
             view.forward(request, response);
 
@@ -165,13 +178,6 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
-
-        for (Object ponudaRaw:listaPonuda) {
-            PonudaEntity ponudaTemp = (PonudaEntity) ponudaRaw;
-            if (brPonude == ponudaTemp.getBrPonude()) {
-                ponuda = ponudaTemp;
-            }
-        }
         ponuda.setBrPonude(brPonude);
         ponuda.setDatum(datum);
         ponuda.setSifraKupca(sifraKupca);
@@ -188,13 +194,6 @@ public class PonudaKontroler extends HttpServlet {
         ponuda.setTipPlacanja(tipPlacanja);
         ponuda.setStatus("update");
 
-
-//
-//        int rbr =1;
-//        int sifraartikla = 1;
-//        int kolicina = 666;
-//        dodajStavku(rbr, sifraartikla, kolicina);
-
         dbb.pokreniDBTransakciju();
         boolean ret = dbb.zapamtiPonudu(ponuda);
         if(ret)
@@ -204,7 +203,6 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     public void obrisiPonudu(int brPonude){
-        ponuda = new PonudaEntity();
         ponuda.setBrPonude(brPonude);
         ponuda.setStatus("delete");
 
@@ -216,36 +214,34 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void dodajStavku(int rbr, int brPonude, int sifraartikla, int kolicina){
+    public void dodajStavku(int rbr, int sifraartikla, int kolicina){
 
-        for (Object ponudaRaw:listaPonuda) {
-            PonudaEntity ponudaTemp = (PonudaEntity) ponudaRaw;
-            if (brPonude == ponudaTemp.getBrPonude()) {
-                ponuda = ponudaTemp;
+        // TODO Nalazenje sledeceg rednog broja
+//        int brojStavki = ponuda.getStavkaPonudesByBrPonude().size();
+//
+//        for (StavkaPonudeEntity stavka : ponuda.getStavkaPonudesByBrPonude()){
+//            ArrayList redniBrojevi = new ArrayList();
+//            redniBrojevi.add(stavka.getRbr());
+//        }
+
+        // Biranje artikla po sifri
+        for (Object artikalRaw:listaArtikala) {
+            ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
+            if (sifraartikla == Artikal.getSifraartikla()) {
+                ponuda.dodajStavku(rbr, Artikal, kolicina);
             }
-        }
 
+
+        }
+    }
+
+    public void izmeniStavku(int rbr, int sifraartikla, int kolicina) {
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
             if (sifraartikla == Artikal.getSifraartikla()) {
                 ponuda.dodajStavku(rbr, Artikal, kolicina);
             }
         }
-    }
-
-    public void izmeniStavku(int rbr, int sifraartikla, int kolicina) {
-
-//        Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
-//        for (Object spRaw:stavkePonude) {
-//
-//            StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
-//
-//            if (sp.getRbr() == rbr) {
-//                sp.setArtikalBySifraArtikla(Artikal);
-//                sp.setKolicina(kolicina);
-//                sp.setStatus("update");
-//            }
-//        }
     }
 
     public void obrisiStavku(int rbr){
