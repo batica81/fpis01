@@ -304,12 +304,13 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
+                    // 'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
                     'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
                     'status' : 'insert',
-                    'rbr' : 1
+                    'rbr' : 0
                 },
                 success:
                     function () {
@@ -332,7 +333,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
+                    // 'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -359,7 +360,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    'BrPonude' : aktuelnaPonuda.BrPonude,
+                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'status' : 'delete',
                     'rbr' : 0
                 },

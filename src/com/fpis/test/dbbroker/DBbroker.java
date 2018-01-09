@@ -60,7 +60,7 @@ public class DBbroker {
         }
 
         catch (Exception e) {
-            System.err.println("Objekat ne moze da se zapamti u bazi... -> " + e);
+            System.err.println("Artikal ne moze da se zapamti u bazi... -> " + e);
         return false;
         }
     }
