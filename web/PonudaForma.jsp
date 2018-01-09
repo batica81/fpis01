@@ -315,7 +315,7 @@
                 success:
                     function () {
                         vratiPonude();
-                        popuniFormu(aktuelnaPonuda.BrPonude);
+                        // popuniFormu(aktuelnaPonuda.BrPonude);
                     },
                 error:
                     function (e) {
