@@ -13,6 +13,17 @@ public class StavkaPonudeEntity {
     private PonudaEntity ponudaByBrPonude;
     private ArtikalEntity artikalBySifraArtikla;
     private String status;
+    private String napomenastavke;
+
+    @Basic
+    @Column(name = "napomenastavke")
+    public String getNapomenastavke() {
+        return napomenastavke;
+    }
+
+    public void setNapomenastavke(String napomenastavke) {
+        this.napomenastavke = napomenastavke;
+    }
 
     @Transient
     public String getStatus() {
@@ -61,13 +72,14 @@ public class StavkaPonudeEntity {
         StavkaPonudeEntity that = (StavkaPonudeEntity) o;
         return rbr == that.rbr &&
                 brPonude == that.brPonude &&
+                napomenastavke == that.napomenastavke &&
                 kolicina == that.kolicina;
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(rbr, brPonude, kolicina);
+        return Objects.hash(rbr, brPonude, kolicina, napomenastavke);
     }
 
     @ManyToOne

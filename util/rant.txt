@@ -1,0 +1,6 @@
+Kako prikazati dodatu stavku na formi, ako ona jos nije zapamcena?
+(ili simulirati sinhronizovanost,
+ ili praviti posabnu logiku za povlacenje trenutne (tranzijentne) ponude sa kontrolera)
+ili ubaciti izmenjnu ponudu u aktuelnu listu pa ponovo povuci GET-om
+
+

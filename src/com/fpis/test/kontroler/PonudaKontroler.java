@@ -15,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Array;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -99,12 +97,12 @@ public class PonudaKontroler extends HttpServlet {
                 int rbr = Integer.valueOf(request.getParameter("rbr"));
 //                int BrPonude = Integer.valueOf(request.getParameter("BrPonude"));
                 int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
-//                String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
+                String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
 
                 if (status.equals("insert")) {
-                    dodajStavku(rbr, sifraartikla, kolicina);
+                    dodajStavku(rbr, sifraartikla, kolicina, napomenastavke);
                 } else if (status.equals("update")) {
-                    izmeniStavku(rbr, sifraartikla, kolicina);
+                    izmeniStavku(rbr, sifraartikla, kolicina, napomenastavke);
                 } else if (status.equals("delete")) {
                     obrisiStavku(rbr);
                 }
@@ -217,7 +215,7 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void dodajStavku(int rbr, int sifraartikla, int kolicina){
+    public void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
 
         // TODO: Nalazenje sledeceg rednog broja
 //        int brojStavki = ponuda.getStavkaPonudesByBrPonude().size();
@@ -231,18 +229,18 @@ public class PonudaKontroler extends HttpServlet {
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
             if (sifraartikla == Artikal.getSifraartikla()) {
-                ponuda.dodajStavku(rbr, Artikal, kolicina);
+                ponuda.dodajStavku(rbr, Artikal, kolicina, napomenastavke);
             }
 
 
         }
     }
 
-    public void izmeniStavku(int rbr, int sifraartikla, int kolicina) {
+    public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
             if (sifraartikla == Artikal.getSifraartikla()) {
-                ponuda.dodajStavku(rbr, Artikal, kolicina);
+                ponuda.dodajStavku(rbr, Artikal, kolicina, napomenastavke);
             }
         }
     }

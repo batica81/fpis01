@@ -211,7 +211,7 @@ public class PonudaEntity {
         this.stavkaPonudesByBrPonude = stavkaPonudesByBrPonude;
     }
 
-    public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina){
+    public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke){
 
         StavkaPonudeEntity sp = new StavkaPonudeEntity();
 
@@ -219,12 +219,13 @@ public class PonudaEntity {
         sp.setBrPonude(brPonude);
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
+        sp.setNapomenastavke(napomenastavke);
         sp.setStatus("insert");
         sp.setPonudaByBrPonude(this);
         stavkaPonudesByBrPonude.add(sp);
     }
 
-    public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina) {
+    public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke) {
 
         Collection<StavkaPonudeEntity> stavkePonude = getStavkaPonudesByBrPonude();
         for (Object spRaw:stavkePonude) {
@@ -234,6 +235,7 @@ public class PonudaEntity {
             if (sp.getRbr() == rbr) {
                 sp.setArtikalBySifraArtikla(Artikal);
                 sp.setKolicina(kolicina);
+                sp.setNapomenastavke(napomenastavke);
                 sp.setStatus("update");
             }
         }
