@@ -12,6 +12,7 @@ public class ArtikalEntity {
     private String jedinicamere;
     private String opisartikla;
     private String status;
+    private int cena;
     private Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla;
 
     @Id
@@ -23,6 +24,16 @@ public class ArtikalEntity {
 
     public void setSifraartikla(int sifraartikla) {
         this.sifraartikla = sifraartikla;
+    }
+
+    @Basic
+    @Column(name = "cena")
+    public int getCena() {
+        return cena;
+    }
+
+    public void setCena(int cena) {
+        this.cena = cena;
     }
 
     @Basic
@@ -73,6 +84,7 @@ public class ArtikalEntity {
         return sifraartikla == that.sifraartikla &&
                 Objects.equals(nazivartikla, that.nazivartikla) &&
                 Objects.equals(jedinicamere, that.jedinicamere) &&
+                Objects.equals(cena, that.cena) &&
                 Objects.equals(opisartikla, that.opisartikla);
     }
 

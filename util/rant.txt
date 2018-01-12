@@ -1,6 +1,16 @@
 Kako prikazati dodatu stavku na formi, ako ona jos nije zapamcena?
-(ili simulirati sinhronizovanost,
- ili praviti posabnu logiku za povlacenje trenutne (tranzijentne) ponude sa kontrolera)
-ili ubaciti izmenjnu ponudu u aktuelnu listu pa ponovo povuci GET-om
+
+simulirati poveyanost (da li je konzistentno?)
+ ili praviti posabnu logiku za povlacenje trenutne (tranzijentne) ponude sa kontrolera) - komplikovano bez punog REST apija
+ili ubaciti izmenjnu ponudu u aktuelnu listu pa ponovo povuci GET-om - ne moze, lista se populise iz baze
+
+Redni brojevi?
+
+Web servis????
 
 
+Kako (zasto?) koristiti JSF, Spring ili JSP a ispostovati zahtev da se ne proledjuju domenski objekti na view?
+
+
+
+Prikaz greske pri snimanju stavke iako je uspesno (verovatno hibernate bug)

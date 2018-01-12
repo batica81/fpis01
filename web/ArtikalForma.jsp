@@ -82,6 +82,11 @@
                             <label for="jedinicamere">Jedinica mere</label>
                             <input class="inputfield form-control input-lg" type="text" placeholder="Jedinica mere" id="jedinicamere" name="jedinicamere">
                         </div>
+                        <div class="form-group form-inline">
+                            <label for="cena">Cena</label>
+                            <input class="inputfield form-control input-lg" type="number" placeholder="Cena"
+                                   id="cena" name="cena">
+                        </div>
                         <input hidden id="stautsinput" type="text" name="status">
 
                         <button id="insertBbutton" class="btn-lg btn-block btn-info" type="submit">Unesi artikal</button>

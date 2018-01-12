@@ -49,6 +49,7 @@ public class PonudaKontroler extends HttpServlet {
                 stavkaJson.put("Rbr", stavka.getRbr());
                 stavkaJson.put("Kolicina", stavka.getKolicina());
                 stavkaJson.put("Artikal", stavka.getArtikalBySifraArtikla().getNazivartikla());
+                stavkaJson.put("Napomena", stavka.getNapomenastavke());
                 listaStavkiJson.add(stavkaJson);
             }
 
@@ -197,8 +198,10 @@ public class PonudaKontroler extends HttpServlet {
 
         dbb.pokreniDBTransakciju();
         boolean ret = dbb.zapamtiPonudu(ponuda);
-        if(ret)
+        if(ret) {
             dbb.potvrdiDBTransakciju();
+            ponuda = new PonudaEntity();
+            }
         else
             dbb.ponistiDBTransakciju();
     }
@@ -225,15 +228,17 @@ public class PonudaKontroler extends HttpServlet {
 //            redniBrojevi.add(stavka.getRbr());
 //        }
 
+        ArtikalEntity odabraniArtikal = new ArtikalEntity();
         // Biranje artikla po sifri
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
             if (sifraartikla == Artikal.getSifraartikla()) {
-                ponuda.dodajStavku(rbr, Artikal, kolicina, napomenastavke);
+                odabraniArtikal = Artikal;
             }
-
-
         }
+
+        ponuda.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
+
     }
 
     public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {

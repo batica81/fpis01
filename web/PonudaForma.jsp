@@ -304,7 +304,6 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
                     'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
@@ -314,7 +313,7 @@
                 },
                 success:
                     function () {
-                        vratiPonude();
+                        // vratiPonude();
                         // popuniFormu(aktuelnaPonuda.BrPonude);
                     },
                 error:
@@ -333,7 +332,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : (aktuelnaPonuda.BrPonude)? aktuelnaPonuda.BrPonude : 0,
+                    'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -360,7 +359,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
+                    'BrPonude' : aktuelnaPonuda.BrPonude,
                     'status' : 'delete',
                     'rbr' : 0
                 },

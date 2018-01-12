@@ -39,6 +39,7 @@ public class ArtikalKontroler extends HttpServlet {
             obj.put("opisartikla", artikal.getOpisartikla());
             obj.put("nazivartikla", artikal.getNazivartikla());
             obj.put("sifraartikla", artikal.getSifraartikla());
+            obj.put("cena", artikal.getCena());
             arr.add(obj);
         }
         out.println(arr);
@@ -49,15 +50,16 @@ public class ArtikalKontroler extends HttpServlet {
 
         String status = String.valueOf(request.getParameter("status"));
         Integer Sifraartikla = Integer.valueOf(request.getParameter("sifraartikla"));
+        Integer Cena = Integer.valueOf(request.getParameter("cena"));
         String Nazivartikla = String.valueOf(request.getParameter("nazivartikla"));
         String Opisartikla = String.valueOf(request.getParameter("opisartikla"));
         String Jedinicamere = String.valueOf(request.getParameter("jedinicamere"));
 
         if (status.equals("insert")) {
-            dodajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
+            dodajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("update")) {
-            izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere);
+            izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("delete")) {
             obrisiArtikal(Sifraartikla);
@@ -73,11 +75,12 @@ public class ArtikalKontroler extends HttpServlet {
         dbb.potvrdiDBTransakciju();
     }
 
-    public void dodajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
+    public void dodajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);
         artikal.setOpisartikla(Opisartikla);
         artikal.setJedinicamere(Jedinicamere);
+        artikal.setCena(Cena);
         artikal.setStatus("insert");
 
         dbb.pokreniDBTransakciju();
@@ -89,11 +92,12 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere){
+    public void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);
         artikal.setOpisartikla(Opisartikla);
         artikal.setJedinicamere(Jedinicamere);
+        artikal.setCena(Cena);
         artikal.setStatus("update");
 
         dbb.pokreniDBTransakciju();
