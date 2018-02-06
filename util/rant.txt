@@ -9,7 +9,7 @@ Redni brojevi?
 Web servis????
 
 
-Kako (zasto?) koristiti JSF, Spring ili JSP a ispostovati zahtev da se ne proledjuju domenski objekti na view?
+Kako (zasto?) koristiti JSF, Spring ili JSP a ispostovati zahtev da se ne prosledjuju domenski objekti na view?
 
 
 

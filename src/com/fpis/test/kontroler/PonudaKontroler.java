@@ -1,9 +1,7 @@
 package com.fpis.test.kontroler;
 
 import com.fpis.test.dbbroker.DBbroker;
-import com.fpis.test.model.ArtikalEntity;
-import com.fpis.test.model.PonudaEntity;
-import com.fpis.test.model.StavkaPonudeEntity;
+import com.fpis.test.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -24,6 +22,8 @@ public class PonudaKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
     private List<PonudaEntity> listaPonuda;
     private List<ArtikalEntity> listaArtikala;
+    private List<KupacEntity> listaKupaca;
+    private List<RadnikEntity> listaRadnika;
     PonudaEntity ponuda = new PonudaEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,8 +31,10 @@ public class PonudaKontroler extends HttpServlet {
 
         vratiPonude();
         vratiArtikle();
+        vratiKupce();
+        vratiRadnike();
 
-        // Vrati listu ponuda u JSON formatu
+        // Konvertuj listu ponuda u JSON format
         PrintWriter out = response.getWriter();
         JSONArray listaPonudaJSON = new JSONArray();
 
@@ -151,6 +153,18 @@ public class PonudaKontroler extends HttpServlet {
     public void vratiArtikle(){
         dbb.pokreniDBTransakciju();
         listaArtikala  = dbb.vratiArtikle();
+        dbb.potvrdiDBTransakciju();
+    }
+
+    public void vratiRadnike(){
+        dbb.pokreniDBTransakciju();
+        listaRadnika  = dbb.vratiRadnike();
+        dbb.potvrdiDBTransakciju();
+    }
+
+    public void vratiKupce(){
+        dbb.pokreniDBTransakciju();
+        listaKupaca  = dbb.vratiKupce();
         dbb.potvrdiDBTransakciju();
     }
 

@@ -1,8 +1,6 @@
 package com.fpis.test.dbbroker;
 
-import com.fpis.test.model.ArtikalEntity;
-import com.fpis.test.model.PonudaEntity;
-import com.fpis.test.model.StavkaPonudeEntity;
+import com.fpis.test.model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -38,6 +36,14 @@ public class DBbroker {
         } catch (Exception e) {
             System.err.println("Greska prilikom rollback operacije... -> " + e);
         }
+    }
+
+    public List<KupacEntity> vratiKupce(){
+        return  (List<KupacEntity>) session.createQuery("from KupacEntity ").list();
+    }
+
+    public List<RadnikEntity> vratiRadnike(){
+        return  (List<RadnikEntity>) session.createQuery("from RadnikEntity ").list();
     }
 
     public List<ArtikalEntity> vratiArtikle(){
