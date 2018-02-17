@@ -1,7 +1,13 @@
-package example;public class HelloWorldClient {
+package example;
+
+public class HelloWorldClient {
   public static void main(String[] argv) {
-      example.HelloWorld service = new HelloWorldService().getHelloWorldPort();
-      //invoke business method
-      service.sayHelloWorldFrom("Belzebub");
+      try {
+          example.HelloWorld ws = new HelloWorldService().getHelloWorldPort();
+          //invoke business method
+          ws.vratiArtikle();
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
   }
 }

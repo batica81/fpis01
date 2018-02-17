@@ -39,4 +39,5 @@ public interface HelloWorld {
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
 
+    public String vratiArtikle();
 }
