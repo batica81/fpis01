@@ -24,7 +24,7 @@ public class ArtikalKontroler extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        vratiArtikle();
+        listaArtikala = vratiArtikle();
 
         // Vrati listu artikala u JSON formatu
         PrintWriter out = response.getWriter();
@@ -56,7 +56,7 @@ public class ArtikalKontroler extends HttpServlet {
         String Jedinicamere = String.valueOf(request.getParameter("jedinicamere"));
 
         if (status.equals("insert")) {
-            dodajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
+            sacuvajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("update")) {
             izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
@@ -69,13 +69,14 @@ public class ArtikalKontroler extends HttpServlet {
         view.forward(request, response);
     } //end doPost
 
-    public void vratiArtikle(){
+    public List<ArtikalEntity> vratiArtikle(){
         dbb.pokreniDBTransakciju();
-        listaArtikala  = dbb.vratiArtikle();
+        List<ArtikalEntity> listaArtikala  = dbb.vratiArtikle();
         dbb.potvrdiDBTransakciju();
+        return listaArtikala;
     }
 
-    public void dodajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
+    public void sacuvajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
         artikal.setSifraartikla(Sifraartikla);
         artikal.setNazivartikla(Nazivartikla);
         artikal.setOpisartikla(Opisartikla);

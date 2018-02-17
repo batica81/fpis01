@@ -177,6 +177,18 @@
         <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
     </div>
 </div>
+<%
+    String listaArtikala;
+    String artikalJSON;
 
+//    prikaziArtikle(listaArtikala)
+//    popuniPoljaForme(artikalJSON)
+
+//    start()
+//    odaberiArtikal()
+//    izmeni()
+
+
+%>
 </body>
 </html>
