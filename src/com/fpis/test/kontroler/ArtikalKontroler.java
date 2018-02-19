@@ -19,6 +19,7 @@ import java.util.List;
 public class ArtikalKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
     private List<ArtikalEntity> listaArtikala;
+    private boolean ret;
     ArtikalEntity artikal = new ArtikalEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,7 +86,7 @@ public class ArtikalKontroler extends HttpServlet {
         artikal.setStatus("insert");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(artikal);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
@@ -102,7 +103,7 @@ public class ArtikalKontroler extends HttpServlet {
         artikal.setStatus("update");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(artikal);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
@@ -115,7 +116,7 @@ public class ArtikalKontroler extends HttpServlet {
         artikal.setStatus("delete");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(artikal);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
@@ -123,4 +124,11 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
+//    TODO: obavezno upotrebiti
+    public ArtikalEntity pronadjiArtikal(int SifraArtikla) {
+        dbb.pokreniDBTransakciju();
+        ArtikalEntity artikal = dbb.pronadjiArtikal(SifraArtikla);
+        dbb.potvrdiDBTransakciju();
+        return artikal;
+    }
 } //end servlet

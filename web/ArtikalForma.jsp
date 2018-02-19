@@ -181,12 +181,14 @@
     String listaArtikala;
     String artikalJSON;
 
-//    prikaziArtikle(listaArtikala)
 //    popuniPoljaForme(artikalJSON)
 
 //    start()
-//    odaberiArtikal()
+//    odaberiArtikal(SifraArtikla)
+//    PronadjiArtikal(SifraArtikla)
+//    PrikaziArtikle(listaArtikala)
 //    izmeni()
+//    Sacuvaj()
 
 
 %>

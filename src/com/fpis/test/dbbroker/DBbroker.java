@@ -49,6 +49,10 @@ public class DBbroker {
         return  (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
     }
 
+    public List<PonudaEntity> vratiPonude(){
+        return  (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
+    }
+
     public boolean zapamtiArtikal(ArtikalEntity artikal) {
 
         try {
@@ -70,16 +74,12 @@ public class DBbroker {
         }
     }
 
-    public List<PonudaEntity> vratiPonude(){
-        return  (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
-    }
-
     public boolean zapamtiPonudu(PonudaEntity ponuda){
 
         try {
             if (ponuda.getStatus().equals("insert")) {
 
-                Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+                Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
                 if(stavkePonude!=null){
                     for (Object spRaw:stavkePonude) {
                         StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
@@ -89,7 +89,7 @@ public class DBbroker {
                 session.persist(ponuda);
             }
             else if (ponuda.getStatus().equals("update")) {
-                Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+                Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
                 if(stavkePonude!=null){
                     for (Object spRaw:stavkePonude) {
                         StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
@@ -129,6 +129,14 @@ public class DBbroker {
             System.err.println("Stavka ponude ne moze da se zapamti u bazi... -> " + e);
             return false;
         }
+    }
+
+    public PonudaEntity pronadjiPonudu(int BrPonude) {
+        return (PonudaEntity) session.get(PonudaEntity.class, BrPonude);
+    }
+
+    public ArtikalEntity pronadjiArtikal(int SifraArtikla) {
+        return (ArtikalEntity) session.get(ArtikalEntity.class, SifraArtikla);
     }
 
 }

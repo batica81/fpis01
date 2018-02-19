@@ -24,15 +24,16 @@ public class PonudaKontroler extends HttpServlet {
     private List<ArtikalEntity> listaArtikala;
     private List<KupacEntity> listaKupaca;
     private List<RadnikEntity> listaRadnika;
+    private boolean ret;
     PonudaEntity ponuda = new PonudaEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        vratiPonude();
-        vratiArtikle();
-        vratiKupce();
-        vratiRadnike();
+        listaPonuda = vratiPonude();
+        listaArtikala = vratiArtikle();
+        listaKupaca = vratiKupce();
+        listaRadnika = vratiRadnike();
 
         // Konvertuj listu ponuda u JSON format
         PrintWriter out = response.getWriter();
@@ -43,7 +44,7 @@ public class PonudaKontroler extends HttpServlet {
             PonudaEntity ponuda = (PonudaEntity) ponudaRaw;
             JSONObject ponudaJson = new JSONObject();
             JSONArray listaStavkiJson = new JSONArray();
-            Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+            Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
 
             for (Object stavkaRaw:stavkePonude) {
                 JSONObject stavkaJson = new JSONObject();
@@ -144,28 +145,24 @@ public class PonudaKontroler extends HttpServlet {
         }
     } //end doPost
 
-    public void vratiPonude(){
+    public List<PonudaEntity> vratiPonude(){
         dbb.pokreniDBTransakciju();
-        listaPonuda  = dbb.vratiPonude();
-        dbb.potvrdiDBTransakciju();
+        return dbb.vratiPonude();
     }
 
-    public void vratiArtikle(){
+    public List<ArtikalEntity> vratiArtikle(){
         dbb.pokreniDBTransakciju();
-        listaArtikala  = dbb.vratiArtikle();
-        dbb.potvrdiDBTransakciju();
+        return dbb.vratiArtikle();
     }
 
-    public void vratiRadnike(){
+    public List<RadnikEntity> vratiRadnike(){
         dbb.pokreniDBTransakciju();
-        listaRadnika  = dbb.vratiRadnike();
-        dbb.potvrdiDBTransakciju();
+        return dbb.vratiRadnike();
     }
 
-    public void vratiKupce(){
+    public List<KupacEntity> vratiKupce(){
         dbb.pokreniDBTransakciju();
-        listaKupaca  = dbb.vratiKupce();
-        dbb.potvrdiDBTransakciju();
+        return dbb.vratiKupce();
     }
 
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
@@ -186,7 +183,7 @@ public class PonudaKontroler extends HttpServlet {
         ponuda.setStatus("insert");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiPonudu(ponuda);
+        ret = dbb.zapamtiPonudu(ponuda);
         if(ret)
             dbb.potvrdiDBTransakciju();
         else
@@ -211,7 +208,7 @@ public class PonudaKontroler extends HttpServlet {
         ponuda.setStatus("update");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiPonudu(ponuda);
+        ret = dbb.zapamtiPonudu(ponuda);
         if(ret) {
             dbb.potvrdiDBTransakciju();
             ponuda = new PonudaEntity();
@@ -225,7 +222,7 @@ public class PonudaKontroler extends HttpServlet {
         ponuda.setStatus("delete");
 
         dbb.pokreniDBTransakciju();
-        boolean ret = dbb.zapamtiPonudu(ponuda);
+        ret = dbb.zapamtiPonudu(ponuda);
         if(ret)
             dbb.potvrdiDBTransakciju();
         else
@@ -266,15 +263,20 @@ public class PonudaKontroler extends HttpServlet {
 
     public void obrisiStavku(int rbr){
 
-        Collection<StavkaPonudeEntity> stavkePonude = ponuda.getStavkaPonudesByBrPonude();
+        Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
         for (Object spRaw:stavkePonude) {
 
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
 
             if(sp.getRbr()==rbr) {
-                sp.setStatus("delete");
+                sp.postaviStatus("delete");
             }
         }
+    }
+
+    //TODO: Dodeliti redni broj nekako
+    public int dodajRbr(){
+        return 0;
     }
 
 } //end servlet

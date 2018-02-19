@@ -385,6 +385,32 @@
     </div>
 </div>
 
-<% out.println("Current Time is: " + "\n"); %>
+<%
+    String listaArtikala;
+    String listaKupaca;
+    String listaRadnika;
+    String listaPonuda;
+    String ponudaJSON;
+
+//    start()
+//    popuniArtikle(listaArtikala);
+//    popuniKupce(listaKupaca);
+//    popuniRadnike(listaRadnika);
+//    popuniPonude(listaPonuda);
+
+//    DodajStavku()
+//    IzmeniStavku()
+//    ObrisiStavku()
+
+//        AzurirajPrikaz()
+//    Sacuvaj()
+
+
+//    popuniPoljaForme(ponudaJSON)
+//    odaberiPonudu()
+//    izmeni()
+
+
+%>
 </body>
 </html>

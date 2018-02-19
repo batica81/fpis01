@@ -23,7 +23,7 @@ public class PonudaEntity {
     private Timestamp datumPrometa;
     private String tipPlacanja;
     private String status;
-    private Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude;
+    private Collection<StavkaPonudeEntity> kolekcijaStavki;
 
     @Id
     @Column(name = "BrPonude")
@@ -203,12 +203,12 @@ public class PonudaEntity {
     }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
-    public Collection<StavkaPonudeEntity> getStavkaPonudesByBrPonude() {
-        return stavkaPonudesByBrPonude;
+    public Collection<StavkaPonudeEntity> getKolekcijaStavki() {
+        return kolekcijaStavki;
     }
 
-    public void setStavkaPonudesByBrPonude(Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude) {
-        this.stavkaPonudesByBrPonude = stavkaPonudesByBrPonude;
+    public void setKolekcijaStavki(Collection<StavkaPonudeEntity> stavkaPonudesByBrPonude) {
+        this.kolekcijaStavki = stavkaPonudesByBrPonude;
     }
 
     public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke){
@@ -220,14 +220,18 @@ public class PonudaEntity {
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
         sp.setNapomenastavke(napomenastavke);
-        sp.setStatus("insert");
+        sp.postaviStatus("insert");
+        this.ubaciUKolekciju(sp);
+    }
+
+    public void ubaciUKolekciju (StavkaPonudeEntity sp) {
         sp.setPonudaByBrPonude(this);
-        stavkaPonudesByBrPonude.add(sp);
+        kolekcijaStavki.add(sp);
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke) {
 
-        Collection<StavkaPonudeEntity> stavkePonude = getStavkaPonudesByBrPonude();
+        Collection<StavkaPonudeEntity> stavkePonude = getKolekcijaStavki();
         for (Object spRaw:stavkePonude) {
 
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
@@ -236,20 +240,20 @@ public class PonudaEntity {
                 sp.setArtikalBySifraArtikla(Artikal);
                 sp.setKolicina(kolicina);
                 sp.setNapomenastavke(napomenastavke);
-                sp.setStatus("update");
+                sp.postaviStatus("update");
             }
         }
     }
 
     public void obrisiStavku(int rbr){
 
-        Collection<StavkaPonudeEntity> stavkePonude = getStavkaPonudesByBrPonude();
+        Collection<StavkaPonudeEntity> stavkePonude = getKolekcijaStavki();
         for (Object spRaw:stavkePonude) {
 
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
 
             if(sp.getRbr()==rbr) {
-                sp.setStatus("delete");
+                sp.postaviStatus("delete");
             }
         }
     }

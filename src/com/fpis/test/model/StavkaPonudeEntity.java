@@ -10,10 +10,10 @@ public class StavkaPonudeEntity {
     private int rbr;
     private int brPonude;
     private int kolicina;
+    private String napomenastavke;
+    private String status;
     private PonudaEntity ponudaByBrPonude;
     private ArtikalEntity artikalBySifraArtikla;
-    private String status;
-    private String napomenastavke;
 
     @Basic
     @Column(name = "napomenastavke")
@@ -31,7 +31,7 @@ public class StavkaPonudeEntity {
     }
 
     @Transient
-    public void setStatus(String status) {
+    public void postaviStatus(String status) {
         this.status = status;
     }
 
@@ -64,6 +64,22 @@ public class StavkaPonudeEntity {
     public void setKolicina(int kolicina) {
         this.kolicina = kolicina;
     }
+
+//    TODO: Videti da li treba i po mogucstvu izbaciti
+//    public void izmeniStavku(int SifraArtikla, int kolicina, String napomenastavke) {
+//        this.setKolicina(kolicina);
+//        this.setNapomenastavke(napomenastavke);
+//
+//
+//        for (Object artikalRaw:listaArtikala) {
+//            ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
+//            if (sifraartikla == Artikal.getSifraartikla()) {
+//                odabraniArtikal = Artikal;
+//            }
+//        }
+//
+//        this.setArtikalBySifraArtikla(ArtikalEntity tempArtikal);
+//    }
 
     @Override
     public boolean equals(Object o) {
