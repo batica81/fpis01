@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
+<%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %><%--
   Created by IntelliJ IDEA.
   User: voja
   Date: 4.1.18.
@@ -189,6 +190,17 @@
 //    PrikaziArtikle(listaArtikala)
 //    izmeni()
 //    Sacuvaj()
+
+
+
+//        ArtikalKontroler k = new ArtikalKontroler();
+
+//        k.vratiArtikle();
+
+        out.println("jaooo");
+
+
+
 
 
 %>

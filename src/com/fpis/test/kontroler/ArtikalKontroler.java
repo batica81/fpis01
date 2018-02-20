@@ -18,14 +18,15 @@ import java.util.List;
 @WebServlet(name = "ArtikalKontroler", urlPatterns = {"/artikalkontroler"})
 public class ArtikalKontroler extends HttpServlet {
     private DBbroker dbb = new DBbroker();
+    private ArtikalEntity a = new ArtikalEntity();
     private List<ArtikalEntity> listaArtikala;
     private boolean ret;
-    ArtikalEntity artikal = new ArtikalEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        listaArtikala = vratiArtikle();
+//        ISKLJUCENO !!!
+//        listaArtikala = vratiArtikle();
 
         // Vrati listu artikala u JSON formatu
         PrintWriter out = response.getWriter();
@@ -70,23 +71,48 @@ public class ArtikalKontroler extends HttpServlet {
         view.forward(request, response);
     } //end doPost
 
-    public List<ArtikalEntity> vratiArtikle(){
+//    VALJDA NE TREBA
+//    public List<ArtikalEntity> vratiArtikle(){
+//        dbb.pokreniDBTransakciju();
+//        List<ArtikalEntity> listaArtikala  = dbb.vratiArtikle();
+//        dbb.potvrdiDBTransakciju();
+//        return listaArtikala;
+//    }
+
+    public String vratiArtikle(){
         dbb.pokreniDBTransakciju();
         List<ArtikalEntity> listaArtikala  = dbb.vratiArtikle();
         dbb.potvrdiDBTransakciju();
-        return listaArtikala;
+
+        JSONArray arr = new JSONArray();
+
+        for (Object artikalRaw:listaArtikala) {
+
+            JSONObject obj = new JSONObject();
+            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
+
+            obj.put("jedinicamere", artikal.getJedinicamere());
+            obj.put("opisartikla", artikal.getOpisartikla());
+            obj.put("nazivartikla", artikal.getNazivartikla());
+            obj.put("sifraartikla", artikal.getSifraartikla());
+            obj.put("cena", artikal.getCena());
+            arr.add(obj);
+        }
+
+
+        return String.valueOf(arr);
     }
 
     public void sacuvajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
-        artikal.setSifraartikla(Sifraartikla);
-        artikal.setNazivartikla(Nazivartikla);
-        artikal.setOpisartikla(Opisartikla);
-        artikal.setJedinicamere(Jedinicamere);
-        artikal.setCena(Cena);
-        artikal.setStatus("insert");
+        a.setSifraartikla(Sifraartikla);
+        a.setNazivartikla(Nazivartikla);
+        a.setOpisartikla(Opisartikla);
+        a.setJedinicamere(Jedinicamere);
+        a.setCena(Cena);
+        a.setStatus("insert");
 
         dbb.pokreniDBTransakciju();
-        ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(a);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
@@ -95,15 +121,15 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
     public void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
-        artikal.setSifraartikla(Sifraartikla);
-        artikal.setNazivartikla(Nazivartikla);
-        artikal.setOpisartikla(Opisartikla);
-        artikal.setJedinicamere(Jedinicamere);
-        artikal.setCena(Cena);
-        artikal.setStatus("update");
+        a.setSifraartikla(Sifraartikla);
+        a.setNazivartikla(Nazivartikla);
+        a.setOpisartikla(Opisartikla);
+        a.setJedinicamere(Jedinicamere);
+        a.setCena(Cena);
+        a.setStatus("update");
 
         dbb.pokreniDBTransakciju();
-        ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(a);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
@@ -112,11 +138,11 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
     public void obrisiArtikal(int Sifraartikla){
-        artikal.setSifraartikla(Sifraartikla);
-        artikal.setStatus("delete");
+        a.setSifraartikla(Sifraartikla);
+        a.setStatus("delete");
 
         dbb.pokreniDBTransakciju();
-        ret = dbb.zapamtiArtikal(artikal);
+        ret = dbb.zapamtiArtikal(a);
 
         if(ret)
             dbb.potvrdiDBTransakciju();
