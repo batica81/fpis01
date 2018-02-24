@@ -151,10 +151,20 @@ public class ArtikalKontroler extends HttpServlet {
     }
 
 //    TODO: obavezno upotrebiti
-    public ArtikalEntity pronadjiArtikal(int SifraArtikla) {
+    public String pronadjiArtikal(int SifraArtikla) {
         dbb.pokreniDBTransakciju();
         ArtikalEntity artikal = dbb.pronadjiArtikal(SifraArtikla);
-        dbb.potvrdiDBTransakciju();
-        return artikal;
+
+        JSONArray arr = new JSONArray();
+        JSONObject obj = new JSONObject();
+
+        obj.put("jedinicamere", artikal.getJedinicamere());
+        obj.put("opisartikla", artikal.getOpisartikla());
+        obj.put("nazivartikla", artikal.getNazivartikla());
+        obj.put("sifraartikla", artikal.getSifraartikla());
+        obj.put("cena", artikal.getCena());
+        arr.add(obj);
+
+        return String.valueOf(arr);
     }
 } //end servlet

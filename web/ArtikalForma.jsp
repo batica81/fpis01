@@ -1,4 +1,3 @@
-<%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
 <%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %><%--
   Created by IntelliJ IDEA.
   User: voja
@@ -30,6 +29,35 @@
     <title>FPIS Aplikacija</title>
 </head>
 <body>
+
+<%
+    String listaArtikala;
+    String artikalJSON;
+
+//    popuniPoljaForme(artikalJSON)
+
+//    start()
+//    odaberiArtikal(SifraArtikla)
+//    PronadjiArtikal(SifraArtikla)
+//    PrikaziArtikle(listaArtikala)
+//    izmeni()
+//    Sacuvaj()
+
+
+
+    ArtikalKontroler k = new ArtikalKontroler();
+
+    listaArtikala = k.vratiArtikle();
+
+//    out.println(listaArtikala);
+
+    artikalJSON = k.pronadjiArtikal(1);
+
+//    out.println("<h2>TRAZENI ARTIKAL JE:</h2>");
+//    out.println(artikalJSON);
+%>
+
+
 <!-- Static navbar -->
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
@@ -116,21 +144,23 @@
             $("#stautsinput").val("delete");
         });
 
-        function vratiArtikle() {
-            $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
-                method: "GET",
-                success:
-                    function (data) {
-                        populateComboBox(data);
-                        listaArtikala = data;
-                    },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-        }
+        // function vratiArtikle() {
+        //     $.ajax({
+        //         url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
+        //         method: "GET",
+        //         success:
+        //             function (data) {
+        //                 populateComboBox(data);
+        //                 listaArtikala = data;
+        //             },
+        //         error:
+        //             function (e) {
+        //                 console.log(e.responseText);
+        //             }
+        //     });
+        // }
+
+        //TODO: pretvoriti u JSP
 
         function populateComboBox(data) {
             $(data).map(function () {
@@ -139,14 +169,16 @@
         }
 
         function popuniFormu(selected) {
-            listaArtikala.forEach( function (artikal) {
-                if (artikal.sifraartikla == selected){
-                    $('#artikalForma').populate(artikal);
-                }
-            });
+            // listaArtikala.forEach( function (artikal) {
+            //     if (artikal.sifraartikla == selected){
+                    $('#artikalForma').populate(selected);
+                // }
+            // });
         }
 
-        vratiArtikle();
+        // vratiArtikle();
+
+        populateComboBox(<% out.println(listaArtikala); %>);
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
@@ -178,31 +210,6 @@
         <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
     </div>
 </div>
-<%
-    String listaArtikala;
-    String artikalJSON;
 
-//    popuniPoljaForme(artikalJSON)
-
-//    start()
-//    odaberiArtikal(SifraArtikla)
-//    PronadjiArtikal(SifraArtikla)
-//    PrikaziArtikle(listaArtikala)
-//    izmeni()
-//    Sacuvaj()
-
-
-
-//        ArtikalKontroler k = new ArtikalKontroler();
-
-//        k.vratiArtikle();
-
-        out.println("jaooo");
-
-
-
-
-
-%>
 </body>
 </html>
