@@ -30,21 +30,25 @@ public class ArtikalKontroler extends HttpServlet {
 
         // Vrati listu artikala u JSON formatu
         PrintWriter out = response.getWriter();
-        JSONArray arr = new JSONArray();
+//        JSONArray arr = new JSONArray();
+//
+//        for (Object artikalRaw:listaArtikala) {
+//
+//            JSONObject obj = new JSONObject();
+//            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
+//
+//            obj.put("jedinicamere", artikal.getJedinicamere());
+//            obj.put("opisartikla", artikal.getOpisartikla());
+//            obj.put("nazivartikla", artikal.getNazivartikla());
+//            obj.put("sifraartikla", artikal.getSifraartikla());
+//            obj.put("cena", artikal.getCena());
+//            arr.add(obj);
+//        }
+//        out.println(arr);
 
-        for (Object artikalRaw:listaArtikala) {
+        out.println(pronadjiArtikal(Integer.valueOf(request.getParameter("sifraArtikla"))));
 
-            JSONObject obj = new JSONObject();
-            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
 
-            obj.put("jedinicamere", artikal.getJedinicamere());
-            obj.put("opisartikla", artikal.getOpisartikla());
-            obj.put("nazivartikla", artikal.getNazivartikla());
-            obj.put("sifraartikla", artikal.getSifraartikla());
-            obj.put("cena", artikal.getCena());
-            arr.add(obj);
-        }
-        out.println(arr);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -165,6 +169,7 @@ public class ArtikalKontroler extends HttpServlet {
         obj.put("cena", artikal.getCena());
         arr.add(obj);
 
+//        dbb.potvrdiDBTransakciju();
         return String.valueOf(arr);
     }
 } //end servlet

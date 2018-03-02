@@ -51,7 +51,7 @@
 
 //    out.println(listaArtikala);
 
-    artikalJSON = k.pronadjiArtikal(1);
+//    artikalJSON = k.pronadjiArtikal(1);
 
 //    out.println("<h2>TRAZENI ARTIKAL JE:</h2>");
 //    out.println(artikalJSON);
@@ -144,21 +144,25 @@
             $("#stautsinput").val("delete");
         });
 
-        // function vratiArtikle() {
-        //     $.ajax({
-        //         url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
-        //         method: "GET",
-        //         success:
-        //             function (data) {
-        //                 populateComboBox(data);
-        //                 listaArtikala = data;
-        //             },
-        //         error:
-        //             function (e) {
-        //                 console.log(e.responseText);
-        //             }
-        //     });
-        // }
+
+        function vratiArtikal(slected) {
+            $.ajax({
+                url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
+                method: "GET",
+                data: {
+                    'sifraArtikla' : slected
+                },
+                success:
+                    function (data) {
+                        popuniFormu(data[0]);
+                        console.log(data);
+                    },
+                error:
+                    function (e) {
+                        console.log(e.responseText);
+                    }
+            });
+        }
 
         //TODO: pretvoriti u JSP
 
@@ -176,13 +180,13 @@
             // });
         }
 
-        // vratiArtikle();
 
         populateComboBox(<% out.println(listaArtikala); %>);
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
-            popuniFormu(selected);
+            // popuniFormu(selected);
+            vratiArtikal(selected);
         });
 
         $('#dugmeizmena').click(function () {
