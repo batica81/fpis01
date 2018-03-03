@@ -19,21 +19,17 @@ import java.util.List;
 
 @WebServlet(name = "PonudaKontroler", urlPatterns = {"/ponudakontroler"})
 public class PonudaKontroler extends HttpServlet {
-    private DBbroker dbb = new DBbroker();
-    private PonudaEntity p = new PonudaEntity();
-    private boolean ret;
     private List<PonudaEntity> listaPonuda;
     private List<ArtikalEntity> listaArtikala;
     private List<KupacEntity> listaKupaca;
     private List<RadnikEntity> listaRadnika;
+    private boolean ret;
+    private DBbroker dbb = new DBbroker();
+    private PonudaEntity p = new PonudaEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
 
-        listaPonuda = vratiPonude();
-        listaArtikala = vratiArtikle();
-        listaKupaca = vratiKupce();
-        listaRadnika = vratiRadnike();
 
         // Konvertuj listu p u JSON format
         PrintWriter out = response.getWriter();
@@ -147,22 +143,22 @@ public class PonudaKontroler extends HttpServlet {
 
     public List<PonudaEntity> vratiPonude(){
         dbb.pokreniDBTransakciju();
-        return dbb.vratiPonude();
+        listaPonuda = dbb.vratiPonude();
     }
 
     public List<ArtikalEntity> vratiArtikle(){
         dbb.pokreniDBTransakciju();
-        return dbb.vratiArtikle();
+        listaArtikala = dbb.vratiArtikle();
     }
 
     public List<RadnikEntity> vratiRadnike(){
         dbb.pokreniDBTransakciju();
-        return dbb.vratiRadnike();
+        listaRadnika = dbb.vratiRadnike();
     }
 
     public List<KupacEntity> vratiKupce(){
         dbb.pokreniDBTransakciju();
-        return dbb.vratiKupce();
+        listaKupaca = dbb.vratiKupce();
     }
 
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){

@@ -17,38 +17,15 @@ import java.util.List;
 
 @WebServlet(name = "ArtikalKontroler", urlPatterns = {"/artikalkontroler"})
 public class ArtikalKontroler extends HttpServlet {
-    private DBbroker dbb = new DBbroker();
-    private ArtikalEntity a = new ArtikalEntity();
     private List<ArtikalEntity> listaArtikala;
     private boolean ret;
+    private DBbroker dbb = new DBbroker();
+    private ArtikalEntity a = new ArtikalEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-
-//        ISKLJUCENO !!!
-//        listaArtikala = vratiArtikle();
-
-        // Vrati listu artikala u JSON formatu
         PrintWriter out = response.getWriter();
-//        JSONArray arr = new JSONArray();
-//
-//        for (Object artikalRaw:listaArtikala) {
-//
-//            JSONObject obj = new JSONObject();
-//            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
-//
-//            obj.put("jedinicamere", artikal.getJedinicamere());
-//            obj.put("opisartikla", artikal.getOpisartikla());
-//            obj.put("nazivartikla", artikal.getNazivartikla());
-//            obj.put("sifraartikla", artikal.getSifraartikla());
-//            obj.put("cena", artikal.getCena());
-//            arr.add(obj);
-//        }
-//        out.println(arr);
-
         out.println(pronadjiArtikal(Integer.valueOf(request.getParameter("sifraArtikla"))));
-
-
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -75,26 +52,15 @@ public class ArtikalKontroler extends HttpServlet {
         view.forward(request, response);
     } //end doPost
 
-//    VALJDA NE TREBA
-//    public List<ArtikalEntity> vratiArtikle(){
-//        dbb.pokreniDBTransakciju();
-//        List<ArtikalEntity> listaArtikala  = dbb.vratiArtikle();
-//        dbb.potvrdiDBTransakciju();
-//        return listaArtikala;
-//    }
-
     public String vratiArtikle(){
         dbb.pokreniDBTransakciju();
-        List<ArtikalEntity> listaArtikala  = dbb.vratiArtikle();
+        listaArtikala  = dbb.vratiArtikle();
         dbb.potvrdiDBTransakciju();
-
         JSONArray arr = new JSONArray();
 
         for (Object artikalRaw:listaArtikala) {
-
             JSONObject obj = new JSONObject();
             ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
-
             obj.put("jedinicamere", artikal.getJedinicamere());
             obj.put("opisartikla", artikal.getOpisartikla());
             obj.put("nazivartikla", artikal.getNazivartikla());
@@ -102,7 +68,6 @@ public class ArtikalKontroler extends HttpServlet {
             obj.put("cena", artikal.getCena());
             arr.add(obj);
         }
-
 
         return String.valueOf(arr);
     }
@@ -154,22 +119,20 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-//    TODO: obavezno upotrebiti
     public String pronadjiArtikal(int SifraArtikla) {
         dbb.pokreniDBTransakciju();
-        ArtikalEntity artikal = dbb.pronadjiArtikal(SifraArtikla);
-
+        a = dbb.pronadjiArtikal(SifraArtikla);
+        dbb.potvrdiDBTransakciju();
         JSONArray arr = new JSONArray();
         JSONObject obj = new JSONObject();
 
-        obj.put("jedinicamere", artikal.getJedinicamere());
-        obj.put("opisartikla", artikal.getOpisartikla());
-        obj.put("nazivartikla", artikal.getNazivartikla());
-        obj.put("sifraartikla", artikal.getSifraartikla());
-        obj.put("cena", artikal.getCena());
+        obj.put("jedinicamere", a.getJedinicamere());
+        obj.put("opisartikla", a.getOpisartikla());
+        obj.put("nazivartikla", a.getNazivartikla());
+        obj.put("sifraartikla", a.getSifraartikla());
+        obj.put("cena", a.getCena());
         arr.add(obj);
 
-//        dbb.potvrdiDBTransakciju();
         return String.valueOf(arr);
     }
 } //end servlet

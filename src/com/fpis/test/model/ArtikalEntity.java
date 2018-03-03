@@ -11,8 +11,8 @@ public class ArtikalEntity {
     private String nazivartikla;
     private String jedinicamere;
     private String opisartikla;
-    private String status;
     private int cena;
+    private String status;
     private Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla;
 
     @Id
@@ -90,7 +90,6 @@ public class ArtikalEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(sifraartikla, nazivartikla, jedinicamere, opisartikla);
     }
 

@@ -37,16 +37,16 @@ public class DBbroker {
         }
     }
 
+    public List<ArtikalEntity> vratiArtikle(){
+        return  (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
+    }
+
     public List<KupacEntity> vratiKupce(){
         return  (List<KupacEntity>) session.createQuery("from KupacEntity ").list();
     }
 
     public List<RadnikEntity> vratiRadnike(){
         return  (List<RadnikEntity>) session.createQuery("from RadnikEntity ").list();
-    }
-
-    public List<ArtikalEntity> vratiArtikle(){
-        return  (List<ArtikalEntity>) session.createQuery("from ArtikalEntity ").list();
     }
 
     public List<PonudaEntity> vratiPonude(){

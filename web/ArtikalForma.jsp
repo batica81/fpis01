@@ -154,7 +154,7 @@
                 },
                 success:
                     function (data) {
-                        popuniFormu(data[0]);
+                        popuniPoljaForme(data[0]);
                         console.log(data);
                     },
                 error:
@@ -166,26 +166,20 @@
 
         //TODO: pretvoriti u JSP
 
-        function populateComboBox(data) {
+        function prikaziArtikle(data) {
             $(data).map(function () {
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
             });
         }
 
-        function popuniFormu(selected) {
-            // listaArtikala.forEach( function (artikal) {
-            //     if (artikal.sifraartikla == selected){
-                    $('#artikalForma').populate(selected);
-                // }
-            // });
+        function popuniPoljaForme(selected) {
+            $('#artikalForma').populate(selected);
         }
 
-
-        populateComboBox(<% out.println(listaArtikala); %>);
+        prikaziArtikle(<% out.println(listaArtikala); %>);
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
-            // popuniFormu(selected);
             vratiArtikal(selected);
         });
 
@@ -196,13 +190,6 @@
             $('.panel-title').toggleClass('hidden');
             $('#insertBbutton').toggleClass('hidden');
         });
-
-        // $('#dugmeunos').click(function () {
-        //     $('#combo').addClass('hidden');
-        //     $('#updateBbutton').addClass('hidden');
-        //     $('#deleteBbutton').addClass('hidden');
-        //     $('#insertBbutton').removeClass('hidden');
-        // });
 
         $('.inputfield').val('');
     });
