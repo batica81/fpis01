@@ -5,7 +5,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-
+<%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -77,14 +77,16 @@
                                        name="datum">
                             </div>
                             <div class="form-group form-inline">
-                                <label for="sifraKupca">Šifra kupca</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Šifra kupca" id="sifraKupca"
-                                       name="sifraKupca">
+                                <label for="select_kupac">Kupac</label>
+                                <select id="select_kupac" name="SIFRAKUPCA" class="form-control">
+                                    <option value="0" selected>Kupac</option>
+                                </select>
                             </div>
                             <div class="form-group form-inline">
-                                <label for="sifraRadnika">Šifra radnika</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Šifra radnika" id="sifraRadnika"
-                                       name="sifraRadnika">
+                                <label for="select_radnik">Radnik</label>
+                                <select id="select_radnik" name="SIFRARADNIKA" class="form-control">
+                                    <option value="0" selected>Radnik</option>
+                                </select>
                             </div>
                             <div class="form-group form-inline">
                                 <label for="isporuka">Isporuka</label>
@@ -191,38 +193,62 @@
 </div>
 
 
+<%
+    String listaArtikala;
+    String listaKupaca;
+    String listaRadnika;
+    String listaPonuda;
+    String ponudaJSON;
+
+
+    PonudaKontroler k = new PonudaKontroler();
+
+    listaPonuda = k.vratiPonude();
+    listaArtikala = k.vratiArtikle();
+    listaKupaca = k.vratiKupce();
+    listaRadnika = k.vratiRadnike();
+
+
+
+
+//    start()
+//    popuniArtikle(listaArtikala);
+//    popuniKupce(listaKupaca);
+//    popuniRadnike(listaRadnika);
+//    popuniPonude(listaPonuda);
+
+//    DodajStavku()
+//    IzmeniStavku()
+//    ObrisiStavku()
+
+//    AzurirajPrikaz()
+//    Sacuvaj()
+
+
+//    popuniPoljaForme(ponudaJSON)
+//    odaberiPonudu()
+//    izmeni()
+
+
+%>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        listaPonuda = "";
-        listaArtikala = "";
         aktuelnaPonuda = {};
 
-        function vratiPonude() {
+        function vratiPonudu(slected) {
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "GET",
+                data: {
+                    'brPonude' : slected
+                },
                 success:
                     function (data) {
-                        populateComboBox(data);
-                        listaPonuda = data;
-                    },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-        }
-
-        function vratiArtikle() {
-            $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
-                method: "GET",
-                success:
-                    function (data) {
-                        populateArtikalComboBox(data);
-                        listaArtikala = data;
+                        popuniPoljaForme(data);
+                        console.log(data);
                     },
                 error:
                     function (e) {
@@ -236,38 +262,46 @@
                 $('<option>').val(this.BrPonude).text(this.banka).appendTo('#combo');
             });
         }
+        populateComboBox(<% out.println(listaPonuda); %>);
 
         function populateArtikalComboBox(data) {
             $(data).map(function () {
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#select_SIFRAARTIKLA');
             });
         }
+        populateArtikalComboBox(<% out.println(listaArtikala); %>);
 
-        function popuniFormu(selected) {
-            $('#detalji_ponude').empty();
-            listaPonuda.forEach( function (ponuda) {
-                if (ponuda.BrPonude == selected){
-                    aktuelnaPonuda = ponuda;
-                    //dirty hack :)
-                    stavke = ponuda.Stavke;
-                    delete ponuda.Stavke;
-                    $('#ponudaForma').populate(ponuda);
-                    ponuda.Stavke = stavke;
-
-                    if  (!jQuery.isEmptyObject(stavke)) {
-                        Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
-                    }
-                }
+        function populateKupacComboBox(data) {
+            $(data).map(function () {
+                $('<option>').val(this.sifraKupca).text(this.ime).appendTo('#select_kupac');
             });
         }
+        populateKupacComboBox(<% out.println(listaKupaca); %>);
 
-        vratiPonude();
+        function populateRadnikComboBox(data) {
+            $(data).map(function () {
+                $('<option>').val(this.sifraRadnika).text(this.ime).appendTo('#select_radnik');
+            });
+        }
+        populateRadnikComboBox(<% out.println(listaRadnika); %>);
 
-        vratiArtikle();
+        function popuniPoljaForme(ponuda) {
+            $('#detalji_ponude').empty();
+            stavke = ponuda.Stavke;
+            delete ponuda.Stavke;
+            $('#ponudaForma').populate(ponuda);
+            $('#select_kupac').val(ponuda.sifraKupca).prop('selected', true);
+            $('#select_radnik').val(ponuda.sifraRadnika).prop('selected', true);
+
+            if  (!jQuery.isEmptyObject(stavke)) {
+                Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
+            }
+        }
+
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
-            popuniFormu(selected);
+            vratiPonudu(selected);
         });
 
         $("#insertBbutton").click(function () {
@@ -343,7 +377,7 @@
                 success:
                     function () {
                         vratiPonude();
-                        popuniFormu();
+                        popuniPoljaForme();
                     },
                 error:
                     function (e) {
@@ -367,7 +401,7 @@
                 success:
                     function () {
                         vratiPonude();
-                        popuniFormu();
+                        popuniPoljaForme();
                     },
                 error:
                     function (e) {
@@ -385,32 +419,5 @@
     </div>
 </div>
 
-<%
-    String listaArtikala;
-    String listaKupaca;
-    String listaRadnika;
-    String listaPonuda;
-    String ponudaJSON;
-
-//    start()
-//    popuniArtikle(listaArtikala);
-//    popuniKupce(listaKupaca);
-//    popuniRadnike(listaRadnika);
-//    popuniPonude(listaPonuda);
-
-//    DodajStavku()
-//    IzmeniStavku()
-//    ObrisiStavku()
-
-//        AzurirajPrikaz()
-//    Sacuvaj()
-
-
-//    popuniPoljaForme(ponudaJSON)
-//    odaberiPonudu()
-//    izmeni()
-
-
-%>
 </body>
 </html>

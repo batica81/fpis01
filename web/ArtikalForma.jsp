@@ -171,12 +171,14 @@
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
             });
         }
+        prikaziArtikle(<% out.println(listaArtikala); %>);
+
 
         function popuniPoljaForme(selected) {
             $('#artikalForma').populate(selected);
         }
 
-        prikaziArtikle(<% out.println(listaArtikala); %>);
+
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();

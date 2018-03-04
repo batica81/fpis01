@@ -4,7 +4,6 @@ import com.fpis.test.dbbroker.DBbroker;
 import com.fpis.test.model.ArtikalEntity;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

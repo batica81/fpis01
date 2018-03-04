@@ -4,7 +4,6 @@ import com.fpis.test.dbbroker.DBbroker;
 import com.fpis.test.model.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,49 +28,8 @@ public class PonudaKontroler extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json");
-
-
-        // Konvertuj listu p u JSON format
         PrintWriter out = response.getWriter();
-        JSONArray listaPonudaJSON = new JSONArray();
-
-        for (Object ponudaRaw:listaPonuda) {
-
-            PonudaEntity ponuda = (PonudaEntity) ponudaRaw;
-            JSONObject ponudaJson = new JSONObject();
-            JSONArray listaStavkiJson = new JSONArray();
-            Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
-
-            for (Object stavkaRaw:stavkePonude) {
-                JSONObject stavkaJson = new JSONObject();
-                StavkaPonudeEntity sp = (StavkaPonudeEntity) stavkaRaw;
-                stavkaJson.put("Rbr", sp.getRbr());
-                stavkaJson.put("Kolicina", sp.getKolicina());
-                stavkaJson.put("Artikal", sp.getArtikalBySifraArtikla().getNazivartikla());
-                stavkaJson.put("Napomena", sp.getNapomenastavke());
-                listaStavkiJson.add(stavkaJson);
-            }
-
-            ponudaJson.put("BrPonude", ponuda.getBrPonude());
-            ponudaJson.put("datum", ponuda.getDatum().toString());
-            ponudaJson.put("sifraKupca", ponuda.getSifraKupca());
-            ponudaJson.put("sifraRadnika", ponuda.getSifraRadnika());
-            ponudaJson.put("isporuka", ponuda.getIsporuka());
-            ponudaJson.put("banka", ponuda.getBanka());
-            ponudaJson.put("tekuciRacun", ponuda.getTekuciRacun());
-            ponudaJson.put("uslovi", ponuda.getUslovi());
-            ponudaJson.put("napomena", ponuda.getNapomena());
-            ponudaJson.put("validnost", ponuda.getValidnost());
-            ponudaJson.put("pozivNaBroj", ponuda.getPozivNaBroj());
-            ponudaJson.put("mesto", ponuda.getMesto());
-            ponudaJson.put("datumPrometa", ponuda.getDatumPrometa().toString());
-            ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
-            ponudaJson.put("Stavke", listaStavkiJson);
-            listaPonudaJSON.add(ponudaJson);
-        }
-
-
-        out.println(listaPonudaJSON);
+        out.println(pronadjiPonudu(Integer.valueOf(request.getParameter("brPonude"))));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -141,24 +99,93 @@ public class PonudaKontroler extends HttpServlet {
         }
     } //end doPost
 
-    public List<PonudaEntity> vratiPonude(){
+    public String vratiPonude(){
         dbb.pokreniDBTransakciju();
         listaPonuda = dbb.vratiPonude();
+        JSONArray listaPonudaJSON = new JSONArray();
+
+        for (Object ponudaRaw:listaPonuda) {
+            PonudaEntity ponuda = (PonudaEntity) ponudaRaw;
+            JSONObject ponudaJson = new JSONObject();
+            JSONArray listaStavkiJson = new JSONArray();
+            Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
+
+            for (Object stavkaRaw:stavkePonude) {
+                JSONObject stavkaJson = new JSONObject();
+                StavkaPonudeEntity sp = (StavkaPonudeEntity) stavkaRaw;
+                stavkaJson.put("Rbr", sp.getRbr());
+                stavkaJson.put("Kolicina", sp.getKolicina());
+                stavkaJson.put("Artikal", sp.getArtikalBySifraArtikla().getNazivartikla());
+                stavkaJson.put("Napomena", sp.getNapomenastavke());
+                listaStavkiJson.add(stavkaJson);
+            }
+
+            ponudaJson.put("BrPonude", ponuda.getBrPonude());
+            ponudaJson.put("datum", ponuda.getDatum().toString());
+            ponudaJson.put("sifraKupca", ponuda.getSifraKupca());
+            ponudaJson.put("sifraRadnika", ponuda.getSifraRadnika());
+            ponudaJson.put("isporuka", ponuda.getIsporuka());
+            ponudaJson.put("banka", ponuda.getBanka());
+            ponudaJson.put("tekuciRacun", ponuda.getTekuciRacun());
+            ponudaJson.put("uslovi", ponuda.getUslovi());
+            ponudaJson.put("napomena", ponuda.getNapomena());
+            ponudaJson.put("validnost", ponuda.getValidnost());
+            ponudaJson.put("pozivNaBroj", ponuda.getPozivNaBroj());
+            ponudaJson.put("mesto", ponuda.getMesto());
+            ponudaJson.put("datumPrometa", ponuda.getDatumPrometa().toString());
+            ponudaJson.put("tipPlacanja", ponuda.getTipPlacanja());
+            ponudaJson.put("Stavke", listaStavkiJson);
+            listaPonudaJSON.add(ponudaJson);
+        }
+        return String.valueOf(listaPonudaJSON);
     }
 
-    public List<ArtikalEntity> vratiArtikle(){
+    public String vratiArtikle(){
         dbb.pokreniDBTransakciju();
-        listaArtikala = dbb.vratiArtikle();
+        listaArtikala  = dbb.vratiArtikle();
+        dbb.potvrdiDBTransakciju();
+        JSONArray arr = new JSONArray();
+        for (Object artikalRaw:listaArtikala) {
+            JSONObject obj = new JSONObject();
+            ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
+            obj.put("jedinicamere", artikal.getJedinicamere());
+            obj.put("opisartikla", artikal.getOpisartikla());
+            obj.put("nazivartikla", artikal.getNazivartikla());
+            obj.put("sifraartikla", artikal.getSifraartikla());
+            obj.put("cena", artikal.getCena());
+            arr.add(obj);
+        }
+        return String.valueOf(arr);
     }
 
-    public List<RadnikEntity> vratiRadnike(){
+    public String vratiRadnike(){
         dbb.pokreniDBTransakciju();
         listaRadnika = dbb.vratiRadnike();
+        dbb.potvrdiDBTransakciju();
+        JSONArray arr = new JSONArray();
+        for (Object radnikRaw:listaRadnika) {
+            JSONObject obj = new JSONObject();
+            RadnikEntity radnik = (RadnikEntity) radnikRaw;
+            obj.put("ime", radnik.getIme());
+            obj.put("sifraRadnika", radnik.getSifraRadnika());
+            arr.add(obj);
+        }
+        return String.valueOf(arr);
     }
 
-    public List<KupacEntity> vratiKupce(){
+    public String vratiKupce(){
         dbb.pokreniDBTransakciju();
         listaKupaca = dbb.vratiKupce();
+        dbb.potvrdiDBTransakciju();
+        JSONArray arr = new JSONArray();
+        for (Object kupacRaw:listaKupaca) {
+            JSONObject obj = new JSONObject();
+            KupacEntity kupac = (KupacEntity) kupacRaw;
+            obj.put("ime", kupac.getIme());
+            obj.put("sifraKupca", kupac.getSifraKupca());
+            arr.add(obj);
+        }
+        return String.valueOf(arr);
     }
 
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
@@ -223,6 +250,42 @@ public class PonudaKontroler extends HttpServlet {
             dbb.potvrdiDBTransakciju();
         else
             dbb.ponistiDBTransakciju();
+    }
+
+    public String pronadjiPonudu(int brPonude) {
+        dbb.pokreniDBTransakciju();
+        p = dbb.pronadjiPonudu(brPonude);
+        dbb.potvrdiDBTransakciju();
+        JSONObject ponudaJson = new JSONObject();
+        JSONArray listaStavkiJson = new JSONArray();
+        Collection<StavkaPonudeEntity> stavkePonude = p.getKolekcijaStavki();
+
+        for (Object stavkaRaw:stavkePonude) {
+            JSONObject stavkaJson = new JSONObject();
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) stavkaRaw;
+            stavkaJson.put("Rbr", sp.getRbr());
+            stavkaJson.put("Kolicina", sp.getKolicina());
+            stavkaJson.put("Artikal", sp.getArtikalBySifraArtikla().getNazivartikla());
+            stavkaJson.put("Napomena", sp.getNapomenastavke());
+            listaStavkiJson.add(stavkaJson);
+        }
+
+        ponudaJson.put("BrPonude", p.getBrPonude());
+        ponudaJson.put("datum", p.getDatum().toString());
+        ponudaJson.put("sifraKupca", p.getSifraKupca());
+        ponudaJson.put("sifraRadnika", p.getSifraRadnika());
+        ponudaJson.put("isporuka", p.getIsporuka());
+        ponudaJson.put("banka", p.getBanka());
+        ponudaJson.put("tekuciRacun", p.getTekuciRacun());
+        ponudaJson.put("uslovi", p.getUslovi());
+        ponudaJson.put("napomena", p.getNapomena());
+        ponudaJson.put("validnost", p.getValidnost());
+        ponudaJson.put("pozivNaBroj", p.getPozivNaBroj());
+        ponudaJson.put("mesto", p.getMesto());
+        ponudaJson.put("datumPrometa", p.getDatumPrometa().toString());
+        ponudaJson.put("tipPlacanja", p.getTipPlacanja());
+        ponudaJson.put("Stavke", listaStavkiJson);
+        return String.valueOf(ponudaJson);
     }
 
     public void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
