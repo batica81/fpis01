@@ -34,26 +34,23 @@ public class PonudaKontroler extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
+//        int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
 
-        if ((Integer) p.getBrPonude() == 0)  {
-
-//        if ( String.valueOf(request.getParameter("status")).equalsIgnoreCase("update")){
-
-            for (Object ponudaRaw : listaPonuda) {
-                PonudaEntity aktuelnaPonuda = (PonudaEntity) ponudaRaw;
-                if (brPonude == aktuelnaPonuda.getBrPonude()) {
-                    p = aktuelnaPonuda;
-                }
-            }
-        }
+//        if ((Integer) p.getBrPonude() == 0)  {
+//
+//            for (Object ponudaRaw : listaPonuda) {
+//                PonudaEntity aktuelnaPonuda = (PonudaEntity) ponudaRaw;
+//                if (brPonude == aktuelnaPonuda.getBrPonude()) {
+//                    p = aktuelnaPonuda;
+//                }
+//            }
+//        }
 
             if (request.getParameterMap().containsKey("radsastavkom")) {
 
                 String status = String.valueOf(request.getParameter("status"));
                 int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
-                int rbr = Integer.valueOf(request.getParameter("rbr"));
-//                int BrPonude = Integer.valueOf(request.getParameter("BrPonude"));
+                int rbr = dodajRbr();
                 int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
                 String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
 
@@ -234,7 +231,7 @@ public class PonudaKontroler extends HttpServlet {
         ret = dbb.zapamtiPonudu(p);
         if(ret) {
             dbb.potvrdiDBTransakciju();
-            p = new PonudaEntity();
+//            p = new PonudaEntity();
             }
         else
             dbb.ponistiDBTransakciju();
@@ -290,14 +287,7 @@ public class PonudaKontroler extends HttpServlet {
 
     public void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
 
-        // TODO: Nalazenje sledeceg rednog broja
-//        int brojStavki = p.getStavkaPonudesByBrPonude().size();
-//
-//        for (StavkaPonudeEntity stavka : p.getStavkaPonudesByBrPonude()){
-//            ArrayList redniBrojevi = new ArrayList();
-//            redniBrojevi.add(stavka.getRbr());
-//        }
-
+        vratiArtikle();
         ArtikalEntity odabraniArtikal = new ArtikalEntity();
         // Biranje artikla po sifri
         for (Object artikalRaw:listaArtikala) {
@@ -333,9 +323,15 @@ public class PonudaKontroler extends HttpServlet {
         }
     }
 
-    //TODO: Dodeliti redni broj nekako
+    //TODO: Dodeliti redni broj
     public int dodajRbr(){
-        return 0;
+
+//        if (p.getKolekcijaStavki()) {
+
+        int tempRbr = p.getKolekcijaStavki().size() + 1;
+
+
+        return tempRbr;
     }
 
 } //end servlet

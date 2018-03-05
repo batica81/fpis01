@@ -78,13 +78,13 @@
                             </div>
                             <div class="form-group form-inline">
                                 <label for="select_kupac">Kupac</label>
-                                <select id="select_kupac" name="SIFRAKUPCA" class="form-control">
+                                <select id="select_kupac" name="sifraKupca" class="form-control">
                                     <option value="0" selected>Kupac</option>
                                 </select>
                             </div>
                             <div class="form-group form-inline">
                                 <label for="select_radnik">Radnik</label>
-                                <select id="select_radnik" name="SIFRARADNIKA" class="form-control">
+                                <select id="select_radnik" name="sifraRadnika" class="form-control">
                                     <option value="0" selected>Radnik</option>
                                 </select>
                             </div>
@@ -301,7 +301,9 @@
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
-            vratiPonudu(selected);
+            if (selected != 0) {
+                vratiPonudu(selected);
+            }
         });
 
         $("#insertBbutton").click(function () {
@@ -339,7 +341,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    'BrPonude' : aktuelnaPonuda.BrPonude,
+                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -367,7 +369,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    'BrPonude' : aktuelnaPonuda.BrPonude,
+                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -394,7 +396,7 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    'BrPonude' : aktuelnaPonuda.BrPonude,
+                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'status' : 'delete',
                     'rbr' : 0
                 },

@@ -11,7 +11,7 @@ public class StavkaPonudeEntity {
     private int brPonude;
     private int kolicina;
     private String napomenastavke;
-    private String status;
+    private String status = "notnull";
     private PonudaEntity ponudaByBrPonude;
     private ArtikalEntity artikalBySifraArtikla;
 

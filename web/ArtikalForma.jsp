@@ -182,7 +182,9 @@
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
-            vratiArtikal(selected);
+            if (selected != 0) {
+                vratiArtikal(selected);
+            }
         });
 
         $('#dugmeizmena').click(function () {
