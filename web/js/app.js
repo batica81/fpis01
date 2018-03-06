@@ -25,7 +25,7 @@ function Tablify_stavka(data, table_id, primary_key){
             tableRow += '<td id="'+tmp_key+'_'+key+'" class="'+ key +'">' + turk[key] + '</td>';
 
         }
-        tableRow += '<td><a class="btn btn-info" href="#">Ažuriraj ovu stavku<a></td>';
+        tableRow += '<td class="center"><a id="'+tmp_key+'_btn" class="azuriraj btn btn-info" href="#">Ažuriraj ovu stavku<a></td>';
         tableRow += '</tr>';
         tmp_keys_array.push(tmp_key);
 

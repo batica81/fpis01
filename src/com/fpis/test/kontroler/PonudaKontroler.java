@@ -80,7 +80,7 @@ public class PonudaKontroler extends HttpServlet {
             String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
 
             if (status.equals("insert")) {
-                dodajPonudu(p.getBrPonude(), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+                dodajPonudu(0, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
             } else if (status.equals("update")) {
                 izmeniPonudu(p.getBrPonude(), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
@@ -231,6 +231,7 @@ public class PonudaKontroler extends HttpServlet {
         ret = dbb.zapamtiPonudu(p);
         if(ret) {
             dbb.potvrdiDBTransakciju();
+            //TODO: proveriti cemu sluzi i kako drugacije da se uradi reinicijalizacija
 //            p = new PonudaEntity();
             }
         else

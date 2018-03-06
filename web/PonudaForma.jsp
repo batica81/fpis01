@@ -145,8 +145,7 @@
                                             <h3 class="panel-title hidden">Rad sa stavkom ponude</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <div action="dodaj_stavke_ponude.php" method="post" role="form">
-                                                <%--<input type="hidden" name="BRPONUDE" value="57">--%>
+                                            <div action="" method="post" role="form">
 
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
@@ -295,6 +294,20 @@
 
             if  (!jQuery.isEmptyObject(stavke)) {
                 Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
+                $(".azuriraj").click(function (e) {
+                    e.preventDefault();
+
+                    var ccid = this.id.split("_")[0];
+                    console.log(stavke);
+                    console.log('this button id: ' + ccid);
+
+                    for(var i=0;i<stavke.length;i++) {
+                        if (stavke[i].Rbr == ccid) {
+                            console.log(stavke[i].Rbr)
+                        }
+                    }
+
+                });
             }
         }
 
@@ -341,7 +354,6 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -359,9 +371,9 @@
                     }
             });
 
-            $('#detalji_ponude tbody').append('<tr><td id="4_Artikal" class="Artikal">'+$("#select_SIFRAARTIKLA option:selected").text()+'</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">'+$("#kolicina").val()+'</td><td id="4_Napomena" class="Napomena">'+$("#napomenastavke").val()+'</td><td><a class="btn btn-info" href="#">Ažuriraj ovu stavku</a><a></a></td></tr>');
+            $('#detalji_ponude tbody').append('<tr><td id="4_Artikal" class="Artikal">'+$("#select_SIFRAARTIKLA option:selected").text()+'</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">'+$("#kolicina").val()+'</td><td id="4_Napomena" class="Napomena">'+$("#napomenastavke").val()+'</td><td></td></tr>');
 
-            $("#select_SIFRAARTIKLA").val('');
+            $("#select_SIFRAARTIKLA").val(0);
             $("#kolicina").val('');
             $("#napomenastavke").val('');
         });
@@ -374,7 +386,6 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
@@ -401,7 +412,6 @@
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
-                    // 'BrPonude' : aktuelnaPonuda.BrPonude,
                     'status' : 'delete',
                     'rbr' : 0
                 },
@@ -416,6 +426,7 @@
                     }
             });
         });
+
 
     });
 
