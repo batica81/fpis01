@@ -34,31 +34,24 @@ public class PonudaKontroler extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-//        int brPonude = Integer.valueOf(request.getParameter("BrPonude"));
-
-//        if ((Integer) p.getBrPonude() == 0)  {
-//
-//            for (Object ponudaRaw : listaPonuda) {
-//                PonudaEntity aktuelnaPonuda = (PonudaEntity) ponudaRaw;
-//                if (brPonude == aktuelnaPonuda.getBrPonude()) {
-//                    p = aktuelnaPonuda;
-//                }
-//            }
-//        }
-
             if (request.getParameterMap().containsKey("radsastavkom")) {
 
                 String status = String.valueOf(request.getParameter("status"));
-                int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
-                int rbr = dodajRbr();
-                int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
-                String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
 
                 if (status.equals("insert")) {
+                    int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
+                    int rbr = dodajRbr();
+                    int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
+                    String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
                     dodajStavku(rbr, sifraartikla, kolicina, napomenastavke);
                 } else if (status.equals("update")) {
+                    int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
+                    int rbr = Integer.valueOf(request.getParameter("rbr"));
+                    int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
+                    String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
                     izmeniStavku(rbr, sifraartikla, kolicina, napomenastavke);
                 } else if (status.equals("delete")) {
+                    int rbr = Integer.valueOf(request.getParameter("rbr"));
                     obrisiStavku(rbr);
                 }
             } else {
@@ -303,16 +296,17 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
+        vratiArtikle();
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
             if (sifraartikla == Artikal.getSifraartikla()) {
-                p.dodajStavku(rbr, Artikal, kolicina, napomenastavke);
+                p.izmeniStavku(rbr, Artikal, kolicina, napomenastavke);
             }
         }
     }
 
     public void obrisiStavku(int rbr){
-
+//TODO: IZMENITI !!!
         Collection<StavkaPonudeEntity> stavkePonude = p.getKolekcijaStavki();
         for (Object spRaw:stavkePonude) {
 

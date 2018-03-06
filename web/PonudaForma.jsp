@@ -162,6 +162,7 @@
                                                     <label class="control-label" for="napomenastavke">Napomena</label>
                                                     <input type="text" id="napomenastavke" name="napomenastavke" class="form-control input-sm" placeholder="Napomena stavke">
                                                 </div>
+                                                <input hidden id="Rbr" type="text" name="Rbr" value="0">
                                                 <div class="stavkabuttons">
                                                     <button id="dodajstavku" name="dodajstavku" class="btn-lg btn-info">Dodaj stavku</button>
                                                     <button id="izmenistavku" name="izmenistavku" class="btn-lg btn-success hidden">Izmeni stavku</button>
@@ -304,6 +305,13 @@
                     for(var i=0;i<stavke.length;i++) {
                         if (stavke[i].Rbr == ccid) {
                             console.log(stavke[i].Rbr)
+
+                            $("#select_SIFRAARTIKLA option").attr('selected', false);
+                            $("#select_SIFRAARTIKLA option:contains("+stavke[i].Artikal+")").attr('selected', true);
+                            $("#kolicina").val(stavke[i].Kolicina);
+                            $("#Rbr").val(stavke[i].Rbr);
+                            $("#napomenastavke").val(stavke[i].Napomena);
+
                         }
                     }
 
@@ -390,12 +398,12 @@
                     'KOLICINA' : $("#kolicina").val(),
                     'napomenastavke' :  $("#napomenastavke").val(),
                     'status' : 'update',
-                    'rbr' : 0
+                    'rbr' : $("#Rbr").val()
                 },
                 success:
                     function () {
-                        vratiPonude();
-                        popuniPoljaForme();
+                        // vratiPonude();
+                        // popuniPoljaForme();
                     },
                 error:
                     function (e) {
@@ -413,12 +421,12 @@
                 data: {
                     'radsastavkom' : true,
                     'status' : 'delete',
-                    'rbr' : 0
+                    'rbr' : $("#Rbr").val()
                 },
                 success:
                     function () {
-                        vratiPonude();
-                        popuniPoljaForme();
+                        // vratiPonude();
+                        // popuniPoljaForme();
                     },
                 error:
                     function (e) {
