@@ -359,6 +359,11 @@
                     }
             });
 
+            $('#detalji_ponude tbody').append('<tr><td id="4_Artikal" class="Artikal">'+$("#select_SIFRAARTIKLA option:selected").text()+'</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">'+$("#kolicina").val()+'</td><td id="4_Napomena" class="Napomena">'+$("#napomenastavke").val()+'</td><td><a class="btn btn-info" href="#">Ažuriraj ovu stavku</a><a></a></td></tr>');
+
+            $("#select_SIFRAARTIKLA").val('');
+            $("#kolicina").val('');
+            $("#napomenastavke").val('');
         });
 
         $("#izmenistavku").click(function (e) {
