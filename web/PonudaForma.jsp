@@ -145,7 +145,7 @@
                                             <h3 class="panel-title hidden">Rad sa stavkom ponude</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <div action="" method="post" role="form">
+                                            <div class="artikalform" action="" method="post" role="form">
 
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
@@ -410,6 +410,10 @@
                         console.log(e.responseText);
                     }
             });
+
+
+
+
         });
 
         $("#obrisistavku").click(function (e) {
@@ -434,6 +438,8 @@
                     }
             });
         });
+
+
 
 
     });
