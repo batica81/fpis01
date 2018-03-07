@@ -312,6 +312,9 @@
                             $("#Rbr").val(stavke[i].Rbr);
                             $("#napomenastavke").val(stavke[i].Napomena);
 
+                            var tmpRbr = "#tr_" + stavke[i].Rbr;
+                            $('#detalji_ponude tr').removeClass('aktivnastavka');
+                            $(tmpRbr).addClass('aktivnastavka');
                         }
                     }
 
@@ -379,7 +382,19 @@
                     }
             });
 
-            $('#detalji_ponude tbody').append('<tr><td id="4_Artikal" class="Artikal">'+$("#select_SIFRAARTIKLA option:selected").text()+'</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">'+$("#kolicina").val()+'</td><td id="4_Napomena" class="Napomena">'+$("#napomenastavke").val()+'</td><td></td></tr>');
+            //todo: dodati tablify za prvu stavku, prima array objekata, pitalica da li je prva ili ovo posle
+            //todo: srediti redne brojeve
+
+            var prvaStavka = [{
+                Artikal : $("#select_SIFRAARTIKLA option:selected").text(),
+                Kolicina : $("#kolicina").val(),
+                Napomena : $("#napomenastavke").val(),
+                Rbr : 1
+            }];
+
+            console.log(prvaStavka);
+            Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
+            $('.tmpArtikal').show('slow');
 
             $("#select_SIFRAARTIKLA").val(0);
             $("#kolicina").val('');
@@ -411,7 +426,7 @@
                     }
             });
 
-
+            // todo: da uzme parametre iz data, uporedi sa redom u tabeli i zaplavi razlicite
 
 
         });
@@ -437,8 +452,11 @@
                         console.log(e.responseText);
                     }
             });
-        });
 
+            var tmpRbr = "#tr_" + $("#Rbr").val();
+            $(tmpRbr).hide( "fade", { direction: "left" }, "slow" );
+
+        });
 
 
 

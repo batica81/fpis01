@@ -15,11 +15,10 @@ function Tablify_stavka(data, table_id, primary_key){
 
     for(var i=0;i<data.length;i++){
         var turk = data[i];
-        tableRow += '<tr>';
-
         tmp_key = turk[primary_key];
         tmp_brponude = turk['BrPonude'];
 
+        tableRow += '<tr id="tr_'+tmp_key+'">';
 
         for(var key in turk){
             tableRow += '<td id="'+tmp_key+'_'+key+'" class="'+ key +'">' + turk[key] + '</td>';

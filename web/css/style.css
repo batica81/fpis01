@@ -115,3 +115,7 @@ button {
 .artikalform {
     font-weight: bold;
 }
+
+.aktivnastavka {
+    background-color: lightskyblue !important;
+}
