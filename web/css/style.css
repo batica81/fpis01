@@ -119,3 +119,7 @@ button {
 .aktivnastavka {
     background-color: lightskyblue !important;
 }
+
+.changed{
+    background-color: palevioletred;
+}

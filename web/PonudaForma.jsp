@@ -74,18 +74,18 @@
                             <div class="form-group form-inline">
                                 <label for="datum">Datum</label>
                                 <input class="inputfield form-control input-lg datepicker" type="text" placeholder="Datum" id="datum"
-                                       name="datum">
+                                       name="datum" required>
                             </div>
                             <div class="form-group form-inline">
                                 <label for="select_kupac">Kupac</label>
-                                <select id="select_kupac" name="sifraKupca" class="form-control">
-                                    <option value="0" selected>Kupac</option>
+                                <select id="select_kupac" name="sifraKupca" class="form-control" required>
+                                    <option value disabled selected>Kupac</option>
                                 </select>
                             </div>
                             <div class="form-group form-inline">
                                 <label for="select_radnik">Radnik</label>
-                                <select id="select_radnik" name="sifraRadnika" class="form-control">
-                                    <option value="0" selected>Radnik</option>
+                                <select id="select_radnik" name="sifraRadnika" class="form-control" required>
+                                    <option selected disabled value>Radnik</option>
                                 </select>
                             </div>
                             <div class="form-group form-inline">
@@ -94,7 +94,7 @@
                             </div>
                             <div class="form-group form-inline">
                                 <label for="banka">Banka</label>
-                                <input class="inputfield form-control input-lg" type="text" placeholder="Banka" id="banka" name="banka">
+                                <input required class="inputfield form-control input-lg" type="text" placeholder="Banka" id="banka" name="banka">
                             </div>
                             <div class="form-group form-inline">
                                 <label for="tekuciRacun">Tekući racun</label>
@@ -127,7 +127,7 @@
                             <div class="form-group form-inline">
                                 <label for="datumPrometa">Datum prometa</label>
                                 <input class="inputfield form-control input-lg datepicker" type="text" placeholder="Datum prometa"
-                                       id="datumPrometa" name="datumPrometa">
+                                       id="datumPrometa" name="datumPrometa" required>
                             </div>
                             <div class="form-group form-inline">
                                 <label for="tipPlacanja">Tip plaćanja</label>
@@ -237,6 +237,7 @@
     $(document).ready(function () {
 
         aktuelnaPonuda = {};
+        stavke = [];
 
         function vratiPonudu(slected) {
             $.ajax({
@@ -304,7 +305,7 @@
 
                     for(var i=0;i<stavke.length;i++) {
                         if (stavke[i].Rbr == ccid) {
-                            console.log(stavke[i].Rbr)
+                            console.log(stavke[i].Rbr);
 
                             $("#select_SIFRAARTIKLA option").attr('selected', false);
                             $("#select_SIFRAARTIKLA option:contains("+stavke[i].Artikal+")").attr('selected', true);
@@ -364,12 +365,12 @@
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
                 data: {
-                    'radsastavkom' : true,
-                    'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
-                    'KOLICINA' : $("#kolicina").val(),
-                    'napomenastavke' :  $("#napomenastavke").val(),
-                    'status' : 'insert',
-                    'rbr' : 0
+                    'radsastavkom': true,
+                    'SIFRAARTIKLA': $("#select_SIFRAARTIKLA").val(),
+                    'KOLICINA': $("#kolicina").val(),
+                    'napomenastavke': $("#napomenastavke").val(),
+                    'status': 'insert',
+                    'rbr': 0
                 },
                 success:
                     function () {
@@ -382,19 +383,28 @@
                     }
             });
 
-            //todo: dodati tablify za prvu stavku, prima array objekata, pitalica da li je prva ili ovo posle
-            //todo: srediti redne brojeve
 
-            var prvaStavka = [{
-                Artikal : $("#select_SIFRAARTIKLA option:selected").text(),
-                Kolicina : $("#kolicina").val(),
-                Napomena : $("#napomenastavke").val(),
-                Rbr : 1
-            }];
+            if ( stavke.length == 0) {
+                var prvaStavka = [{
+                    Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
+                    Kolicina: $("#kolicina").val(),
+                    Napomena: $("#napomenastavke").val(),
+                    Rbr: 1
+                }];
 
-            console.log(prvaStavka);
-            Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
-            $('.tmpArtikal').show('slow');
+                console.log(prvaStavka);
+                Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
+                $('.azuriraj').addClass('hidden');
+                $('.tmpArtikal').show('slow');
+                stavke.push('1');
+            } else {
+
+                //todo: srediti redne brojeve
+
+                var newRow = '<tr class="tmpArtikal" style="display: none;"><td class="Artikal">' + $("#select_SIFRAARTIKLA option:selected").text() + '</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">' + $("#kolicina").val() + '</td><td id="4_Napomena" class="Napomena">' + $("#napomenastavke").val() + '</td><td></td></tr>';
+                $('#detalji_ponude tbody').append(newRow);
+                $('.tmpArtikal').show('slow');
+            }
 
             $("#select_SIFRAARTIKLA").val(0);
             $("#kolicina").val('');
@@ -426,8 +436,13 @@
                     }
             });
 
-            // todo: da uzme parametre iz data, uporedi sa redom u tabeli i zaplavi razlicite
 
+            // todo: da uzme parametre iz data, uporedi sa redom u tabeli izmeni i zacrveni razlicite
+            for(var i=0;i<stavke.length;i++) {
+                if (stavke[i].Rbr == $("#Rbr").val()) {
+                    console.log('redni br stavke za izmenu: ' + stavke[i].Rbr);
+                }
+            }
 
         });
 
