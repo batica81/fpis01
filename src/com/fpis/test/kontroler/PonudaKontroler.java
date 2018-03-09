@@ -72,6 +72,8 @@ public class PonudaKontroler extends HttpServlet {
             Timestamp datumPrometa = Timestamp.valueOf(request.getParameter("datumPrometa"));
             String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
 
+            //todo: redosled upisa za novu ponudu sa stavkom !!!
+
             if (status.equals("insert")) {
                 dodajPonudu(0, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);

@@ -318,11 +318,9 @@
                             $(tmpRbr).addClass('aktivnastavka');
                         }
                     }
-
                 });
             }
         }
-
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
@@ -360,7 +358,6 @@
 
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
-
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
@@ -374,15 +371,12 @@
                 },
                 success:
                     function () {
-                        // vratiPonude();
-                        // popuniFormu(aktuelnaPonuda.BrPonude);
                     },
                 error:
                     function (e) {
                         console.log(e.responseText);
                     }
             });
-
 
             if ( stavke.length == 0) {
                 var prvaStavka = [{
@@ -392,7 +386,6 @@
                     Rbr: 1
                 }];
 
-                console.log(prvaStavka);
                 Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
                 $('.azuriraj').addClass('hidden');
                 $('.tmpArtikal').show('slow');
@@ -413,7 +406,6 @@
 
         $("#izmenistavku").click(function (e) {
             e.preventDefault();
-
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
@@ -427,8 +419,6 @@
                 },
                 success:
                     function () {
-                        // vratiPonude();
-                        // popuniPoljaForme();
                     },
                 error:
                     function (e) {
@@ -436,19 +426,17 @@
                     }
             });
 
-
             // todo: da uzme parametre iz data, uporedi sa redom u tabeli izmeni i zacrveni razlicite
+            // todo: deselect na click van polja
             for(var i=0;i<stavke.length;i++) {
                 if (stavke[i].Rbr == $("#Rbr").val()) {
                     console.log('redni br stavke za izmenu: ' + stavke[i].Rbr);
                 }
             }
-
         });
 
         $("#obrisistavku").click(function (e) {
             e.preventDefault();
-
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
@@ -459,21 +447,15 @@
                 },
                 success:
                     function () {
-                        // vratiPonude();
-                        // popuniPoljaForme();
                     },
                 error:
                     function (e) {
                         console.log(e.responseText);
                     }
             });
-
             var tmpRbr = "#tr_" + $("#Rbr").val();
             $(tmpRbr).hide( "fade", { direction: "left" }, "slow" );
-
         });
-
-
 
     });
 
