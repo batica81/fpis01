@@ -65,21 +65,11 @@ public class StavkaPonudeEntity {
         this.kolicina = kolicina;
     }
 
-//    TODO: Videti da li treba i po mogucstvu izbaciti
-//    public void izmeniStavku(int SifraArtikla, int kolicina, String napomenastavke) {
-//        this.setKolicina(kolicina);
-//        this.setNapomenastavke(napomenastavke);
-//
-//
-//        for (Object artikalRaw:listaArtikala) {
-//            ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
-//            if (sifraartikla == Artikal.getSifraartikla()) {
-//                odabraniArtikal = Artikal;
-//            }
-//        }
-//
-//        this.setArtikalBySifraArtikla(ArtikalEntity tempArtikal);
-//    }
+    public void izmeniStavku(ArtikalEntity Artikal, int kolicina, String napomenastavke) {
+        this.setKolicina(kolicina);
+        this.setNapomenastavke(napomenastavke);
+        this.setArtikalBySifraArtikla(Artikal);
+    }
 
     @Override
     public boolean equals(Object o) {

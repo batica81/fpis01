@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Array;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -311,13 +313,26 @@ public class PonudaKontroler extends HttpServlet {
 
         if (p.getKolekcijaStavki() != null) {
 
-            int tempRbr = p.getKolekcijaStavki().size() + 1;
+//            return p.getKolekcijaStavki().size() + 1;
 
+            ArrayList<Integer> postojeciRbr = new ArrayList<>();
+            ArrayList<Integer> moguciRbr = new ArrayList<>();
 
-            return tempRbr;
-        } else {
+            for (StavkaPonudeEntity sp : p.getKolekcijaStavki()) {
+                postojeciRbr.add(sp.getRbr());
+            }
+
+            for (int i = 0; i < postojeciRbr.size() + 1; i++) {
+                moguciRbr.add(i+1);
+            }
+            // todo: od mogucih oduzmi postojece i prvi koji ostane to je taj
+
+            moguciRbr.removeAll(postojeciRbr);
+        }
+         else {
             return 1;
         }
+        return 0;
     }
 
 } //end servlet

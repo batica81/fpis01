@@ -237,9 +237,10 @@ public class PonudaEntity {
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
 
             if (sp.getRbr() == rbr) {
-                sp.setArtikalBySifraArtikla(Artikal);
-                sp.setKolicina(kolicina);
-                sp.setNapomenastavke(napomenastavke);
+//                sp.setArtikalBySifraArtikla(Artikal);
+//                sp.setKolicina(kolicina);
+//                sp.setNapomenastavke(napomenastavke);
+                sp.izmeniStavku(Artikal, kolicina, napomenastavke);
                 sp.postaviStatus("update");
             }
         }

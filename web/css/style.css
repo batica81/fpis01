@@ -122,4 +122,5 @@ button {
 
 .changed{
     background-color: palevioletred;
+    font-weight: bold;
 }

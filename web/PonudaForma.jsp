@@ -61,7 +61,7 @@
                     <h3 class="panel-title hidden">Izmena ponude</h3>
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
-                    <option value="0" selected>Odaberite ponudu za izmenu</option>
+                    <option selected disabled value>Odaberite ponudu za izmenu</option>
                 </select>
                 <div class="panel-body">
                     <form id="ponudaForma" class="" action="ponudakontroler" method="post" role="form">
@@ -150,7 +150,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
                                                     <select id="select_SIFRAARTIKLA" name="SIFRAARTIKLA" class="form-control">
-                                                        <option value="0" selected>Artikal</option>
+                                                        <option selected disabled value>Artikal</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -322,6 +322,15 @@
             }
         }
 
+        // $('.panel').click(function (e) {
+        //     e.stopPropagation();
+        //
+        //     $('#detalji_ponude tr').removeClass('aktivnastavka');
+        //     $("#select_SIFRAARTIKLA").val(0);
+        //     $("#kolicina").val('');
+        //     $("#napomenastavke").val('');
+        // });
+
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
             if (selected != 0) {
@@ -426,13 +435,26 @@
                     }
             });
 
-            // todo: da uzme parametre iz data, uporedi sa redom u tabeli izmeni i zacrveni razlicite
-            // todo: deselect na click van polja
             for(var i=0;i<stavke.length;i++) {
                 if (stavke[i].Rbr == $("#Rbr").val()) {
-                    console.log('redni br stavke za izmenu: ' + stavke[i].Rbr);
+                    var tmpRbr = "#tr_" + stavke[i].Rbr;
+                    // $('#detalji_ponude tr').removeClass('aktivnastavka');
+                    $(tmpRbr).removeClass('aktivnastavka');
+                    if ($("#kolicina").val() !=  stavke[i].Kolicina) {
+                        $('#'+stavke[i].Rbr+'_Kolicina').addClass('changed').text($("#kolicina").val());
+                    }
+                    if ($("#napomenastavke").val() !=  stavke[i].Napomena) {
+                        $('#'+stavke[i].Rbr+'_Napomena').addClass('changed').text($("#napomenastavke").val());
+                    }
+                    if ($("#select_SIFRAARTIKLA option:selected").text() !=  stavke[i].Artikal) {
+                        $('#'+stavke[i].Rbr+'_Artikal').addClass('changed').text($("#select_SIFRAARTIKLA option:selected").text());
+                    }
                 }
             }
+
+            $("#select_SIFRAARTIKLA").val(0);
+            $("#kolicina").val('');
+            $("#napomenastavke").val('');
         });
 
         $("#obrisistavku").click(function (e) {
