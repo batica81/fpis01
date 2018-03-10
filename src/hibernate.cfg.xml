@@ -13,6 +13,7 @@
     <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
     <property name="hibernate.connection.autocommit">false</property>
     <property name="connection.pool_size">200</property>
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/fpis01?useSSL=false</property>
     <property name="hibernate.connection.username">fpis01</property>
     <property name="hibernate.connection.password">fon123</property>

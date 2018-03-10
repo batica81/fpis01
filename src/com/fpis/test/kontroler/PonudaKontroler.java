@@ -40,6 +40,9 @@ public class PonudaKontroler extends HttpServlet {
                 String status = String.valueOf(request.getParameter("status"));
 
                 if (status.equals("insert")) {
+                    if (Boolean.valueOf(request.getParameter("unosponude"))) {
+                        p = new PonudaEntity();
+                    }
                     int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
                     int rbr = dodajRbr();
                     int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
@@ -292,7 +295,8 @@ public class PonudaKontroler extends HttpServlet {
                 odabraniArtikal = Artikal;
             }
         }
-//        if (p.getBrPonude() != 0) {
+
+        //        if (p.getBrPonude() != 0) {
             p.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
 //        } else {
 

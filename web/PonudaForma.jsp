@@ -379,7 +379,7 @@
                     'KOLICINA': $("#kolicina").val(),
                     'napomenastavke': $("#napomenastavke").val(),
                     'status': 'insert',
-                    'rbr': 0
+                    'unosponude': ($('#combo').hasClass('hidden'))? true : false
                 },
                 success:
                     function () {

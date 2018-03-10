@@ -1,9 +1,15 @@
 package com.fpis.test.model;
 
+import org.hibernate.collection.internal.PersistentBag;
+
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
+
+
 
 @Entity
 @Table(name = "Ponuda", schema = "fpis01", catalog = "")
@@ -201,7 +207,7 @@ public class PonudaEntity {
         return Objects.hash(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost, pozivNaBroj, mesto, datumPrometa, tipPlacanja);
     }
 
-    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
     public Collection<StavkaPonudeEntity> getKolekcijaStavki() {
         return kolekcijaStavki;
     }
@@ -224,11 +230,13 @@ public class PonudaEntity {
         ubaciUKolekciju(sp);
     }
 
+
     public void ubaciUKolekciju (StavkaPonudeEntity sp) {
 //        if (kolekcijaStavki != null) {
 
 
-            sp.setPonudaByBrPonude(this);
+        sp.setPonudaByBrPonude(this);
+
             kolekcijaStavki.add(sp);
 //        }
     }
