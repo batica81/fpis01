@@ -164,7 +164,7 @@
             });
         }
 
-        //TODO: pretvoriti u JSP
+        //TODO: pretvoriti u JSP i preimenovati metode
 
         function prikaziArtikle(data) {
             $(data).map(function () {

@@ -78,6 +78,7 @@ public class DBbroker {
 
         try {
             if (ponuda.getStatus().equals("insert")) {
+//                session.persist(ponuda);
 
                 Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
                 if(stavkePonude!=null){

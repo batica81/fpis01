@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -203,6 +202,9 @@ public class PonudaKontroler extends HttpServlet {
         ret = dbb.zapamtiPonudu(p);
         if(ret)
             dbb.potvrdiDBTransakciju();
+
+        // naknadno dodaj stavke
+
         else
             dbb.ponistiDBTransakciju();
     }
@@ -290,7 +292,11 @@ public class PonudaKontroler extends HttpServlet {
                 odabraniArtikal = Artikal;
             }
         }
-        p.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
+//        if (p.getBrPonude() != 0) {
+            p.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
+//        } else {
+
+//        }
     }
 
     public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
@@ -304,17 +310,11 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     public void obrisiStavku(int rbr){
-
         p.obrisiStavku(rbr);
     }
 
-    //TODO: Dodeliti redni broj - for broj clanova if in array..
     public int dodajRbr(){
-
         if (p.getKolekcijaStavki() != null) {
-
-//            return p.getKolekcijaStavki().size() + 1;
-
             ArrayList<Integer> postojeciRbr = new ArrayList<>();
             ArrayList<Integer> moguciRbr = new ArrayList<>();
 
@@ -325,14 +325,14 @@ public class PonudaKontroler extends HttpServlet {
             for (int i = 0; i < postojeciRbr.size() + 1; i++) {
                 moguciRbr.add(i+1);
             }
-            // todo: od mogucih oduzmi postojece i prvi koji ostane to je taj
+            // od mogucih oduzmi postojece i prvi koji ostane to je taj
 
             moguciRbr.removeAll(postojeciRbr);
+            return moguciRbr.get(0);
         }
          else {
             return 1;
         }
-        return 0;
     }
 
 } //end servlet

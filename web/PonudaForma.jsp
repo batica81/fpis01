@@ -236,8 +236,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        aktuelnaPonuda = {};
-        stavke = [];
+        var aktuelnaPonuda = {};
+        var stavke = [];
 
         function vratiPonudu(slected) {
             $.ajax({
@@ -294,7 +294,8 @@
             $('#select_kupac').val(ponuda.sifraKupca).prop('selected', true);
             $('#select_radnik').val(ponuda.sifraRadnika).prop('selected', true);
 
-            if  (!jQuery.isEmptyObject(stavke)) {
+            // if  (!jQuery.isEmptyObject(stavke)) {
+            if  (stavke.length != 0) {
                 Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
                 $(".azuriraj").click(function (e) {
                     e.preventDefault();
@@ -319,6 +320,8 @@
                         }
                     }
                 });
+            } else {
+                $('#detalji_ponude thead').remove();
             }
         }
 
@@ -390,27 +393,48 @@
             if ( stavke.length == 0) {
                 var prvaStavka = [{
                     Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
+                    Rbr: 1,
                     Kolicina: $("#kolicina").val(),
-                    Napomena: $("#napomenastavke").val(),
-                    Rbr: 1
+                    Napomena: $("#napomenastavke").val()
                 }];
 
                 Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
                 $('.azuriraj').addClass('hidden');
                 $('.tmpArtikal').show('slow');
-                stavke.push('1');
+                stavke = prvaStavka;
             } else {
 
-                //todo: srediti redne brojeve
+                var postojeciRbr = [];
+                var moguciRbr = [];
 
-                var newRow = '<tr class="tmpArtikal" style="display: none;"><td class="Artikal">' + $("#select_SIFRAARTIKLA option:selected").text() + '</td><td id="4_Rbr" class="Rbr">4</td><td id="4_Kolicina" class="Kolicina">' + $("#kolicina").val() + '</td><td id="4_Napomena" class="Napomena">' + $("#napomenastavke").val() + '</td><td></td></tr>';
+                for (var j=0; j < stavke.length; j++ ) {
+                    postojeciRbr.push(stavke[j].Rbr);
+                }
+
+                for (var k=0; k < postojeciRbr.length + 1; k++ ) {
+                    moguciRbr.push(k+1);
+                }
+
+                var noviRbr = moguciRbr.diff(postojeciRbr)[0];
+
+                var novaStavka = {
+                    Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
+                    Rbr: noviRbr,
+                    Kolicina: $("#kolicina").val(),
+                    Napomena: $("#napomenastavke").val()
+                };
+
+                var newRow = '<tr class="tmpArtikal" style="display: none;"><td class="Artikal">' + novaStavka.Artikal + '</td><td class="Rbr">'+ novaStavka.Rbr +'</td><td class="Kolicina">' + novaStavka.Kolicina + '</td><td class="Napomena">' + novaStavka.Napomena + '</td><td></td></tr>';
                 $('#detalji_ponude tbody').append(newRow);
                 $('.tmpArtikal').show('slow');
+                stavke.push(novaStavka);
             }
 
             $("#select_SIFRAARTIKLA").val(0);
             $("#kolicina").val('');
             $("#napomenastavke").val('');
+            $('#detalji_ponude').tablesorter();
+            $('#detalji_ponude').tablesorter();
         });
 
         $("#izmenistavku").click(function (e) {

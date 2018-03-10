@@ -198,11 +198,10 @@ public class PonudaEntity {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost, pozivNaBroj, mesto, datumPrometa, tipPlacanja);
     }
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
+    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
     public Collection<StavkaPonudeEntity> getKolekcijaStavki() {
         return kolekcijaStavki;
     }
@@ -216,30 +215,28 @@ public class PonudaEntity {
         StavkaPonudeEntity sp = new StavkaPonudeEntity();
 
         sp.setRbr(rbr);
+        // problem br ponude
         sp.setBrPonude(brPonude);
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
         sp.setNapomenastavke(napomenastavke);
         sp.postaviStatus("insert");
-        this.ubaciUKolekciju(sp);
+        ubaciUKolekciju(sp);
     }
 
     public void ubaciUKolekciju (StavkaPonudeEntity sp) {
-        sp.setPonudaByBrPonude(this);
-        kolekcijaStavki.add(sp);
+//        if (kolekcijaStavki != null) {
+
+
+            sp.setPonudaByBrPonude(this);
+            kolekcijaStavki.add(sp);
+//        }
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke) {
-
-        Collection<StavkaPonudeEntity> stavkePonude = getKolekcijaStavki();
-        for (Object spRaw:stavkePonude) {
-
+        for (Object spRaw:kolekcijaStavki) {
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
-
             if (sp.getRbr() == rbr) {
-//                sp.setArtikalBySifraArtikla(Artikal);
-//                sp.setKolicina(kolicina);
-//                sp.setNapomenastavke(napomenastavke);
                 sp.izmeniStavku(Artikal, kolicina, napomenastavke);
                 sp.postaviStatus("update");
             }
@@ -247,12 +244,8 @@ public class PonudaEntity {
     }
 
     public void obrisiStavku(int rbr){
-
-        Collection<StavkaPonudeEntity> stavkePonude = getKolekcijaStavki();
-        for (Object spRaw:stavkePonude) {
-
+        for (Object spRaw:kolekcijaStavki) {
             StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
-
             if(sp.getRbr()==rbr) {
                 sp.postaviStatus("delete");
             }

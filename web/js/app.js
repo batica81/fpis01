@@ -39,3 +39,9 @@ function Tablify_stavka(data, table_id, primary_key){
 
 
 } // end Tablify_stavka
+
+Array.prototype.diff = function (a) {
+    return this.filter(function (i) {
+        return a.indexOf(i) === -1;
+    });
+};

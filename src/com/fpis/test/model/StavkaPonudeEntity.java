@@ -88,7 +88,7 @@ public class StavkaPonudeEntity {
         return Objects.hash(rbr, brPonude, kolicina, napomenastavke);
     }
 
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "BrPonude", referencedColumnName = "BrPonude", nullable = false, insertable = false, updatable = false)
     public PonudaEntity getPonudaByBrPonude() {
         return ponudaByBrPonude;
