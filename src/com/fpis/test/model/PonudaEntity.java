@@ -219,11 +219,8 @@ public class PonudaEntity {
     }
 
     public void dodajStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke){
-
         StavkaPonudeEntity sp = new StavkaPonudeEntity();
-
         sp.setRbr(rbr);
-        // problem br ponude
         sp.setBrPonude(brPonude);
         sp.setArtikalBySifraArtikla(Artikal);
         sp.setKolicina(kolicina);
@@ -234,13 +231,8 @@ public class PonudaEntity {
 
 
     public void ubaciUKolekciju (StavkaPonudeEntity sp) {
-//        if (kolekcijaStavki != null) {
-
-
         sp.setPonudaByBrPonude(this);
-
-            kolekcijaStavki.add(sp);
-//        }
+        kolekcijaStavki.add(sp);
     }
 
     public void izmeniStavku(int rbr, ArtikalEntity Artikal, int kolicina, String napomenastavke) {

@@ -46,6 +46,7 @@ public class StavkaPonudeEntity {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "BrPonude")
     public int getBrPonude() {
         return brPonude;
@@ -88,7 +89,7 @@ public class StavkaPonudeEntity {
         return Objects.hash(rbr, brPonude, kolicina, napomenastavke);
     }
 
-    @ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @ManyToOne (fetch = FetchType.LAZY)
     @JoinColumn(name = "BrPonude", referencedColumnName = "BrPonude", nullable = false, insertable = false, updatable = false)
     public PonudaEntity getPonudaByBrPonude() {
         return ponudaByBrPonude;

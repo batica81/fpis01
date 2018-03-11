@@ -78,16 +78,17 @@ public class DBbroker {
 
         try {
             if (ponuda.getStatus().equals("insert")) {
-//                session.persist(ponuda);
-
+                session.saveOrUpdate(ponuda);
                 Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
                 if(stavkePonude!=null){
                     for (Object spRaw:stavkePonude) {
                         StavkaPonudeEntity sp = (StavkaPonudeEntity) spRaw;
+                        if (sp.getBrPonude() == 0) {
+                            sp.setBrPonude(ponuda.getBrPonude());
+                        }
                         zapamtiStavkuPonude(sp);
                     }
                 }
-                session.persist(ponuda);
             }
             else if (ponuda.getStatus().equals("update")) {
                 Collection<StavkaPonudeEntity> stavkePonude = ponuda.getKolekcijaStavki();
@@ -115,8 +116,7 @@ public class DBbroker {
 
         try {
             if (sp.getStatus().equals("insert")) {
-//                session.persist(sp);
-                session.saveOrUpdate(sp);
+                session.persist(sp);
             }
             else if (sp.getStatus().equals("update")) {
                 session.saveOrUpdate(sp);

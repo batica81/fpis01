@@ -41,7 +41,9 @@ public class PonudaKontroler extends HttpServlet {
 
                 if (status.equals("insert")) {
                     if (Boolean.valueOf(request.getParameter("unosponude"))) {
-                        p = new PonudaEntity();
+                        if  (p.getBrPonude() != 0) {
+                            p = new PonudaEntity();
+                        }
                     }
                     int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
                     int rbr = dodajRbr();
@@ -60,7 +62,6 @@ public class PonudaKontroler extends HttpServlet {
                 }
             } else {
 
-
             String status = String.valueOf(request.getParameter("status"));
             Timestamp datum = Timestamp.valueOf(request.getParameter("datum"));
             int sifraKupca = Integer.valueOf(request.getParameter("sifraKupca"));
@@ -76,8 +77,6 @@ public class PonudaKontroler extends HttpServlet {
             Timestamp datumPrometa = Timestamp.valueOf(request.getParameter("datumPrometa"));
             String tipPlacanja = String.valueOf(request.getParameter("tipPlacanja"));
 
-            //todo: redosled upisa za novu ponudu sa stavkom !!!
-
             if (status.equals("insert")) {
                 dodajPonudu(0, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
@@ -91,7 +90,6 @@ public class PonudaKontroler extends HttpServlet {
             response.setContentType("text/html");
             RequestDispatcher view = request.getRequestDispatcher("html/back.html");
             view.forward(request, response);
-
         }
     } //end doPost
 
@@ -186,7 +184,6 @@ public class PonudaKontroler extends HttpServlet {
 
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         p.setBrPonude(brPonude);
-//        p = new PonudaEntity();
         p.setDatum(datum);
         p.setSifraKupca(sifraKupca);
         p.setSifraRadnika(sifraRadnika);
@@ -206,9 +203,6 @@ public class PonudaKontroler extends HttpServlet {
         ret = dbb.zapamtiPonudu(p);
         if(ret)
             dbb.potvrdiDBTransakciju();
-
-        // naknadno dodaj stavke
-
         else
             dbb.ponistiDBTransakciju();
     }
@@ -296,12 +290,7 @@ public class PonudaKontroler extends HttpServlet {
                 odabraniArtikal = Artikal;
             }
         }
-
-        //        if (p.getBrPonude() != 0) {
             p.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
-//        } else {
-
-//        }
     }
 
     public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
