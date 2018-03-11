@@ -1,8 +1,3 @@
-drop table if exists ARTIKAL;
-drop table if exists Kupac;
-drop table if exists Ponuda;
-drop table if exists Radnik;
-drop table if exists StavkaPonude;
 create table ARTIKAL (SIFRAARTIKLA integer not null auto_increment, cena integer, JEDINICAMERE varchar(255), NAZIVARTIKLA varchar(255), OPISARTIKLA varchar(255), primary key (SIFRAARTIKLA)) ;
 create table Kupac (SifraKupca integer not null, Adresa varchar(255), BrTel integer, Email varchar(255), Ime varchar(255), PIB integer, primary key (SifraKupca)) ;
 create table Ponuda (BrPonude integer not null auto_increment, Banka varchar(255), Datum datetime, DatumPrometa datetime, Isporuka varchar(255), Mesto varchar(255), Napomena varchar(255), PozivNaBroj varchar(255), SifraKupca integer, SifraRadnika integer, TekuciRacun varchar(255), TipPlacanja varchar(255), Uslovi varchar(255), Validnost varchar(255), primary key (BrPonude)) ;
