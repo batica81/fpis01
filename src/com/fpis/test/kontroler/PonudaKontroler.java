@@ -186,6 +186,7 @@ public class PonudaKontroler extends HttpServlet {
 
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         p.setBrPonude(brPonude);
+//        p = new PonudaEntity();
         p.setDatum(datum);
         p.setSifraKupca(sifraKupca);
         p.setSifraRadnika(sifraRadnika);

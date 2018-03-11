@@ -5,6 +5,7 @@ import org.hibernate.collection.internal.PersistentBag;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Objects;
@@ -29,9 +30,10 @@ public class PonudaEntity {
     private Timestamp datumPrometa;
     private String tipPlacanja;
     private String status;
-    private Collection<StavkaPonudeEntity> kolekcijaStavki;
+    private Collection<StavkaPonudeEntity> kolekcijaStavki = new ArrayList<>();
 
     @Id
+    @GeneratedValue
     @Column(name = "BrPonude")
     public int getBrPonude() {
         return brPonude;
@@ -207,7 +209,7 @@ public class PonudaEntity {
         return Objects.hash(brPonude, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost, pozivNaBroj, mesto, datumPrometa, tipPlacanja);
     }
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
+    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "ponudaByBrPonude")
     public Collection<StavkaPonudeEntity> getKolekcijaStavki() {
         return kolekcijaStavki;
     }

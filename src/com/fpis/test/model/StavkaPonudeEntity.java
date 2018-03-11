@@ -88,7 +88,7 @@ public class StavkaPonudeEntity {
         return Objects.hash(rbr, brPonude, kolicina, napomenastavke);
     }
 
-    @ManyToOne (fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @ManyToOne (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "BrPonude", referencedColumnName = "BrPonude", nullable = false, insertable = false, updatable = false)
     public PonudaEntity getPonudaByBrPonude() {
         return ponudaByBrPonude;

@@ -115,7 +115,8 @@ public class DBbroker {
 
         try {
             if (sp.getStatus().equals("insert")) {
-                session.persist(sp);
+//                session.persist(sp);
+                session.saveOrUpdate(sp);
             }
             else if (sp.getStatus().equals("update")) {
                 session.saveOrUpdate(sp);
