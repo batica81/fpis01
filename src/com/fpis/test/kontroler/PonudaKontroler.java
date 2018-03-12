@@ -182,6 +182,42 @@ public class PonudaKontroler extends HttpServlet {
         return String.valueOf(arr);
     }
 
+    public String pronadjiPonudu(int brPonude) {
+        dbb.pokreniDBTransakciju();
+        p = dbb.pronadjiPonudu(brPonude);
+        dbb.potvrdiDBTransakciju();
+        JSONObject ponudaJson = new JSONObject();
+        JSONArray listaStavkiJson = new JSONArray();
+        Collection<StavkaPonudeEntity> stavkePonude = p.getKolekcijaStavki();
+
+        for (Object stavkaRaw:stavkePonude) {
+            JSONObject stavkaJson = new JSONObject();
+            StavkaPonudeEntity sp = (StavkaPonudeEntity) stavkaRaw;
+            stavkaJson.put("Rbr", sp.getRbr());
+            stavkaJson.put("Kolicina", sp.getKolicina());
+            stavkaJson.put("Artikal", sp.getArtikalBySifraArtikla().getNazivartikla());
+            stavkaJson.put("Napomena", sp.getNapomenastavke());
+            listaStavkiJson.add(stavkaJson);
+        }
+
+        ponudaJson.put("BrPonude", p.getBrPonude());
+        ponudaJson.put("datum", p.getDatum().toString());
+        ponudaJson.put("sifraKupca", p.getSifraKupca());
+        ponudaJson.put("sifraRadnika", p.getSifraRadnika());
+        ponudaJson.put("isporuka", p.getIsporuka());
+        ponudaJson.put("banka", p.getBanka());
+        ponudaJson.put("tekuciRacun", p.getTekuciRacun());
+        ponudaJson.put("uslovi", p.getUslovi());
+        ponudaJson.put("napomena", p.getNapomena());
+        ponudaJson.put("validnost", p.getValidnost());
+        ponudaJson.put("pozivNaBroj", p.getPozivNaBroj());
+        ponudaJson.put("mesto", p.getMesto());
+        ponudaJson.put("datumPrometa", p.getDatumPrometa().toString());
+        ponudaJson.put("tipPlacanja", p.getTipPlacanja());
+        ponudaJson.put("Stavke", listaStavkiJson);
+        return String.valueOf(ponudaJson);
+    }
+
     public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         p.setBrPonude(brPonude);
         p.setDatum(datum);
@@ -245,41 +281,7 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public String pronadjiPonudu(int brPonude) {
-        dbb.pokreniDBTransakciju();
-        p = dbb.pronadjiPonudu(brPonude);
-        dbb.potvrdiDBTransakciju();
-        JSONObject ponudaJson = new JSONObject();
-        JSONArray listaStavkiJson = new JSONArray();
-        Collection<StavkaPonudeEntity> stavkePonude = p.getKolekcijaStavki();
-
-        for (Object stavkaRaw:stavkePonude) {
-            JSONObject stavkaJson = new JSONObject();
-            StavkaPonudeEntity sp = (StavkaPonudeEntity) stavkaRaw;
-            stavkaJson.put("Rbr", sp.getRbr());
-            stavkaJson.put("Kolicina", sp.getKolicina());
-            stavkaJson.put("Artikal", sp.getArtikalBySifraArtikla().getNazivartikla());
-            stavkaJson.put("Napomena", sp.getNapomenastavke());
-            listaStavkiJson.add(stavkaJson);
-        }
-
-        ponudaJson.put("BrPonude", p.getBrPonude());
-        ponudaJson.put("datum", p.getDatum().toString());
-        ponudaJson.put("sifraKupca", p.getSifraKupca());
-        ponudaJson.put("sifraRadnika", p.getSifraRadnika());
-        ponudaJson.put("isporuka", p.getIsporuka());
-        ponudaJson.put("banka", p.getBanka());
-        ponudaJson.put("tekuciRacun", p.getTekuciRacun());
-        ponudaJson.put("uslovi", p.getUslovi());
-        ponudaJson.put("napomena", p.getNapomena());
-        ponudaJson.put("validnost", p.getValidnost());
-        ponudaJson.put("pozivNaBroj", p.getPozivNaBroj());
-        ponudaJson.put("mesto", p.getMesto());
-        ponudaJson.put("datumPrometa", p.getDatumPrometa().toString());
-        ponudaJson.put("tipPlacanja", p.getTipPlacanja());
-        ponudaJson.put("Stavke", listaStavkiJson);
-        return String.valueOf(ponudaJson);
-    }
+    // Rad sa stavkom
 
     public void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
         vratiArtikle();

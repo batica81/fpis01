@@ -53,8 +53,15 @@ public class DBbroker {
         return  (List<PonudaEntity>) session.createQuery("from PonudaEntity ").list();
     }
 
-    public boolean zapamtiArtikal(ArtikalEntity artikal) {
+    public PonudaEntity pronadjiPonudu(int BrPonude) {
+        return (PonudaEntity) session.get(PonudaEntity.class, BrPonude);
+    }
 
+    public ArtikalEntity pronadjiArtikal(int SifraArtikla) {
+        return (ArtikalEntity) session.get(ArtikalEntity.class, SifraArtikla);
+    }
+
+    public boolean zapamtiArtikal(ArtikalEntity artikal) {
         try {
             if (artikal.getStatus().equals("insert")) {
                 session.persist(artikal);
@@ -67,7 +74,6 @@ public class DBbroker {
             }
             return true;
         }
-
         catch (Exception e) {
             System.err.println("Artikal ne moze da se zapamti u bazi... -> " + e);
         return false;
@@ -75,7 +81,6 @@ public class DBbroker {
     }
 
     public boolean zapamtiPonudu(PonudaEntity ponuda){
-
         try {
             if (ponuda.getStatus().equals("insert")) {
                 session.saveOrUpdate(ponuda);
@@ -113,7 +118,6 @@ public class DBbroker {
     }
 
     public boolean zapamtiStavkuPonude(StavkaPonudeEntity sp) {
-
         try {
             if (sp.getStatus().equals("insert")) {
                 session.persist(sp);
@@ -126,19 +130,10 @@ public class DBbroker {
             }
             return true;
         }
-
         catch (Exception e) {
             System.err.println("Stavka ponude ne moze da se zapamti u bazi... -> " + e);
             return false;
         }
-    }
-
-    public PonudaEntity pronadjiPonudu(int BrPonude) {
-        return (PonudaEntity) session.get(PonudaEntity.class, BrPonude);
-    }
-
-    public ArtikalEntity pronadjiArtikal(int SifraArtikla) {
-        return (ArtikalEntity) session.get(ArtikalEntity.class, SifraArtikla);
     }
 
 }

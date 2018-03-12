@@ -29,22 +29,20 @@ public class ArtikalKontroler extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-
         String status = String.valueOf(request.getParameter("status"));
-        Integer Sifraartikla = Integer.valueOf(request.getParameter("sifraartikla"));
         Integer Cena = Integer.valueOf(request.getParameter("cena"));
         String Nazivartikla = String.valueOf(request.getParameter("nazivartikla"));
         String Opisartikla = String.valueOf(request.getParameter("opisartikla"));
         String Jedinicamere = String.valueOf(request.getParameter("jedinicamere"));
 
         if (status.equals("insert")) {
-            sacuvajArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
+            sacuvajArtikal(0, Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("update")) {
-            izmeniArtikal(Sifraartikla, Nazivartikla, Opisartikla, Jedinicamere, Cena);
+            izmeniArtikal(a.getSifraartikla(), Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("delete")) {
-            obrisiArtikal(Sifraartikla);
+            obrisiArtikal(a.getSifraartikla());
         }
 
         RequestDispatcher view = request.getRequestDispatcher("html/back.html");
@@ -67,6 +65,22 @@ public class ArtikalKontroler extends HttpServlet {
             obj.put("cena", artikal.getCena());
             arr.add(obj);
         }
+        return String.valueOf(arr);
+    }
+
+    public String pronadjiArtikal(int SifraArtikla) {
+        dbb.pokreniDBTransakciju();
+        a = dbb.pronadjiArtikal(SifraArtikla);
+        dbb.potvrdiDBTransakciju();
+        JSONArray arr = new JSONArray();
+        JSONObject obj = new JSONObject();
+
+        obj.put("jedinicamere", a.getJedinicamere());
+        obj.put("opisartikla", a.getOpisartikla());
+        obj.put("nazivartikla", a.getNazivartikla());
+        obj.put("sifraartikla", a.getSifraartikla());
+        obj.put("cena", a.getCena());
+        arr.add(obj);
 
         return String.valueOf(arr);
     }
@@ -118,20 +132,4 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public String pronadjiArtikal(int SifraArtikla) {
-        dbb.pokreniDBTransakciju();
-        a = dbb.pronadjiArtikal(SifraArtikla);
-        dbb.potvrdiDBTransakciju();
-        JSONArray arr = new JSONArray();
-        JSONObject obj = new JSONObject();
-
-        obj.put("jedinicamere", a.getJedinicamere());
-        obj.put("opisartikla", a.getOpisartikla());
-        obj.put("nazivartikla", a.getNazivartikla());
-        obj.put("sifraartikla", a.getSifraartikla());
-        obj.put("cena", a.getCena());
-        arr.add(obj);
-
-        return String.valueOf(arr);
-    }
 } //end servlet

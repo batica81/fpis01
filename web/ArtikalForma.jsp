@@ -1,34 +1,8 @@
-<%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %><%--
-  Created by IntelliJ IDEA.
-  User: voja
-  Date: 4.1.18.
-  Time: 20.33
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.populate.js"></script>
-    <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
-    <script type="text/javascript" src="js/tablesorter.min.js"></script>
-    <script type="text/javascript" src="js/jquery.form.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="css/images/favicon.ico">
-
-    <title>FPIS Aplikacija</title>
-</head>
-<body>
+<%@include file="header.jsp" %>
 
 <%
     String listaArtikala;
@@ -43,8 +17,6 @@
 //    izmeni()
 //    Sacuvaj()
 
-
-
     ArtikalKontroler k = new ArtikalKontroler();
 
     listaArtikala = k.vratiArtikle();
@@ -57,30 +29,6 @@
 //    out.println(artikalJSON);
 %>
 
-
-<!-- Static navbar -->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.jsp">FPIS Aplikacija</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a id="dugmeunos" href="ArtikalForma.jsp">Unos artikla</a></li>
-                <li><a id="dugmeizmena" href="#">Izmena artikla</a></li>
-                <li><a href="PonudaForma.jsp">Unos ponude</a></li>
-                <li><a href="PonudaForma.jsp">Izmena Ponude</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
-
 <div class="container artikalforma">
     <div class="row centered-form">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
@@ -90,7 +38,7 @@
                     <h3 class="panel-title hidden">Izmena artikla</h3>
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
-                    <option value="0" selected>Odaberite artikal za izmenu</option>
+                    <option selected disabled value>Odaberite artikal za izmenu</option>
                 </select>
                 <div class="panel-body">
                     <form id="artikalForma" class="" action="artikalkontroler" method="post" role="form">
@@ -133,7 +81,6 @@
 
         $("#insertBbutton").click(function () {
             $("#stautsinput").val("insert");
-            $("#sifraartikla").val(0);
         });
 
         $("#updateBbutton").click(function () {
@@ -144,18 +91,16 @@
             $("#stautsinput").val("delete");
         });
 
-
-        function vratiArtikal(slected) {
+        function pronadjiArtikal(sifraArtikla) {
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
                 method: "GET",
                 data: {
-                    'sifraArtikla' : slected
+                    'sifraArtikla' : sifraArtikla
                 },
                 success:
-                    function (data) {
-                        popuniPoljaForme(data[0]);
-                        console.log(data);
+                    function (artikalJSON) {
+                        popuniPoljaForme(artikalJSON[0]);
                     },
                 error:
                     function (e) {
@@ -166,45 +111,27 @@
 
         //TODO: pretvoriti u JSP i preimenovati metode
 
-        function prikaziArtikle(data) {
-            $(data).map(function () {
+        function prikaziArtikle(listaArtikala) {
+            $(listaArtikala).map(function () {
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
             });
         }
         prikaziArtikle(<% out.println(listaArtikala); %>);
 
-
-        function popuniPoljaForme(selected) {
-            $('#artikalForma').populate(selected);
+        function popuniPoljaForme(artikalJSON) {
+            $('#artikalForma').populate(artikalJSON);
         }
-
-
 
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
             if (selected != 0) {
-                vratiArtikal(selected);
+                pronadjiArtikal(selected);
             }
         });
 
-        $('#dugmeizmena').click(function () {
-            $('#combo').toggleClass('hidden');
-            $('#updateBbutton').toggleClass('hidden');
-            $('#deleteBbutton').toggleClass('hidden');
-            $('.panel-title').toggleClass('hidden');
-            $('#insertBbutton').toggleClass('hidden');
-        });
-
-        $('.inputfield').val('');
     });
 
 </script>
 
-<div id="footer" class="navbar-fixed-bottom">
-    <div class="container">
-        <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
-    </div>
-</div>
-
-</body>
+<%@include file="footer.jsp" %>
 </html>

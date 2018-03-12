@@ -1,56 +1,9 @@
-<%--  Created by IntelliJ IDEA.
-  User: voja
-  Date: 4.1.18.
-  Time: 20.34
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery.populate.js"></script>
-    <script type="text/javascript" src="js/moment-with-locales.min.js"></script>
-    <script type="text/javascript" src="js/tablesorter.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.structure.min.css">
-    <link rel="stylesheet" href="css/jquery-ui.theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="css/images/favicon.ico">
-
-    <title>FPIS Aplikacija</title>
-</head>
-<body>
-<!-- Static navbar -->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.jsp">FPIS Aplikacija</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a id="dugmeunos" href="ArtikalForma.jsp">Unos artikla</a></li>
-                <li><a id="dugmeizmena" href="ArtikalForma.jsp">Izmena artikla</a></li>
-                <li><a id="dugmeunosPonude" href="PonudaForma.jsp">Unos ponude</a></li>
-                <li><a id="dugmeizmenaPonude" href="#">Izmena Ponude</a></li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
-</nav>
+<%@include file="header.jsp" %>
 
 <div class="container ponudaforma">
     <div class="row centered-form">
@@ -200,16 +153,12 @@
     String listaPonuda;
     String ponudaJSON;
 
-
     PonudaKontroler k = new PonudaKontroler();
 
     listaPonuda = k.vratiPonude();
     listaArtikala = k.vratiArtikle();
     listaKupaca = k.vratiKupce();
     listaRadnika = k.vratiRadnike();
-
-
-
 
 //    start()
 //    popuniArtikle(listaArtikala);
@@ -294,7 +243,6 @@
             $('#select_kupac').val(ponuda.sifraKupca).prop('selected', true);
             $('#select_radnik').val(ponuda.sifraRadnika).prop('selected', true);
 
-            // if  (!jQuery.isEmptyObject(stavke)) {
             if  (stavke.length != 0) {
                 Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
                 $(".azuriraj").click(function (e) {
@@ -325,15 +273,6 @@
             }
         }
 
-        // $('.panel').click(function (e) {
-        //     e.stopPropagation();
-        //
-        //     $('#detalji_ponude tr').removeClass('aktivnastavka');
-        //     $("#select_SIFRAARTIKLA").val(0);
-        //     $("#kolicina").val('');
-        //     $("#napomenastavke").val('');
-        // });
-
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
             if (selected != 0) {
@@ -343,7 +282,6 @@
 
         $("#insertBbutton").click(function () {
             $("#stautsinput").val("insert");
-            $("#BrPonude").val(0);
         });
 
         $("#updateBbutton").click(function () {
@@ -352,16 +290,6 @@
 
         $("#deleteBbutton").click(function () {
             $("#stautsinput").val("delete");
-        });
-
-        $('#dugmeizmenaPonude').click(function () {
-            $('#combo').toggleClass('hidden');
-            $('#updateBbutton').toggleClass('hidden');
-            $('#deleteBbutton').toggleClass('hidden');
-            $('.panel-title').toggleClass('hidden');
-            $('#insertBbutton').toggleClass('hidden');
-            $('#izmenistavku').toggleClass('hidden');
-            $('#obrisistavku').toggleClass('hidden');
         });
 
         $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
@@ -462,7 +390,6 @@
             for(var i=0;i<stavke.length;i++) {
                 if (stavke[i].Rbr == $("#Rbr").val()) {
                     var tmpRbr = "#tr_" + stavke[i].Rbr;
-                    // $('#detalji_ponude tr').removeClass('aktivnastavka');
                     $(tmpRbr).removeClass('aktivnastavka');
                     if ($("#kolicina").val() !=  stavke[i].Kolicina) {
                         $('#'+stavke[i].Rbr+'_Kolicina').addClass('changed').text($("#kolicina").val());
@@ -501,16 +428,16 @@
             });
             var tmpRbr = "#tr_" + $("#Rbr").val();
             $(tmpRbr).hide( "fade", { direction: "left" }, "slow" );
+
+            $("#select_SIFRAARTIKLA").val(0);
+            $("#kolicina").val('');
+            $("#napomenastavke").val('');
         });
 
     });
 
 </script>
-<div id="footer" class="">
-    <div class="container">
-        <p class="">Copyright &copy; 2018 Vojislav Ristivojević, 2016/3079</p>
-    </div>
-</div>
 
-</body>
+<%@include file="footer.jsp" %>
+
 </html>

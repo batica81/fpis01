@@ -27,7 +27,6 @@ function Tablify_stavka(data, table_id, primary_key){
         tableRow += '<td class="center"><a id="'+tmp_key+'_btn" class="azuriraj btn btn-info" href="#">Ažuriraj ovu stavku<a></td>';
         tableRow += '</tr>';
         tmp_keys_array.push(tmp_key);
-
     }
 
     $(table_id).append(tableHeader);
@@ -35,9 +34,6 @@ function Tablify_stavka(data, table_id, primary_key){
     $(table_id).append(tableRow);
     $(table_id).append('</tbody>');
     $(table_id).tablesorter();
-
-
-
 } // end Tablify_stavka
 
 Array.prototype.diff = function (a) {
@@ -45,3 +41,30 @@ Array.prototype.diff = function (a) {
         return a.indexOf(i) === -1;
     });
 };
+
+$(document).ready(function () {
+
+    $('#navbar a').click(function () {
+        sessionStorage.setItem("clicked", this.id);
+    });
+
+    if ( sessionStorage.getItem("clicked") == "dugmeizmena") {
+        $('.artikalforma #combo').removeClass('hidden');
+        $('.artikalforma .panel-title').text('Izmena artikla');
+        $('.artikalforma #updateBbutton').removeClass('hidden');
+        $('.artikalforma #deleteBbutton').removeClass('hidden');
+        $('.artikalforma #insertBbutton').addClass('hidden');
+    };
+
+    if ( sessionStorage.getItem("clicked") == "dugmeizmenaPonude") {
+        $('.ponudaforma #combo').removeClass('hidden');
+        $('.ponudaforma #updateBbutton').removeClass('hidden');
+        $('.ponudaforma #deleteBbutton').removeClass('hidden');
+        $('.ponudaforma .panel-title').text('Izmena ponude');
+        $('.ponudaforma #insertBbutton').addClass('hidden');
+        $('.ponudaforma #izmenistavku').removeClass('hidden');
+        $('.ponudaforma #obrisistavku').removeClass('hidden');
+    };
+
+    $('.inputfield').val('');
+});

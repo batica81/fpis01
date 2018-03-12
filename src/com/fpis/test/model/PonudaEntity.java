@@ -1,16 +1,10 @@
 package com.fpis.test.model;
 
-import org.hibernate.collection.internal.PersistentBag;
-
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Objects;
-
-
 
 @Entity
 @Table(name = "Ponuda", schema = "fpis01", catalog = "")
@@ -228,7 +222,6 @@ public class PonudaEntity {
         sp.postaviStatus("insert");
         ubaciUKolekciju(sp);
     }
-
 
     public void ubaciUKolekciju (StavkaPonudeEntity sp) {
         sp.setPonudaByBrPonude(this);
