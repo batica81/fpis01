@@ -42,6 +42,8 @@ Array.prototype.diff = function (a) {
     });
 };
 
+//Init
+
 $(document).ready(function () {
 
     $('#navbar a').click(function () {
@@ -61,6 +63,7 @@ $(document).ready(function () {
         $('.ponudaforma #updateBbutton').removeClass('hidden');
         $('.ponudaforma #deleteBbutton').removeClass('hidden');
         $('.ponudaforma .panel-title').text('Izmena ponude');
+        $('.stavka').text('Rad sa stavkom ponude');
         $('.ponudaforma #insertBbutton').addClass('hidden');
         $('.ponudaforma #izmenistavku').removeClass('hidden');
         $('.ponudaforma #obrisistavku').removeClass('hidden');

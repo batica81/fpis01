@@ -1,7 +1,9 @@
 <%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
+
 <%@include file="header.jsp" %>
 
 <%
@@ -35,7 +37,6 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Unos artikla</h3>
-                    <h3 class="panel-title hidden">Izmena artikla</h3>
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
                     <option selected disabled value>Odaberite artikal za izmenu</option>

@@ -94,8 +94,7 @@
                                 <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <h3 class="panel-title">Dodajte novu stavku ponude</h3>
-                                            <h3 class="panel-title hidden">Rad sa stavkom ponude</h3>
+                                            <h3 class="stavka panel-title">Dodajte novu stavku ponude</h3>
                                         </div>
                                         <div class="panel-body">
                                             <div class="artikalform" action="" method="post" role="form">
@@ -145,7 +144,6 @@
     </div>
 </div>
 
-
 <%
     String listaArtikala;
     String listaKupaca;
@@ -173,27 +171,24 @@
 //    AzurirajPrikaz()
 //    Sacuvaj()
 
-
 //    popuniPoljaForme(ponudaJSON)
 //    odaberiPonudu()
 //    izmeni()
 
-
 %>
-
 
 <script type="text/javascript">
     $(document).ready(function () {
 
-        var aktuelnaPonuda = {};
         var stavke = [];
 
-        function vratiPonudu(slected) {
+        // Rad sa ponudom
+        function pronadjiPonudu(brPonude) {
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
                 method: "GET",
                 data: {
-                    'brPonude' : slected
+                    'brPonude' : brPonude
                 },
                 success:
                     function (data) {
@@ -207,41 +202,41 @@
             });
         }
 
-        function populateComboBox(data) {
-            $(data).map(function () {
-                $('<option>').val(this.BrPonude).text(this.banka).appendTo('#combo');
+        function popuniPonude(listaPonuda) {
+            $(listaPonuda).map(function () {
+                $('<option>').val(this.BrPonude).text('Br. ' + this.BrPonude +' - '+ this.banka).appendTo('#combo');
             });
         }
-        populateComboBox(<% out.println(listaPonuda); %>);
+        popuniPonude(<% out.println(listaPonuda); %>);
 
-        function populateArtikalComboBox(data) {
-            $(data).map(function () {
+        function popuniArtikle(listaArtikala) {
+            $(listaArtikala).map(function () {
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#select_SIFRAARTIKLA');
             });
         }
-        populateArtikalComboBox(<% out.println(listaArtikala); %>);
+        popuniArtikle(<% out.println(listaArtikala); %>);
 
-        function populateKupacComboBox(data) {
-            $(data).map(function () {
+        function popuniKupce(listaKupaca) {
+            $(listaKupaca).map(function () {
                 $('<option>').val(this.sifraKupca).text(this.ime).appendTo('#select_kupac');
             });
         }
-        populateKupacComboBox(<% out.println(listaKupaca); %>);
+        popuniKupce(<% out.println(listaKupaca); %>);
 
-        function populateRadnikComboBox(data) {
-            $(data).map(function () {
+        function popuniRadnike(listaRadnika) {
+            $(listaRadnika).map(function () {
                 $('<option>').val(this.sifraRadnika).text(this.ime).appendTo('#select_radnik');
             });
         }
-        populateRadnikComboBox(<% out.println(listaRadnika); %>);
+        popuniRadnike(<% out.println(listaRadnika); %>);
 
-        function popuniPoljaForme(ponuda) {
+        function popuniPoljaForme(ponudaJSON) {
             $('#detalji_ponude').empty();
-            stavke = ponuda.Stavke;
-            delete ponuda.Stavke;
-            $('#ponudaForma').populate(ponuda);
-            $('#select_kupac').val(ponuda.sifraKupca).prop('selected', true);
-            $('#select_radnik').val(ponuda.sifraRadnika).prop('selected', true);
+            stavke = ponudaJSON.Stavke;
+            delete ponudaJSON.Stavke;
+            $('#ponudaForma').populate(ponudaJSON);
+            $('#select_kupac').val(ponudaJSON.sifraKupca).prop('selected', true);
+            $('#select_radnik').val(ponudaJSON.sifraRadnika).prop('selected', true);
 
             if  (stavke.length != 0) {
                 Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
@@ -276,7 +271,7 @@
         $('#combo').change(function () {
             selected = $('#combo').find('option:selected').val();
             if (selected != 0) {
-                vratiPonudu(selected);
+                pronadjiPonudu(selected);
             }
         });
 
@@ -292,10 +287,7 @@
             $("#stautsinput").val("delete");
         });
 
-        $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
-
         // Rad sa stavkom
-
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
             $.ajax({
@@ -318,6 +310,7 @@
                     }
             });
 
+            // prva stavka
             if ( stavke.length == 0) {
                 var prvaStavka = [{
                     Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
@@ -332,6 +325,7 @@
                 stavke = prvaStavka;
             } else {
 
+                // dodeli redni broj
                 var postojeciRbr = [];
                 var moguciRbr = [];
 
@@ -434,6 +428,7 @@
             $("#napomenastavke").val('');
         });
 
+        $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
     });
 
 </script>
