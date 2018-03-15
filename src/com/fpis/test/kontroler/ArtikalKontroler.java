@@ -72,7 +72,6 @@ public class ArtikalKontroler extends HttpServlet {
         dbb.pokreniDBTransakciju();
         a = dbb.pronadjiArtikal(SifraArtikla);
         dbb.potvrdiDBTransakciju();
-        JSONArray arr = new JSONArray();
         JSONObject obj = new JSONObject();
 
         obj.put("jedinicamere", a.getJedinicamere());
@@ -80,9 +79,8 @@ public class ArtikalKontroler extends HttpServlet {
         obj.put("nazivartikla", a.getNazivartikla());
         obj.put("sifraartikla", a.getSifraartikla());
         obj.put("cena", a.getCena());
-        arr.add(obj);
 
-        return String.valueOf(arr);
+        return String.valueOf(obj);
     }
 
     public void sacuvajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){

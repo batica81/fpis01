@@ -1,7 +1,9 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<!DOCTYPE html>
+<html>
 <head>
+    <meta charset="utf-8">
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -23,7 +25,6 @@
 </head>
 <body>
 
-<!-- Static navbar -->
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
@@ -42,6 +43,6 @@
                 <li><a id="dugmeunosPonude" href="PonudaForma.jsp">Unos ponude</a></li>
                 <li><a id="dugmeizmenaPonude" href="PonudaForma.jsp">Izmena Ponude</a></li>
             </ul>
-        </div><!--/.nav-collapse -->
+        </div>
     </div>
 </nav>

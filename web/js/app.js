@@ -1,3 +1,5 @@
+//Util
+
 function Tablify_stavka(data, table_id, primary_key){
 
     var tableRow;
@@ -70,4 +72,6 @@ $(document).ready(function () {
     };
 
     $('.inputfield').val('');
+    $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
+
 });

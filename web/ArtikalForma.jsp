@@ -2,33 +2,36 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<html>
-
 <%@include file="header.jsp" %>
 
-<%
+<%!
     String listaArtikala;
     String artikalJSON;
-
-//    popuniPoljaForme(artikalJSON)
-
-//    start()
-//    odaberiArtikal(SifraArtikla)
-//    PronadjiArtikal(SifraArtikla)
-//    PrikaziArtikle(listaArtikala)
-//    izmeni()
-//    Sacuvaj()
-
     ArtikalKontroler k = new ArtikalKontroler();
 
-    listaArtikala = k.vratiArtikle();
+    //    popuniPoljaForme(artikalJSON)
 
-//    out.println(listaArtikala);
+    //    PronadjiArtikal(SifraArtikla)
+    //    odaberiArtikal(SifraArtikla)
+    //    start()
+
+    //    PrikaziArtikle(listaArtikala)
+
+    //    Sacuvaj()
+    //    izmeni()
+
+
+//    out.print(listaArtikala);
 
 //    artikalJSON = k.pronadjiArtikal(1);
 
 //    out.println("<h2>TRAZENI ARTIKAL JE:</h2>");
 //    out.println(artikalJSON);
+%>
+
+<%
+    listaArtikala = k.vratiArtikle();
+//out.print(request.getParameter("sifraArtikla"));
 %>
 
 <div class="container artikalforma">
@@ -67,7 +70,7 @@
                         </div>
                         <input hidden id="stautsinput" type="text" name="status">
 
-                        <button id="insertBbutton" class="btn-lg btn-block btn-info" type="submit">Unesi artikal</button>
+                        <button id="insertBbutton" type="submit" class="btn-lg btn-block btn-info">Unesi artikal</button>
                         <button id="updateBbutton" type="submit" class="btn-lg btn-block btn-success hidden">Izmeni artikal</button>
                         <button id="deleteBbutton" type="submit" class="btn-lg btn-block btn-danger hidden">Obriši artikal</button>
                     </form>
@@ -80,18 +83,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $("#insertBbutton").click(function () {
-            $("#stautsinput").val("insert");
-        });
-
-        $("#updateBbutton").click(function () {
-            $("#stautsinput").val("update");
-        });
-
-        $("#deleteBbutton").click(function () {
-            $("#stautsinput").val("delete");
-        });
-
         function pronadjiArtikal(sifraArtikla) {
             $.ajax({
                 url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
@@ -101,7 +92,7 @@
                 },
                 success:
                     function (artikalJSON) {
-                        popuniPoljaForme(artikalJSON[0]);
+                        popuniPoljaForme(artikalJSON);
                     },
                 error:
                     function (e) {
@@ -110,8 +101,7 @@
             });
         }
 
-        //TODO: pretvoriti u JSP i preimenovati metode
-
+        //TODO: pretvoriti u JSP
         function prikaziArtikle(listaArtikala) {
             $(listaArtikala).map(function () {
                 $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
@@ -124,15 +114,54 @@
         }
 
         $('#combo').change(function () {
-            selected = $('#combo').find('option:selected').val();
-            if (selected != 0) {
-                pronadjiArtikal(selected);
+            sifraArtikla = $('#combo').find('option:selected').val();
+            if (sifraArtikla != 0) {
+                pronadjiArtikal(sifraArtikla);
             }
         });
 
+        $("#insertBbutton").click(function () {
+            $("#stautsinput").val("insert");
+        });
+
+        $("#updateBbutton").click(function () {
+            $("#stautsinput").val("update");
+        });
+
+        $("#deleteBbutton").click(function () {
+            $("#stautsinput").val("delete");
+        });
     });
 
 </script>
 
+<%!
+
+    public String getQuarter(int i){
+        String quarter;
+        switch(i){
+            case 1: quarter = "Winter";
+                break;
+
+            case 2: quarter = "Spring";
+                break;
+
+            case 3: quarter = "Summer I";
+                break;
+
+            case 4: quarter = "Summer II";
+                break;
+
+            case 5: quarter = "Fall";
+                break;
+
+            default: quarter = "ERROR";
+        }
+
+        return quarter;
+    }
+
+%>
+
+
 <%@include file="footer.jsp" %>
-</html>

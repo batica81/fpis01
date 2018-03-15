@@ -1,7 +1,6 @@
 
 <%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 
 <%@include file="header.jsp" %>
 
@@ -144,7 +143,7 @@
     </div>
 </div>
 
-<%
+<%!
     String listaArtikala;
     String listaKupaca;
     String listaRadnika;
@@ -153,10 +152,6 @@
 
     PonudaKontroler k = new PonudaKontroler();
 
-    listaPonuda = k.vratiPonude();
-    listaArtikala = k.vratiArtikle();
-    listaKupaca = k.vratiKupce();
-    listaRadnika = k.vratiRadnike();
 
 //    start()
 //    popuniArtikle(listaArtikala);
@@ -177,6 +172,13 @@
 
 %>
 
+<%
+    listaPonuda = k.vratiPonude();
+    listaArtikala = k.vratiArtikle();
+    listaKupaca = k.vratiKupce();
+    listaRadnika = k.vratiRadnike();
+%>
+
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -191,9 +193,9 @@
                     'brPonude' : brPonude
                 },
                 success:
-                    function (data) {
-                        popuniPoljaForme(data);
-                        console.log(data);
+                    function (ponudaJSON) {
+                        popuniPoljaForme(ponudaJSON);
+                        console.log(ponudaJSON);
                     },
                 error:
                     function (e) {
@@ -428,11 +430,9 @@
             $("#napomenastavke").val('');
         });
 
-        $( ".datepicker" ).datepicker({dateFormat: 'yy-mm-dd 00:00:00'});
     });
 
 </script>
 
 <%@include file="footer.jsp" %>
 
-</html>
