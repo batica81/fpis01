@@ -163,7 +163,7 @@
                                             <h3 class="stavka panel-title">Dodajte novu stavku ponude</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <form class="artikalform" action="" method="post" role="form">
+                                            <div class="artikalform" action="" method="post" role="form">
 
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
@@ -175,7 +175,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label" for="kolicina">Količina</label>
                                                     <input type="number" min="1" step="1" name="KOLICINA" id="kolicina"
-                                                           class="form-control input-sm" placeholder="Količina" required>
+                                                           class="form-control input-sm" placeholder="Količina">
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="napomenastavke">Napomena</label>
@@ -188,7 +188,7 @@
                                                     <button id="obrisistavku" name="obrisistavku" class="btn-lg btn-danger hidden">Obriši
                                                         stavku</button>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -294,147 +294,151 @@
         });
 
         // Rad sa stavkom
-        // TODO: ne slati ajax ako je artikal 0
-        // TODO: proveriti da li treba slati rbr 0 za stavku
+
+        // TODO: bug sa kliktanjem vise puta na azuriraj
 
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
-            $.ajax({
-                url: "/fpis01_war_exploded/ponudakontroler",
-                method: "POST",
-                data: {
-                    'radsastavkom': true,
-                    'SIFRAARTIKLA': $("#select_SIFRAARTIKLA").val(),
-                    'KOLICINA': $("#kolicina").val(),
-                    'napomenastavke': $("#napomenastavke").val(),
-                    'status': 'insert',
-                    'unosponude': ($('#combo').hasClass('hidden'))? true : false
-                },
-                success:
-                    function () {
+            if  ($("#select_SIFRAARTIKLA").val() != 0 && $("#kolicina").val() !=0) {
+                $.ajax({
+                    url: "/fpis01_war_exploded/ponudakontroler",
+                    method: "POST",
+                    data: {
+                        'radsastavkom': true,
+                        'SIFRAARTIKLA': $("#select_SIFRAARTIKLA").val(),
+                        'KOLICINA': $("#kolicina").val(),
+                        'napomenastavke': $("#napomenastavke").val(),
+                        'status': 'insert',
+                        'unosponude': ($('#combo').hasClass('hidden')) ? true : false
                     },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-            
-            // prva stavka
-            if ( stavke.length == 0) {
-                var prvaStavka = [{
-                    Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
-                    Rbr: 1,
-                    Kolicina: $("#kolicina").val(),
-                    Napomena: $("#napomenastavke").val()
-                }];
+                    success:
+                        function () {
+                        },
+                    error:
+                        function (e) {
+                            console.log(e.responseText);
+                        }
+                });
 
-                Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
-                $('.azuriraj').addClass('hidden');
-                $('.tmpArtikal').show('slow');
-                stavke = prvaStavka;
-            } else {
+                // prva stavka
+                if (stavke.length == 0) {
+                    var prvaStavka = [{
+                        Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
+                        Rbr: 1,
+                        Kolicina: $("#kolicina").val(),
+                        Napomena: $("#napomenastavke").val()
+                    }];
+
+                    Tablify_stavka(prvaStavka, '#detalji_ponude', 'Rbr');
+                    $('.azuriraj').addClass('hidden');
+                    $('.tmpArtikal').show('slow');
+                    stavke = prvaStavka;
+                } else {
 
 //TODO: dodajRbr na formi
-                // dodeli redni broj
-                var postojeciRbr = [];
-                var moguciRbr = [];
+                    // dodeli redni broj
+                    var postojeciRbr = [];
+                    var moguciRbr = [];
 
-                for (var j=0; j < stavke.length; j++ ) {
-                    postojeciRbr.push(stavke[j].Rbr);
+                    for (var j = 0; j < stavke.length; j++) {
+                        postojeciRbr.push(stavke[j].Rbr);
+                    }
+
+                    for (var k = 0; k < postojeciRbr.length + 1; k++) {
+                        moguciRbr.push(k + 1);
+                    }
+
+                    var noviRbr = moguciRbr.diff(postojeciRbr)[0];
+
+                    /////////
+
+                    var novaStavka = {
+                        Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
+                        Rbr: noviRbr,
+                        Kolicina: $("#kolicina").val(),
+                        Napomena: $("#napomenastavke").val()
+                    };
+
+                    var newRow = '<tr class="tmpArtikal" style="display: none;"><td class="Artikal">' + novaStavka.Artikal + '</td><td class="Rbr">' + novaStavka.Rbr + '</td><td class="Kolicina">' + novaStavka.Kolicina + '</td><td class="Napomena">' + novaStavka.Napomena + '</td><td></td></tr>';
+                    $('#detalji_ponude tbody').append(newRow);
+                    $('.tmpArtikal').show('slow');
+                    stavke.push(novaStavka);
                 }
 
-                for (var k=0; k < postojeciRbr.length + 1; k++ ) {
-                    moguciRbr.push(k+1);
-                }
-
-                var noviRbr = moguciRbr.diff(postojeciRbr)[0];
-
-                /////////
-
-                var novaStavka = {
-                    Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
-                    Rbr: noviRbr,
-                    Kolicina: $("#kolicina").val(),
-                    Napomena: $("#napomenastavke").val()
-                };
-
-                var newRow = '<tr class="tmpArtikal" style="display: none;"><td class="Artikal">' + novaStavka.Artikal + '</td><td class="Rbr">'+ novaStavka.Rbr +'</td><td class="Kolicina">' + novaStavka.Kolicina + '</td><td class="Napomena">' + novaStavka.Napomena + '</td><td></td></tr>';
-                $('#detalji_ponude tbody').append(newRow);
-                $('.tmpArtikal').show('slow');
-                stavke.push(novaStavka);
+                $("#select_SIFRAARTIKLA").val(0);
+                $("#kolicina").val('');
+                $("#napomenastavke").val('');
+                $('#detalji_ponude').tablesorter();
+                $('#detalji_ponude').tablesorter();
             }
-
-            $("#select_SIFRAARTIKLA").val(0);
-            $("#kolicina").val('');
-            $("#napomenastavke").val('');
-            $('#detalji_ponude').tablesorter();
-            $('#detalji_ponude').tablesorter();
         });
 
         $("#izmenistavku").click(function (e) {
             e.preventDefault();
-            $.ajax({
-                url: "/fpis01_war_exploded/ponudakontroler",
-                method: "POST",
-                data: {
-                    'radsastavkom' : true,
-                    'SIFRAARTIKLA' : $("#select_SIFRAARTIKLA").val(),
-                    'KOLICINA' : $("#kolicina").val(),
-                    'napomenastavke' :  $("#napomenastavke").val(),
-                    'status' : 'update',
-                    'rbr' : $("#Rbr").val()
-                },
-                success:
-                    function () {
+            if  ($("#select_SIFRAARTIKLA").val() != 0 && $("#kolicina").val() !=0) {
+                $.ajax({
+                    url: "/fpis01_war_exploded/ponudakontroler",
+                    method: "POST",
+                    data: {
+                        'radsastavkom': true,
+                        'SIFRAARTIKLA': $("#select_SIFRAARTIKLA").val(),
+                        'KOLICINA': $("#kolicina").val(),
+                        'napomenastavke': $("#napomenastavke").val(),
+                        'status': 'update',
+                        'rbr': $("#Rbr").val()
                     },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
+                    success:
+                        function () {
+                        },
+                    error:
+                        function (e) {
+                            console.log(e.responseText);
+                        }
+                });
 
-            for(var i=0;i<stavke.length;i++) {
-                if (stavke[i].Rbr == $("#Rbr").val()) {
-                    var tmpRbr = "#tr_" + stavke[i].Rbr;
-                    $(tmpRbr).removeClass('aktivnastavka');
-                    if ($("#kolicina").val() !=  stavke[i].Kolicina) {
-                        $('#'+stavke[i].Rbr+'_Kolicina').addClass('changed').text($("#kolicina").val());
-                    }
-                    if ($("#napomenastavke").val() !=  stavke[i].Napomena) {
-                        $('#'+stavke[i].Rbr+'_Napomena').addClass('changed').text($("#napomenastavke").val());
-                    }
-                    if ($("#select_SIFRAARTIKLA option:selected").text() !=  stavke[i].Artikal) {
-                        $('#'+stavke[i].Rbr+'_Artikal').addClass('changed').text($("#select_SIFRAARTIKLA option:selected").text());
+                for (var i = 0; i < stavke.length; i++) {
+                    if (stavke[i].Rbr == $("#Rbr").val()) {
+                        var tmpRbr = "#tr_" + stavke[i].Rbr;
+                        $(tmpRbr).removeClass('aktivnastavka');
+                        if ($("#kolicina").val() != stavke[i].Kolicina) {
+                            $('#' + stavke[i].Rbr + '_Kolicina').addClass('changed').text($("#kolicina").val());
+                        }
+                        if ($("#napomenastavke").val() != stavke[i].Napomena) {
+                            $('#' + stavke[i].Rbr + '_Napomena').addClass('changed').text($("#napomenastavke").val());
+                        }
+                        if ($("#select_SIFRAARTIKLA option:selected").text() != stavke[i].Artikal) {
+                            $('#' + stavke[i].Rbr + '_Artikal').addClass('changed').text($("#select_SIFRAARTIKLA option:selected").text());
+                        }
                     }
                 }
+                $("#select_SIFRAARTIKLA").val(0);
+                $("#kolicina").val('');
+                $("#napomenastavke").val('');
             }
-
-            $("#select_SIFRAARTIKLA").val(0);
-            $("#kolicina").val('');
-            $("#napomenastavke").val('');
         });
 
         $("#obrisistavku").click(function (e) {
             e.preventDefault();
-            $.ajax({
-                url: "/fpis01_war_exploded/ponudakontroler",
-                method: "POST",
-                data: {
-                    'radsastavkom' : true,
-                    'status' : 'delete',
-                    'rbr' : $("#Rbr").val()
-                },
-                success:
-                    function () {
+            if  ($("#select_SIFRAARTIKLA").val() != 0 && $("#kolicina").val() !=0) {
+                $.ajax({
+                    url: "/fpis01_war_exploded/ponudakontroler",
+                    method: "POST",
+                    data: {
+                        'radsastavkom': true,
+                        'status': 'delete',
+                        'rbr': $("#Rbr").val()
                     },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-            var tmpRbr = "#tr_" + $("#Rbr").val();
-            $(tmpRbr).hide( "fade", { direction: "left" }, "slow" );
-
+                    success:
+                        function () {
+                        },
+                    error:
+                        function (e) {
+                            console.log(e.responseText);
+                        }
+                });
+                var tmpRbr = "#tr_" + $("#Rbr").val();
+                $(tmpRbr).hide("fade", {direction: "left"}, "slow");
+            }
             $("#select_SIFRAARTIKLA").val(0);
             $("#kolicina").val('');
             $("#napomenastavke").val('');
