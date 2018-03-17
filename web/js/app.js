@@ -1,8 +1,7 @@
 //Util
 
 function Tablify_stavka(data, table_id, primary_key){
-
-    var tableRow;
+    var tableRow = "";
     var tableHeader = '<thead>';
     var keynames_array = [];
     var tmp_keys_array = [];
@@ -17,8 +16,8 @@ function Tablify_stavka(data, table_id, primary_key){
 
     for(var i=0;i<data.length;i++){
         var turk = data[i];
-        tmp_key = turk[primary_key];
-        tmp_brponude = turk['BrPonude'];
+        var tmp_key = turk[primary_key];
+        var tmp_brponude = turk['BrPonude'];
 
         tableRow += '<tr id="tr_'+tmp_key+'">';
 
@@ -44,8 +43,10 @@ Array.prototype.diff = function (a) {
     });
 };
 
-//Init
 
+
+
+//Init
 $(document).ready(function () {
 
     $('#navbar a').click(function () {

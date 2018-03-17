@@ -2,72 +2,36 @@
 <%@ page import="org.json.simple.parser.JSONParser" %>
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="org.json.simple.JSONArray" %>
-
+<%@ page import="org.json.simple.parser.ParseException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@include file="header.jsp" %>
 
 <%!
-    String listaArtikala;
-    String artikalJSON;
-    ArtikalKontroler k = new ArtikalKontroler();
+    private String listaArtikala;
+    private String artikalJSON;
+    private ArtikalKontroler k = new ArtikalKontroler();
+    private JSONParser parser = new JSONParser();
 
-    JSONParser parser = new JSONParser();
-
-
-
-    //    popuniPoljaForme(artikalJSON)
-
-    //    PronadjiArtikal(SifraArtikla)
-    //    odaberiArtikal(SifraArtikla)
-    //    start()
-
-    //    PrikaziArtikle(listaArtikala)
-
-    //    Sacuvaj()
-    //    izmeni()
-
-
-//    out.print(listaArtikala);
-
-//    artikalJSON = k.pronadjiArtikal(1);
-
-//    out.println("<h2>TRAZENI ARTIKAL JE:</h2>");
-//    out.println(artikalJSON);
+    private String PrikaziArtikle(String listaArtikala){
+        JSONArray artikalArray = null;
+        String tempLista = "";
+        try {
+            artikalArray = (JSONArray) parser.parse(listaArtikala);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (Object artikalObject:artikalArray) {
+            JSONObject artikal = (JSONObject) artikalObject;
+            tempLista += "<option value="+ artikal.get("sifraartikla") + ">" + artikal.get("nazivartikla") + "</option>\n";
+        }
+        return tempLista;
+    }
 %>
 
 <%
     listaArtikala = k.vratiArtikle();
-
-
-    JSONArray artikalArray = (JSONArray) parser.parse(listaArtikala);
-
-    String aa = ( "<option value="+((JSONObject)artikalArray.get(0)).get("sifraartikla") + ">" + ((JSONObject)artikalArray.get(0)).get("nazivartikla") + "</option>");
-
-//    for (:
-//         ) {
-//
-//    }
-//    artikalArray.size()
-//
-//
-//
-//    for (Object artikalRaw:listaArtikala) {
-//    JSONObject obj = new JSONObject();
-//    ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
-//    obj.put("jedinicamere", artikal.getJedinicamere());
-//    obj.put("opisartikla", artikal.getOpisartikla());
-//    obj.put("nazivartikla", artikal.getNazivartikla());
-//    obj.put("sifraartikla", artikal.getSifraartikla());
-//    obj.put("cena", artikal.getCena());
-//    arr.add(obj);
-//    }
-//    return String.valueOf(arr);
-
-
-
 %>
-
 
 <div class="container artikalforma">
     <div class="row centered-form">
@@ -78,7 +42,7 @@
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
                     <option selected disabled value>Odaberite artikal za izmenu</option>
-                    <% out.println(aa); %>
+                    <% out.print(PrikaziArtikle(listaArtikala)); %>
                 </select>
                 <div class="panel-body">
                     <form id="artikalForma" class="" action="artikalkontroler" method="post" role="form">
@@ -118,14 +82,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
-        //TODO: pretvoriti u JSP
-        <%--function prikaziArtikle(listaArtikala) {--%>
-            <%--$(listaArtikala).map(function () {--%>
-                <%--$('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');--%>
-            <%--});--%>
-        <%--}--%>
-        <%--prikaziArtikle(<% out.println(listaArtikala); %>);--%>
 
         function pronadjiArtikal(sifraArtikla) {
             $.ajax({
@@ -168,35 +124,5 @@
     });
 
 </script>
-
-<%!
-
-//    TEST
-    public String getQuarter(int i){
-        String quarter;
-        switch(i){
-            case 1: quarter = "Winter";
-                break;
-
-            case 2: quarter = "Spring";
-                break;
-
-            case 3: quarter = "Summer I";
-                break;
-
-            case 4: quarter = "Summer II";
-                break;
-
-            case 5: quarter = "Fall";
-                break;
-
-            default: quarter = "ERROR";
-        }
-
-        return quarter;
-    }
-
-%>
-
 
 <%@include file="footer.jsp" %>

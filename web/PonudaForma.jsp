@@ -1,36 +1,65 @@
-
 <%@ page import="com.fpis.test.kontroler.PonudaKontroler" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONArray" %>
+<%@ page import="org.json.simple.parser.ParseException" %>
+<%@ page import="org.json.simple.JSONObject" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@include file="header.jsp" %>
 
 <%!
-    String listaArtikala;
-    String listaKupaca;
-    String listaRadnika;
-    String listaPonuda;
-    String ponudaJSON;
+    private String listaArtikala;
+    private String listaKupaca;
+    private String listaRadnika;
+    private String listaPonuda;
+    private String ponudaJSON;
+    private PonudaKontroler k = new PonudaKontroler();
+    private JSONParser parser = new JSONParser();
 
-    PonudaKontroler k = new PonudaKontroler();
+    private String PrikaziArtikle(String listaArtikala){
+        JSONArray artikalArray = null;
+        String tempLista = "";
+        try {
+            artikalArray = (JSONArray) parser.parse(listaArtikala);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (Object artikalObject:artikalArray) {
+            JSONObject artikal = (JSONObject) artikalObject;
+            tempLista += "<option value="+ artikal.get("sifraartikla") + ">" + artikal.get("nazivartikla") + "</option>\n";
+        }
+        return tempLista;
+    }
 
+    private String PrikaziKupce(String listaKupaca){
+        JSONArray kupacArray = null;
+        String tempLista = "";
+        try {
+            kupacArray = (JSONArray) parser.parse(listaKupaca);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (Object kupacObject:kupacArray) {
+            JSONObject kupac = (JSONObject) kupacObject;
+            tempLista += "<option value="+ kupac.get("sifraKupca") + ">" + kupac.get("ime") + "</option>\n";
+        }
+        return tempLista;
+    }
 
-//    start()
-//    popuniArtikle(listaArtikala);
-//    popuniKupce(listaKupaca);
-//    popuniRadnike(listaRadnika);
-//    popuniPonude(listaPonuda);
-
-//    DodajStavku()
-//    IzmeniStavku()
-//    ObrisiStavku()
-
-//    AzurirajPrikaz()
-//    Sacuvaj()
-
-//    popuniPoljaForme(ponudaJSON)
-//    odaberiPonudu()
-//    izmeni()
-
+    private String PrikaziPonude(String listaPonuda){
+        JSONArray ponudaArray = null;
+        String tempLista = "";
+        try {
+            ponudaArray = (JSONArray) parser.parse(listaPonuda);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        for (Object ponudaObject:ponudaArray) {
+            JSONObject ponuda = (JSONObject) ponudaObject;
+            tempLista += "<option value="+ ponuda.get("BrPonude") + ">Br. " + ponuda.get("BrPonude") + " - " + ponuda.get("banka") + "</option>\n";
+        }
+        return tempLista;
+    }
 %>
 
 <%
@@ -50,6 +79,7 @@
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
                     <option selected disabled value>Odaberite ponudu za izmenu</option>
+                    <% out.print(PrikaziPonude(listaPonuda)); %>
                 </select>
                 <div class="panel-body">
                     <form id="ponudaForma" class="" action="ponudakontroler" method="post" role="form">
@@ -68,6 +98,7 @@
                                 <label for="select_kupac">Kupac</label>
                                 <select id="select_kupac" name="sifraKupca" class="form-control" required>
                                     <option value disabled selected>Kupac</option>
+                                    <% out.print(PrikaziKupce(listaKupaca)); %>
                                 </select>
                             </div>
                             <div class="form-group form-inline">
@@ -132,18 +163,19 @@
                                             <h3 class="stavka panel-title">Dodajte novu stavku ponude</h3>
                                         </div>
                                         <div class="panel-body">
-                                            <div class="artikalform" action="" method="post" role="form">
+                                            <form class="artikalform" action="" method="post" role="form">
 
                                                 <div class="form-group">
                                                     <label class="control-label" for="select_SIFRAARTIKLA">Artikal</label>
                                                     <select id="select_SIFRAARTIKLA" name="SIFRAARTIKLA" class="form-control">
                                                         <option selected disabled value>Artikal</option>
+                                                        <% out.print(PrikaziArtikle(listaArtikala)); %>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="kolicina">Količina</label>
                                                     <input type="number" min="1" step="1" name="KOLICINA" id="kolicina"
-                                                           class="form-control input-sm" placeholder="Količina">
+                                                           class="form-control input-sm" placeholder="Količina" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label" for="napomenastavke">Napomena</label>
@@ -156,7 +188,7 @@
                                                     <button id="obrisistavku" name="obrisistavku" class="btn-lg btn-danger hidden">Obriši
                                                         stavku</button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -179,36 +211,11 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
     $(document).ready(function () {
-
         var stavke = [];
 
-        // Rad sa ponudom
-
-        function popuniPonude(listaPonuda) {
-            $(listaPonuda).map(function () {
-                $('<option>').val(this.BrPonude).text('Br. ' + this.BrPonude +' - '+ this.banka).appendTo('#combo');
-            });
-        }
-        popuniPonude(<% out.println(listaPonuda); %>);
-
-        function popuniArtikle(listaArtikala) {
-            $(listaArtikala).map(function () {
-                $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#select_SIFRAARTIKLA');
-            });
-        }
-        popuniArtikle(<% out.println(listaArtikala); %>);
-
-        function popuniKupce(listaKupaca) {
-            $(listaKupaca).map(function () {
-                $('<option>').val(this.sifraKupca).text(this.ime).appendTo('#select_kupac');
-            });
-        }
-        popuniKupce(<% out.println(listaKupaca); %>);
-
+        // Primer rada sa JSON formatom u javaScript-u
         function popuniRadnike(listaRadnika) {
             $(listaRadnika).map(function () {
                 $('<option>').val(this.sifraRadnika).text(this.ime).appendTo('#select_radnik');
@@ -216,6 +223,7 @@
         }
         popuniRadnike(<% out.println(listaRadnika); %>);
 
+        // Rad sa ponudom
         function pronadjiPonudu(brPonude) {
             $.ajax({
                 url: "/fpis01_war_exploded/ponudakontroler",
@@ -245,17 +253,12 @@
 
             if  (stavke.length != 0) {
                 Tablify_stavka(stavke, '#detalji_ponude', 'Rbr');
+
                 $(".azuriraj").click(function (e) {
                     e.preventDefault();
-
                     var ccid = this.id.split("_")[0];
-                    console.log(stavke);
-                    console.log('this button id: ' + ccid);
-
                     for(var i=0;i<stavke.length;i++) {
                         if (stavke[i].Rbr == ccid) {
-                            console.log(stavke[i].Rbr);
-
                             $("#select_SIFRAARTIKLA option").attr('selected', false);
                             $("#select_SIFRAARTIKLA option:contains("+stavke[i].Artikal+")").attr('selected', true);
                             $("#kolicina").val(stavke[i].Kolicina);
@@ -275,9 +278,7 @@
 
         $('#combo').change(function () {
             var BrPonude = $('#combo').find('option:selected').val();
-            if (BrPonude != 0) {
                 pronadjiPonudu(BrPonude);
-            }
         });
 
         $("#insertBbutton").click(function () {
@@ -293,6 +294,9 @@
         });
 
         // Rad sa stavkom
+        // TODO: ne slati ajax ako je artikal 0
+        // TODO: proveriti da li treba slati rbr 0 za stavku
+
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
             $.ajax({
@@ -314,7 +318,7 @@
                         console.log(e.responseText);
                     }
             });
-
+            
             // prva stavka
             if ( stavke.length == 0) {
                 var prvaStavka = [{
@@ -330,6 +334,7 @@
                 stavke = prvaStavka;
             } else {
 
+//TODO: dodajRbr na formi
                 // dodeli redni broj
                 var postojeciRbr = [];
                 var moguciRbr = [];
@@ -343,6 +348,8 @@
                 }
 
                 var noviRbr = moguciRbr.diff(postojeciRbr)[0];
+
+                /////////
 
                 var novaStavka = {
                     Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
