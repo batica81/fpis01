@@ -4,6 +4,42 @@
 
 <%@include file="header.jsp" %>
 
+<%!
+    String listaArtikala;
+    String listaKupaca;
+    String listaRadnika;
+    String listaPonuda;
+    String ponudaJSON;
+
+    PonudaKontroler k = new PonudaKontroler();
+
+
+//    start()
+//    popuniArtikle(listaArtikala);
+//    popuniKupce(listaKupaca);
+//    popuniRadnike(listaRadnika);
+//    popuniPonude(listaPonuda);
+
+//    DodajStavku()
+//    IzmeniStavku()
+//    ObrisiStavku()
+
+//    AzurirajPrikaz()
+//    Sacuvaj()
+
+//    popuniPoljaForme(ponudaJSON)
+//    odaberiPonudu()
+//    izmeni()
+
+%>
+
+<%
+    listaPonuda = k.vratiPonude();
+    listaArtikala = k.vratiArtikle();
+    listaKupaca = k.vratiKupce();
+    listaRadnika = k.vratiRadnike();
+%>
+
 <div class="container ponudaforma">
     <div class="row centered-form">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -143,41 +179,7 @@
     </div>
 </div>
 
-<%!
-    String listaArtikala;
-    String listaKupaca;
-    String listaRadnika;
-    String listaPonuda;
-    String ponudaJSON;
 
-    PonudaKontroler k = new PonudaKontroler();
-
-
-//    start()
-//    popuniArtikle(listaArtikala);
-//    popuniKupce(listaKupaca);
-//    popuniRadnike(listaRadnika);
-//    popuniPonude(listaPonuda);
-
-//    DodajStavku()
-//    IzmeniStavku()
-//    ObrisiStavku()
-
-//    AzurirajPrikaz()
-//    Sacuvaj()
-
-//    popuniPoljaForme(ponudaJSON)
-//    odaberiPonudu()
-//    izmeni()
-
-%>
-
-<%
-    listaPonuda = k.vratiPonude();
-    listaArtikala = k.vratiArtikle();
-    listaKupaca = k.vratiKupce();
-    listaRadnika = k.vratiRadnike();
-%>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -185,24 +187,6 @@
         var stavke = [];
 
         // Rad sa ponudom
-        function pronadjiPonudu(brPonude) {
-            $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
-                method: "GET",
-                data: {
-                    'brPonude' : brPonude
-                },
-                success:
-                    function (ponudaJSON) {
-                        popuniPoljaForme(ponudaJSON);
-                        console.log(ponudaJSON);
-                    },
-                error:
-                    function (e) {
-                        console.log(e.responseText);
-                    }
-            });
-        }
 
         function popuniPonude(listaPonuda) {
             $(listaPonuda).map(function () {
@@ -231,6 +215,25 @@
             });
         }
         popuniRadnike(<% out.println(listaRadnika); %>);
+
+        function pronadjiPonudu(brPonude) {
+            $.ajax({
+                url: "/fpis01_war_exploded/ponudakontroler",
+                method: "GET",
+                data: {
+                    'brPonude' : brPonude
+                },
+                success:
+                    function (ponudaJSON) {
+                        popuniPoljaForme(ponudaJSON);
+                        console.log(ponudaJSON);
+                    },
+                error:
+                    function (e) {
+                        console.log(e.responseText);
+                    }
+            });
+        }
 
         function popuniPoljaForme(ponudaJSON) {
             $('#detalji_ponude').empty();
@@ -271,9 +274,9 @@
         }
 
         $('#combo').change(function () {
-            selected = $('#combo').find('option:selected').val();
-            if (selected != 0) {
-                pronadjiPonudu(selected);
+            var BrPonude = $('#combo').find('option:selected').val();
+            if (BrPonude != 0) {
+                pronadjiPonudu(BrPonude);
             }
         });
 
@@ -293,7 +296,7 @@
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
             $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                url: "/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
                 data: {
                     'radsastavkom': true,
@@ -364,7 +367,7 @@
         $("#izmenistavku").click(function (e) {
             e.preventDefault();
             $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                url: "/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
                 data: {
                     'radsastavkom' : true,
@@ -407,7 +410,7 @@
         $("#obrisistavku").click(function (e) {
             e.preventDefault();
             $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/ponudakontroler",
+                url: "/fpis01_war_exploded/ponudakontroler",
                 method: "POST",
                 data: {
                     'radsastavkom' : true,

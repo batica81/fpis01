@@ -68,7 +68,7 @@ public class ArtikalKontroler extends HttpServlet {
         return String.valueOf(arr);
     }
 
-    public String pronadjiArtikal(int SifraArtikla) {
+    private String pronadjiArtikal(int SifraArtikla) {
         dbb.pokreniDBTransakciju();
         a = dbb.pronadjiArtikal(SifraArtikla);
         dbb.potvrdiDBTransakciju();
@@ -83,7 +83,7 @@ public class ArtikalKontroler extends HttpServlet {
         return String.valueOf(obj);
     }
 
-    public void sacuvajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
+    private void sacuvajArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
         a.setSifraartikla(Sifraartikla);
         a.setNazivartikla(Nazivartikla);
         a.setOpisartikla(Opisartikla);
@@ -100,7 +100,7 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
+    private void izmeniArtikal(int Sifraartikla, String Nazivartikla, String Opisartikla, String Jedinicamere, int Cena){
         a.setSifraartikla(Sifraartikla);
         a.setNazivartikla(Nazivartikla);
         a.setOpisartikla(Opisartikla);
@@ -117,7 +117,7 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void obrisiArtikal(int Sifraartikla){
+    private void obrisiArtikal(int Sifraartikla){
         a.setSifraartikla(Sifraartikla);
         a.setStatus("delete");
 

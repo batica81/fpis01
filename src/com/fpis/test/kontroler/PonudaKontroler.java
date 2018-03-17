@@ -182,7 +182,7 @@ public class PonudaKontroler extends HttpServlet {
         return String.valueOf(arr);
     }
 
-    public String pronadjiPonudu(int brPonude) {
+    private String pronadjiPonudu(int brPonude) {
         dbb.pokreniDBTransakciju();
         p = dbb.pronadjiPonudu(brPonude);
         dbb.potvrdiDBTransakciju();
@@ -218,7 +218,7 @@ public class PonudaKontroler extends HttpServlet {
         return String.valueOf(ponudaJson);
     }
 
-    public void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
+    private void dodajPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         p.setBrPonude(brPonude);
         p.setDatum(datum);
         p.setSifraKupca(sifraKupca);
@@ -243,7 +243,7 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
+    private void izmeniPonudu(int brPonude, Timestamp datum, int sifraKupca, int sifraRadnika, String isporuka, String banka, String tekuciRacun, String uslovi, String napomena, String validnost, String pozivNaBroj, String mesto, Timestamp datumPrometa, String tipPlacanja){
         p.setBrPonude(brPonude);
         p.setDatum(datum);
         p.setSifraKupca(sifraKupca);
@@ -269,7 +269,7 @@ public class PonudaKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-    public void obrisiPonudu(int brPonude){
+    private void obrisiPonudu(int brPonude){
         p.setBrPonude(brPonude);
         p.setStatus("delete");
 
@@ -283,7 +283,7 @@ public class PonudaKontroler extends HttpServlet {
 
     // Rad sa stavkom
 
-    public void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
+    private void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
         vratiArtikle();
         ArtikalEntity odabraniArtikal = new ArtikalEntity();
         for (Object artikalRaw:listaArtikala) {
@@ -295,7 +295,7 @@ public class PonudaKontroler extends HttpServlet {
             p.dodajStavku(rbr, odabraniArtikal, kolicina, napomenastavke);
     }
 
-    public void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
+    private void izmeniStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke) {
         vratiArtikle();
         for (Object artikalRaw:listaArtikala) {
             ArtikalEntity Artikal = (ArtikalEntity) artikalRaw;
@@ -305,11 +305,11 @@ public class PonudaKontroler extends HttpServlet {
         }
     }
 
-    public void obrisiStavku(int rbr){
+    private void obrisiStavku(int rbr){
         p.obrisiStavku(rbr);
     }
 
-    public int dodajRbr(){
+    private int dodajRbr(){
         if (p.getKolekcijaStavki() != null) {
             ArrayList<Integer> postojeciRbr = new ArrayList<>();
             ArrayList<Integer> moguciRbr = new ArrayList<>();

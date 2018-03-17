@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Ponuda", schema = "fpis01", catalog = "")
+@Table(name = "Ponuda", schema = "fpis01", catalog = "fpis01")
 public class PonudaEntity {
     private int brPonude;
     private Timestamp datum;
@@ -223,7 +223,7 @@ public class PonudaEntity {
         ubaciUKolekciju(sp);
     }
 
-    public void ubaciUKolekciju (StavkaPonudeEntity sp) {
+    private void ubaciUKolekciju(StavkaPonudeEntity sp) {
         sp.setPonudaByBrPonude(this);
         kolekcijaStavki.add(sp);
     }

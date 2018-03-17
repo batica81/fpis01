@@ -45,6 +45,10 @@ public class HelloWorld {
       } catch (Exception e) {
         e.printStackTrace();
       }
+      System.out.println("");
+      System.out.println("Podaci poslati sa SERVERA:");
+      System.out.println("--------------------------");
+      System.out.println("");
       System.out.println(csvResult);
       return csvResult;
   }

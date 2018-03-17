@@ -1,4 +1,7 @@
 <%@ page import="com.fpis.test.kontroler.ArtikalKontroler" %>
+<%@ page import="org.json.simple.parser.JSONParser" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.json.simple.JSONArray" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -8,6 +11,10 @@
     String listaArtikala;
     String artikalJSON;
     ArtikalKontroler k = new ArtikalKontroler();
+
+    JSONParser parser = new JSONParser();
+
+
 
     //    popuniPoljaForme(artikalJSON)
 
@@ -31,8 +38,36 @@
 
 <%
     listaArtikala = k.vratiArtikle();
-//out.print(request.getParameter("sifraArtikla"));
+
+
+    JSONArray artikalArray = (JSONArray) parser.parse(listaArtikala);
+
+    String aa = ( "<option value="+((JSONObject)artikalArray.get(0)).get("sifraartikla") + ">" + ((JSONObject)artikalArray.get(0)).get("nazivartikla") + "</option>");
+
+//    for (:
+//         ) {
+//
+//    }
+//    artikalArray.size()
+//
+//
+//
+//    for (Object artikalRaw:listaArtikala) {
+//    JSONObject obj = new JSONObject();
+//    ArtikalEntity artikal = (ArtikalEntity) artikalRaw;
+//    obj.put("jedinicamere", artikal.getJedinicamere());
+//    obj.put("opisartikla", artikal.getOpisartikla());
+//    obj.put("nazivartikla", artikal.getNazivartikla());
+//    obj.put("sifraartikla", artikal.getSifraartikla());
+//    obj.put("cena", artikal.getCena());
+//    arr.add(obj);
+//    }
+//    return String.valueOf(arr);
+
+
+
 %>
+
 
 <div class="container artikalforma">
     <div class="row centered-form">
@@ -43,6 +78,7 @@
                 </div>
                 <select name="combo" id="combo" class="dropdown form-control hidden">
                     <option selected disabled value>Odaberite artikal za izmenu</option>
+                    <% out.println(aa); %>
                 </select>
                 <div class="panel-body">
                     <form id="artikalForma" class="" action="artikalkontroler" method="post" role="form">
@@ -83,9 +119,17 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
+        //TODO: pretvoriti u JSP
+        <%--function prikaziArtikle(listaArtikala) {--%>
+            <%--$(listaArtikala).map(function () {--%>
+                <%--$('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');--%>
+            <%--});--%>
+        <%--}--%>
+        <%--prikaziArtikle(<% out.println(listaArtikala); %>);--%>
+
         function pronadjiArtikal(sifraArtikla) {
             $.ajax({
-                url: "http://localhost:8080/fpis01_war_exploded/artikalkontroler",
+                url: "/fpis01_war_exploded/artikalkontroler",
                 method: "GET",
                 data: {
                     'sifraArtikla' : sifraArtikla
@@ -101,23 +145,13 @@
             });
         }
 
-        //TODO: pretvoriti u JSP
-        function prikaziArtikle(listaArtikala) {
-            $(listaArtikala).map(function () {
-                $('<option>').val(this.sifraartikla).text(this.nazivartikla).appendTo('#combo');
-            });
-        }
-        prikaziArtikle(<% out.println(listaArtikala); %>);
-
         function popuniPoljaForme(artikalJSON) {
             $('#artikalForma').populate(artikalJSON);
         }
 
         $('#combo').change(function () {
-            sifraArtikla = $('#combo').find('option:selected').val();
-            if (sifraArtikla != 0) {
+            var sifraArtikla = $('#combo').find('option:selected').val();
                 pronadjiArtikal(sifraArtikla);
-            }
         });
 
         $("#insertBbutton").click(function () {
@@ -137,6 +171,7 @@
 
 <%!
 
+//    TEST
     public String getQuarter(int i){
         String quarter;
         switch(i){

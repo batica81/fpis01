@@ -1,11 +1,10 @@
 package com.fpis.test.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "ARTIKAL", schema = "fpis01", catalog = "")
+@Table(name = "ARTIKAL", schema = "fpis01", catalog = "fpis01")
 public class ArtikalEntity {
     private int sifraartikla;
     private String nazivartikla;
@@ -13,7 +12,6 @@ public class ArtikalEntity {
     private String opisartikla;
     private int cena;
     private String status;
-    private Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla;
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -93,12 +91,4 @@ public class ArtikalEntity {
         return Objects.hash(sifraartikla, nazivartikla, jedinicamere, opisartikla);
     }
 
-    @OneToMany(mappedBy = "artikalBySifraArtikla")
-    public Collection<StavkaPonudeEntity> getStavkaPonudesBySifraartikla() {
-        return stavkaPonudesBySifraartikla;
-    }
-
-    public void setStavkaPonudesBySifraartikla(Collection<StavkaPonudeEntity> stavkaPonudesBySifraartikla) {
-        this.stavkaPonudesBySifraartikla = stavkaPonudesBySifraartikla;
-    }
 }
