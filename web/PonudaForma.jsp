@@ -264,7 +264,6 @@
                             $("#kolicina").val(stavke[i].Kolicina);
                             $("#Rbr").val(stavke[i].Rbr);
                             $("#napomenastavke").val(stavke[i].Napomena);
-
                             var tmpRbr = "#tr_" + stavke[i].Rbr;
                             $('#detalji_ponude tr').removeClass('aktivnastavka');
                             $(tmpRbr).addClass('aktivnastavka');
@@ -296,6 +295,7 @@
         // Rad sa stavkom
 
         // TODO: bug sa kliktanjem vise puta na azuriraj
+        // TODO: bug multiuser
 
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
@@ -335,26 +335,9 @@
                     stavke = prvaStavka;
                 } else {
 
-//TODO: dodajRbr na formi
-                    // dodeli redni broj
-                    var postojeciRbr = [];
-                    var moguciRbr = [];
-
-                    for (var j = 0; j < stavke.length; j++) {
-                        postojeciRbr.push(stavke[j].Rbr);
-                    }
-
-                    for (var k = 0; k < postojeciRbr.length + 1; k++) {
-                        moguciRbr.push(k + 1);
-                    }
-
-                    var noviRbr = moguciRbr.diff(postojeciRbr)[0];
-
-                    /////////
-
                     var novaStavka = {
                         Artikal: $("#select_SIFRAARTIKLA option:selected").text(),
-                        Rbr: noviRbr,
+                        Rbr: dodajRbr(stavke),
                         Kolicina: $("#kolicina").val(),
                         Napomena: $("#napomenastavke").val()
                     };

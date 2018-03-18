@@ -5,46 +5,48 @@ function Tablify_stavka(data, table_id, primary_key){
     var tableHeader = '<thead>';
     var keynames_array = [];
     var tmp_keys_array = [];
-
     for (var keyName in data[0]){
         tableHeader += '<th>' + keyName + '</th>';
         keynames_array.push(keyName);
     }
-
     tableHeader += '<th>Ažuriraj stavku</th>';
     tableHeader += '</thead>';
-
     for(var i=0;i<data.length;i++){
         var turk = data[i];
         var tmp_key = turk[primary_key];
         var tmp_brponude = turk['BrPonude'];
-
         tableRow += '<tr id="tr_'+tmp_key+'">';
-
         for(var key in turk){
             tableRow += '<td id="'+tmp_key+'_'+key+'" class="'+ key +'">' + turk[key] + '</td>';
-
         }
         tableRow += '<td class="center"><a id="'+tmp_key+'_btn" class="azuriraj btn btn-info" href="#">Ažuriraj ovu stavku<a></td>';
         tableRow += '</tr>';
         tmp_keys_array.push(tmp_key);
     }
-
     $(table_id).append(tableHeader);
     $(table_id).append('<tbody>');
     $(table_id).append(tableRow);
     $(table_id).append('</tbody>');
     $(table_id).tablesorter();
-} // end Tablify_stavka
+}
 
-Array.prototype.diff = function (a) {
-    return this.filter(function (i) {
-        return a.indexOf(i) === -1;
-    });
-};
-
-
-
+// dodeli redni broj na formi
+function dodajRbr(stavke) {
+    Array.prototype.diff = function (a) {
+        return this.filter(function (i) {
+            return a.indexOf(i) === -1;
+        });
+    };
+    var postojeciRbr = [];
+    var moguciRbr = [];
+    for (var j = 0; j < stavke.length; j++) {
+        postojeciRbr.push(stavke[j].Rbr);
+    }
+    for (var k = 0; k < postojeciRbr.length + 1; k++) {
+        moguciRbr.push(k + 1);
+    }
+    return moguciRbr.diff(postojeciRbr)[0];
+}
 
 //Init
 $(document).ready(function () {
