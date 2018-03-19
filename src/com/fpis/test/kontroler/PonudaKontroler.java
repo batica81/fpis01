@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -32,13 +33,18 @@ public class PonudaKontroler extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
         out.println(pronadjiPonudu(Integer.valueOf(request.getParameter("brPonude"))));
+        session.setAttribute("brPonude", p.getBrPonude());
     }
+
+//    TODO: mesanje podataka konkurentnih korisnika
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-            if (request.getParameterMap().containsKey("radsastavkom")) {
+        HttpSession session = request.getSession();
+        if (request.getParameterMap().containsKey("radsastavkom")) {
 
                 String status = String.valueOf(request.getParameter("status"));
 
@@ -84,10 +90,10 @@ public class PonudaKontroler extends HttpServlet {
                 dodajPonudu(0, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
             } else if (status.equals("update")) {
-                izmeniPonudu(p.getBrPonude(), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+                izmeniPonudu((int) session.getAttribute("brPonude"), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
             } else if (status.equals("delete")) {
-                obrisiPonudu(p.getBrPonude());
+                obrisiPonudu((int) session.getAttribute("brPonude"));
             }
 
             response.setContentType("text/html");
@@ -285,7 +291,6 @@ public class PonudaKontroler extends HttpServlet {
     }
 
     // Rad sa stavkom
-
     private void dodajStavku(int rbr, int sifraartikla, int kolicina, String napomenastavke){
         vratiArtikle();
         ArtikalEntity odabraniArtikal = new ArtikalEntity();
@@ -334,4 +339,4 @@ public class PonudaKontroler extends HttpServlet {
         }
     }
 
-} //end servlet
+}

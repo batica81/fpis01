@@ -244,6 +244,9 @@
             });
         }
 
+        //    TODO: deselect azuriranja
+
+
         function popuniPoljaForme(ponudaJSON) {
             $('#detalji_ponude').empty();
             stavke = ponudaJSON.Stavke;

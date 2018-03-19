@@ -24,20 +24,16 @@ public class ArtikalKontroler extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.println(pronadjiArtikal(Integer.valueOf(request.getParameter("sifraArtikla"))));
-
-        // TODO: bug multiuser
-
         HttpSession session = request.getSession();
-        System.out.println("SESSION ID: " + session.getId());
-
-
+        out.println(pronadjiArtikal(Integer.valueOf(request.getParameter("sifraArtikla"))));
+        session.setAttribute("sifraArtikla", a.getSifraartikla());
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
+        HttpSession session = request.getSession();
         String status = String.valueOf(request.getParameter("status"));
         Integer Cena = Integer.valueOf(request.getParameter("cena"));
         String Nazivartikla = String.valueOf(request.getParameter("nazivartikla"));
@@ -48,10 +44,10 @@ public class ArtikalKontroler extends HttpServlet {
             sacuvajArtikal(0, Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("update")) {
-            izmeniArtikal(a.getSifraartikla(), Nazivartikla, Opisartikla, Jedinicamere, Cena);
+            izmeniArtikal((int) session.getAttribute("sifraArtikla"), Nazivartikla, Opisartikla, Jedinicamere, Cena);
         }
         else if (status.equals("delete")) {
-            obrisiArtikal(a.getSifraartikla());
+            obrisiArtikal((int) session.getAttribute("sifraArtikla"));
         }
 
         RequestDispatcher view = request.getRequestDispatcher("html/back.html");
@@ -139,4 +135,4 @@ public class ArtikalKontroler extends HttpServlet {
             dbb.ponistiDBTransakciju();
     }
 
-} //end servlet
+}
