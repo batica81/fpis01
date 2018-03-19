@@ -7,9 +7,7 @@ import org.json.simple.JSONObject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -22,12 +20,23 @@ public class ArtikalKontroler extends HttpServlet {
     private ArtikalEntity a = new ArtikalEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         out.println(pronadjiArtikal(Integer.valueOf(request.getParameter("sifraArtikla"))));
+
+        // TODO: bug multiuser
+
+        HttpSession session = request.getSession();
+        System.out.println("SESSION ID: " + session.getId());
+
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         String status = String.valueOf(request.getParameter("status"));
         Integer Cena = Integer.valueOf(request.getParameter("cena"));

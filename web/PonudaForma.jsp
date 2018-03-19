@@ -212,8 +212,9 @@
 </div>
 
 <script type="text/javascript">
+    var stavke = [];
+
     $(document).ready(function () {
-        var stavke = [];
 
         // Primer rada sa JSON formatom u javaScript-u
         function popuniRadnike(listaRadnika) {
@@ -259,8 +260,8 @@
                     var ccid = this.id.split("_")[0];
                     for(var i=0;i<stavke.length;i++) {
                         if (stavke[i].Rbr == ccid) {
-                            $("#select_SIFRAARTIKLA option").attr('selected', false);
-                            $("#select_SIFRAARTIKLA option:contains("+stavke[i].Artikal+")").attr('selected', true);
+                            $("#select_SIFRAARTIKLA option").prop('selected', false);
+                            $("#select_SIFRAARTIKLA option:contains("+stavke[i].Artikal+")").prop('selected', true);
                             $("#kolicina").val(stavke[i].Kolicina);
                             $("#Rbr").val(stavke[i].Rbr);
                             $("#napomenastavke").val(stavke[i].Napomena);
@@ -293,10 +294,6 @@
         });
 
         // Rad sa stavkom
-
-        // TODO: bug sa kliktanjem vise puta na azuriraj
-        // TODO: bug multiuser
-
         $("#dodajstavku").click(function (e) {
             e.preventDefault();
             if  ($("#select_SIFRAARTIKLA").val() != 0 && $("#kolicina").val() !=0) {

@@ -28,13 +28,16 @@ public class PonudaKontroler extends HttpServlet {
     private PonudaEntity p = new PonudaEntity();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         out.println(pronadjiPonudu(Integer.valueOf(request.getParameter("brPonude"))));
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
             if (request.getParameterMap().containsKey("radsastavkom")) {
 
                 String status = String.valueOf(request.getParameter("status"));
