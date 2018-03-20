@@ -48,6 +48,15 @@ function dodajRbr(stavke) {
     return moguciRbr.diff(postojeciRbr)[0];
 }
 
+function odustani() {
+    $("#select_SIFRAARTIKLA").val(0);
+    $("#kolicina").val('');
+    $("#napomenastavke").val('');
+    $('#detalji_ponude tr').removeClass('aktivnastavka');
+
+
+}
+
 //Init
 $(document).ready(function () {
 
