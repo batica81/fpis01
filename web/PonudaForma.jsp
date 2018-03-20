@@ -244,9 +244,6 @@
             });
         }
 
-        //    TODO: deselect azuriranja
-
-
         function popuniPoljaForme(ponudaJSON) {
             $('#detalji_ponude').empty();
             stavke = ponudaJSON.Stavke;
@@ -271,6 +268,8 @@
                             var tmpRbr = "#tr_" + stavke[i].Rbr;
                             $('#detalji_ponude tr').removeClass('aktivnastavka');
                             $(tmpRbr).addClass('aktivnastavka');
+                            $("#detalji_ponude tr span").addClass('hidden');
+                            $(tmpRbr + " span").removeClass('hidden');
                         }
                     }
                 });
@@ -397,6 +396,7 @@
                 $("#select_SIFRAARTIKLA").val(0);
                 $("#kolicina").val('');
                 $("#napomenastavke").val('');
+                $("#detalji_ponude tr span").addClass('hidden');
             }
         });
 

@@ -19,7 +19,7 @@ function Tablify_stavka(data, table_id, primary_key){
         for(var key in turk){
             tableRow += '<td id="'+tmp_key+'_'+key+'" class="'+ key +'">' + turk[key] + '</td>';
         }
-        tableRow += '<td class="center"><a id="'+tmp_key+'_btn" class="azuriraj btn btn-info" href="#">Ažuriraj ovu stavku<a></td>';
+        tableRow += '<td><a id="'+tmp_key+'_btn" class="azuriraj btn btn-info" href="#">Ažuriraj ovu stavku</a><span class="dugmeOdustaniWrapper"><span class="dugmeOdustani hidden" onclick="odustani()"><i class="fa fa-cab"></i></span></span></td>';
         tableRow += '</tr>';
         tmp_keys_array.push(tmp_key);
     }
@@ -53,8 +53,7 @@ function odustani() {
     $("#kolicina").val('');
     $("#napomenastavke").val('');
     $('#detalji_ponude tr').removeClass('aktivnastavka');
-
-
+    $('.dugmeOdustani').addClass('hidden');
 }
 
 //Init

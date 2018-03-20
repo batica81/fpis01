@@ -128,3 +128,16 @@ button {
 .Artikal {
     width: 35%;
 }
+
+.dugmeOdustani i{
+    padding-left: 10px;
+}
+
+.dugmeOdustaniWrapper {
+    display: inline-block;
+    width: 40px;
+}
+
+.azuriraj {
+    margin-left: 20%;
+}

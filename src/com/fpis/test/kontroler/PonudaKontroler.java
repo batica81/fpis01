@@ -38,37 +38,35 @@ public class PonudaKontroler extends HttpServlet {
         session.setAttribute("brPonude", p.getBrPonude());
     }
 
-//    TODO: mesanje podataka konkurentnih korisnika
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         if (request.getParameterMap().containsKey("radsastavkom")) {
+            String status = String.valueOf(request.getParameter("status"));
 
-                String status = String.valueOf(request.getParameter("status"));
-
-                if (status.equals("insert")) {
-                    if (Boolean.valueOf(request.getParameter("unosponude"))) {
-                        if  (p.getBrPonude() != 0) {
-                            p = new PonudaEntity();
-                        }
+            if (status.equals("insert")) {
+                if (Boolean.valueOf(request.getParameter("unosponude"))) {
+                    if  (p.getBrPonude() != 0) {
+                        p = new PonudaEntity();
+                        session.setAttribute("brPonude", p.getBrPonude());
                     }
-                    int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
-                    int rbr = dodajRbr();
-                    int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
-                    String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
-                    dodajStavku(rbr, sifraartikla, kolicina, napomenastavke);
-                } else if (status.equals("update")) {
-                    int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
-                    int rbr = Integer.valueOf(request.getParameter("rbr"));
-                    int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
-                    String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
-                    izmeniStavku(rbr, sifraartikla, kolicina, napomenastavke);
-                } else if (status.equals("delete")) {
-                    int rbr = Integer.valueOf(request.getParameter("rbr"));
-                    obrisiStavku(rbr);
                 }
+                int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
+                int rbr = dodajRbr();
+                int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
+                String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
+                dodajStavku(rbr, sifraartikla, kolicina, napomenastavke);
+            } else if (status.equals("update")) {
+                int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
+                int rbr = Integer.valueOf(request.getParameter("rbr"));
+                int sifraartikla = Integer.valueOf(request.getParameter("SIFRAARTIKLA"));
+                String napomenastavke = String.valueOf(request.getParameter("napomenastavke"));
+                izmeniStavku(rbr, sifraartikla, kolicina, napomenastavke);
+            } else if (status.equals("delete")) {
+                int rbr = Integer.valueOf(request.getParameter("rbr"));
+                obrisiStavku(rbr);
+            }
             } else {
 
             String status = String.valueOf(request.getParameter("status"));
