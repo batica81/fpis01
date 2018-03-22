@@ -35,21 +35,22 @@ public class PonudaKontroler extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         out.println(pronadjiPonudu(Integer.valueOf(request.getParameter("brPonude"))));
-        session.setAttribute("brPonude", p.getBrPonude());
+        session.setAttribute("ponuda", p);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        p = (PonudaEntity) session.getAttribute("ponuda");
         if (request.getParameterMap().containsKey("radsastavkom")) {
             String status = String.valueOf(request.getParameter("status"));
 
             if (status.equals("insert")) {
                 if (Boolean.valueOf(request.getParameter("unosponude"))) {
-                    if  (p.getBrPonude() != 0) {
+                    if  (p == null || p.getBrPonude() != 0) {
                         p = new PonudaEntity();
-                        session.setAttribute("brPonude", p.getBrPonude());
+                        session.setAttribute("ponuda", p);
                     }
                 }
                 int kolicina = Integer.valueOf(request.getParameter("KOLICINA"));
@@ -88,10 +89,10 @@ public class PonudaKontroler extends HttpServlet {
                 dodajPonudu(0, datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
             } else if (status.equals("update")) {
-                izmeniPonudu((int) session.getAttribute("brPonude"), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
+                izmeniPonudu(p.getBrPonude(), datum, sifraKupca, sifraRadnika, isporuka, banka, tekuciRacun, uslovi, napomena, validnost,
                         pozivNaBroj, mesto, datumPrometa, tipPlacanja);
             } else if (status.equals("delete")) {
-                obrisiPonudu((int) session.getAttribute("brPonude"));
+                obrisiPonudu(p.getBrPonude());
             }
 
             response.setContentType("text/html");
