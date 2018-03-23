@@ -69,7 +69,6 @@
                                    id="cena" name="cena">
                         </div>
                         <input hidden id="stautsinput" type="text" name="status">
-
                         <button id="insertBbutton" type="submit" class="btn-lg btn-block btn-info">Unesi artikal</button>
                         <button id="updateBbutton" type="submit" class="btn-lg btn-block btn-success hidden">Izmeni artikal</button>
                         <button id="deleteBbutton" type="submit" class="btn-lg btn-block btn-danger hidden">Obriši artikal</button>

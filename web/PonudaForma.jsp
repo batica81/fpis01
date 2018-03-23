@@ -199,7 +199,6 @@
                                 <table id="detalji_ponude" border='1' class='table tablesorter table-striped table-condensed'></table>
                             </div>
                         </div>
-
                         <input hidden id="stautsinput" type="text" name="status">
                         <button id="insertBbutton" class="btn-lg btn-block btn-info" type="submit">Unesi ponudu</button>
                         <button id="updateBbutton" type="submit" class="btn-lg btn-block btn-success hidden">Izmeni ponudu</button>
@@ -213,7 +212,6 @@
 
 <script type="text/javascript">
     var stavke = [];
-
     $(document).ready(function () {
 
         // Primer rada sa JSON formatom u javaScript-u

@@ -29,6 +29,5 @@
     <mapping class="com.fpis.test.model.KupacEntity"/>
     <mapping class="com.fpis.test.model.RadnikEntity"/>
     <mapping class="com.fpis.test.model.StavkaPonudeEntity"/>
-
   </session-factory>
 </hibernate-configuration>
